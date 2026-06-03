@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cloud-Based Student Portfolio and Resume Builder System Using AWS</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a href="#home" class="logo">LP<span>Portfolio</span></a>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#resume-builder">Resume Builder</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <button class="theme-btn" id="themeToggle" type="button">🌙</button>
+      <button class="menu-btn" id="menuToggle" type="button">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero section" id="home">
+      <div class="container hero-grid">
+        <div class="hero-text">
+          <p class="tag">AI & DS Student • AWS Learner • Developer</p>
+          <h1>Hi, I am <span>Leela Priyanka</span></h1>
+          <p class="subtitle">
+            I build simple, responsive, and modern web experiences.
+            This platform helps students create and manage portfolios and resumes online.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#resume-builder" class="btn primary">Build Resume</a>
+            <a href="#projects" class="btn secondary">View Projects</a>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="profile-circle">LP</div>
+          <h3>Student Developer</h3>
+          <p>AI & DS | Frontend | AWS Basics | GitHub</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section about" id="about">
+      <div class="container">
+        <h2 class="section-title">About Me</h2>
+        <div class="card">
+          <p>
+            I am a BTech student interested in Web Development, Data Science,
+            and AWS. This project helps students create a cloud-based digital
+            portfolio and resume management system.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section skills" id="skills">
+      <div class="container">
+        <h2 class="section-title">Skills</h2>
+        <div class="skills-grid">
+          <div class="skill-card">HTML</div>
+          <div class="skill-card">CSS</div>
+          <div class="skill-card">JavaScript</div>
+          <div class="skill-card">Git & GitHub</div>
+          <div class="skill-card">AWS Basics</div>
+          <div class="skill-card">Java</div>
+          <div class="skill-card">JDBC</div>
+          <div class="skill-card">MySQL</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section projects" id="projects">
+      <div class="container">
+        <h2 class="section-title">Projects</h2>
+        <div class="project-grid">
+          <article class="project-card">
+            <h3>Student Portfolio</h3>
+            <p>Personal portfolio website with modern UI and responsive layout.</p>
+          </article>
+          <article class="project-card">
+            <h3>Resume Builder</h3>
+            <p>Frontend form to collect data and preview resume details live.</p>
+          </article>
+          <article class="project-card">
+            <h3>AWS Deployment Ready</h3>
+            <p>Static site structure prepared for S3, CloudFront, and Route 53 deployment.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section builder" id="resume-builder">
+      <div class="container">
+        <h2 class="section-title">Resume Builder</h2>
+
+        <div class="builder-grid">
+          <form class="builder-form card" id="resumeForm">
+            <label>Full Name
+              <input type="text" id="name" placeholder="Enter your name" />
+            </label>
+
+            <label>Role / Title
+              <input type="text" id="role" placeholder="Example: AI & DS Student" />
+            </label>
+
+            <label>Summary
+              <textarea id="summary" rows="4" placeholder="Short profile summary..."></textarea>
+            </label>
+
+            <label>Skills (comma separated)
+              <input type="text" id="skillsInput" placeholder="HTML, CSS, JavaScript" />
+            </label>
+
+            <label>Education
+              <input type="text" id="education" placeholder="BTech AI & DS, BVC Engineering College" />
+            </label>
+
+            <label>Projects
+              <input type="text" id="projectsInput" placeholder="Portfolio Website, Resume Builder" />
+            </label>
+
+            <button class="btn primary" type="submit">Update Preview</button>
+            <button class="btn secondary" type="button" id="downloadBtn">Download Resume Text</button>
+          </form>
+
+          <div class="preview card">
+            <h3>Live Resume Preview</h3>
+            <div id="previewContent">
+              <p><strong>Name:</strong> Your Name</p>
+              <p><strong>Role:</strong> Your Role</p>
+              <p><strong>Summary:</strong> Your summary will appear here.</p>
+              <p><strong>Skills:</strong> HTML, CSS, JavaScript</p>
+              <p><strong>Education:</strong> Your education details</p>
+              <p><strong>Projects:</strong> Your projects</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact">
+      <div class="container">
+        <h2 class="section-title">Contact</h2>
+        <div class="contact-card card">
+          <p>Email: leelapriyankagandham@gmail.com</p>
+          <p>GitHub: Leelapriyanka18</p>
+          <p>Location: India</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 Leela Priyanka • Cloud-Based Student Portfolio and Resume Builder System Using AWS</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/script.js"></script>
+</body>
+</html>
