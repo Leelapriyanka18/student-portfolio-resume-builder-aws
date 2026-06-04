@@ -1,231 +1,18 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About | Student Portfolio Resume Builder</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      min-height: 100vh;
-      font-family: Arial, sans-serif;
-      color: #1f2937;
-      background: #f5f7fb;
-      line-height: 1.6;
-    }
-
-    .header {
-      background: #ffffff;
-      border-bottom: 1px solid #e5e7eb;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .container {
-      width: min(1100px, calc(100% - 32px));
-      margin: 0 auto;
-    }
-
-    .nav {
-      min-height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-    }
-
-    .logo {
-      color: #111827;
-      font-size: 22px;
-      font-weight: 800;
-      text-decoration: none;
-    }
-
-    .logo span {
-      color: #2563eb;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      flex-wrap: wrap;
-    }
-
-    .nav-links a {
-      color: #4b5563;
-      font-weight: 600;
-      text-decoration: none;
-    }
-
-    .nav-links a:hover {
-      color: #2563eb;
-    }
-
-    .hero {
-      padding: 72px 0 40px;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.3fr 0.7fr;
-      gap: 32px;
-      align-items: center;
-    }
-
-    .tag {
-      color: #2563eb;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    h1 {
-      color: #111827;
-      font-size: clamp(34px, 5vw, 56px);
-      line-height: 1.1;
-      margin-bottom: 18px;
-    }
-
-    h1 span {
-      color: #2563eb;
-    }
-
-    .subtitle {
-      max-width: 680px;
-      color: #4b5563;
-      font-size: 18px;
-    }
-
-    .profile-card,
-    .card {
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.08);
-    }
-
-    .profile-card {
-      padding: 28px;
-      text-align: center;
-    }
-
-    .profile-circle {
-      width: 110px;
-      height: 110px;
-      margin: 0 auto 18px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: #dbeafe;
-      color: #1d4ed8;
-      font-size: 36px;
-      font-weight: 800;
-    }
-
-    .section {
-      padding: 42px 0;
-    }
-
-    .section-title {
-      color: #111827;
-      font-size: 30px;
-      margin-bottom: 18px;
-    }
-
-    .card {
-      padding: 24px;
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-top: 22px;
-    }
-
-    .info-card h3 {
-      color: #111827;
-      margin-bottom: 8px;
-    }
-
-    .info-card p,
-    .card li {
-      color: #4b5563;
-    }
-
-    ul {
-      padding-left: 20px;
-    }
-
-    .cta {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 22px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 44px;
-      padding: 0 18px;
-      border-radius: 8px;
-      font-weight: 700;
-      text-decoration: none;
-    }
-
-    .btn.primary {
-      color: #ffffff;
-      background: #2563eb;
-    }
-
-    .btn.secondary {
-      color: #2563eb;
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-    }
-
-    .footer {
-      padding: 26px 0;
-      color: #6b7280;
-      text-align: center;
-      border-top: 1px solid #e5e7eb;
-      background: #ffffff;
-    }
-
-    @media (max-width: 800px) {
-      .nav {
-        align-items: flex-start;
-        flex-direction: column;
-        padding: 16px 0;
-      }
-
-      .hero-grid,
-      .about-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        padding-top: 44px;
-      }
-    }
-  </style>
+  <title>About | Student Portfolio</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
 </head>
 <body>
   <header class="header">
     <div class="container nav">
       <a href="../index.html" class="logo">LP<span>Portfolio</span></a>
-
       <nav class="nav-links" aria-label="Main navigation">
         <a href="../index.html#home">Home</a>
-        <a href="about.html">About</a>
+        <a href="about.html" class="active">About</a>
         <a href="../index.html#skills">Skills</a>
         <a href="../index.html#projects">Projects</a>
         <a href="../index.html#resume-builder">Resume Builder</a>
@@ -234,82 +21,49 @@
     </div>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="container hero-grid">
+  <main class="page-section">
+    <div class="container">
+      <div class="hero-grid">
         <div>
-          <p class="tag">AI & DS Student | AWS Learner | Frontend Developer</p>
+          <p class="tag">AI & DS Student • AWS Learner • Frontend Developer</p>
           <h1>About <span>Leela Priyanka</span></h1>
           <p class="subtitle">
-            I am a BTech student interested in web development, data science,
-            and cloud technologies. This portfolio and resume builder project
-            helps students create a professional online identity using a simple,
-            responsive interface.
+            I am a BTech student interested in web development, data science, and cloud technologies.
+            This project helps students build a polished portfolio and resume system with a clean, modern interface.
           </p>
-
-          <div class="cta">
+          <div class="hero-actions">
             <a href="../index.html#resume-builder" class="btn primary">Build Resume</a>
             <a href="../index.html#projects" class="btn secondary">View Projects</a>
           </div>
         </div>
-
         <aside class="profile-card">
           <div class="profile-circle">LP</div>
           <h2>Student Developer</h2>
-          <p>AI & DS | AWS Basics | HTML | CSS | JavaScript</p>
+          <p>AI & DS | AWS | Java | Frontend | SQL</p>
+          <div class="hero-actions" style="justify-content:center;">
+            <a href="https://github.com/your-username" target="_blank" rel="noopener" class="btn secondary">GitHub</a>
+            <a href="https://www.linkedin.com/in/your-username" target="_blank" rel="noopener" class="btn secondary">LinkedIn</a>
+          </div>
         </aside>
       </div>
-    </section>
 
-    <section class="section">
-      <div class="container">
-        <h2 class="section-title">My Goal</h2>
+      <section class="section">
+        <h2 class="section-title">About This Project</h2>
         <div class="card">
-          <p>
-            My goal is to build useful digital solutions that are easy to use,
-            visually clean, and deployment-ready. Through this project, I am
-            learning how frontend development, resume data handling, and AWS
-            cloud hosting can work together in a real student-focused system.
-          </p>
-        </div>
-
-        <div class="about-grid">
-          <article class="card info-card">
-            <h3>Education</h3>
-            <p>BTech student specializing in Artificial Intelligence and Data Science.</p>
-          </article>
-
-          <article class="card info-card">
-            <h3>Interests</h3>
-            <p>Web development, frontend design, data science, cloud computing, and AWS.</p>
-          </article>
-
-          <article class="card info-card">
-            <h3>Project Focus</h3>
-            <p>A cloud-based student portfolio and resume builder system using AWS.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <h2 class="section-title">What This System Does</h2>
-        <div class="card">
+          <p>This student portfolio and resume builder is designed to help learners present their education, projects, and certificates in a professional online format.</p>
           <ul>
-            <li>Displays a personal portfolio with profile, skills, and projects.</li>
-            <li>Provides a resume builder form for entering student details.</li>
-            <li>Shows a live resume preview based on user input.</li>
-            <li>Supports deployment as a static website using AWS services.</li>
+            <li>Responsive design for desktop and mobile</li>
+            <li>Modern card-based content layout</li>
+            <li>Simple navigation and polished presentation</li>
           </ul>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   </main>
 
   <footer class="footer">
     <div class="container">
-      <p>© 2026 Leela Priyanka | Student Portfolio and Resume Builder</p>
+      <p>© 2026 Student Portfolio and Resume Builder</p>
     </div>
   </footer>
 </body>

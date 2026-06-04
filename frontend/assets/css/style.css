@@ -1,0 +1,509 @@
+﻿/* Modern shared site styling */
+:root {
+  color-scheme: light;
+  font-family: Inter, "Segoe UI", system-ui, sans-serif;
+  color: #0f172a;
+  background: #eef3fb;
+  font-size: 16px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #eef3fb 0%, #f8fbff 100%);
+  color: #0f172a;
+  line-height: 1.65;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+.container {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 0;
+  position: relative;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.logo span {
+  color: #2563eb;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.nav-links a {
+  color: #475569;
+  font-weight: 600;
+  padding: 10px 16px;
+  border-radius: 999px;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  background: #eff6ff;
+  color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.menu-btn,
+.theme-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  border: 1px solid #d1d5db;
+  color: #334155;
+  background: #ffffff;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.menu-btn:hover,
+.theme-btn:hover {
+  transform: translateY(-1px);
+  background: #f8fafc;
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+}
+
+.hero,
+.section,
+.page-section {
+  padding: 90px 0;
+}
+
+.hero-grid,
+.builder-grid,
+.skills-grid,
+.project-grid,
+.certificate-grid,
+.dashboard-grid,
+.about-grid {
+  display: grid;
+  gap: 24px;
+}
+
+.hero-grid {
+  grid-template-columns: minmax(300px, 1.7fr) minmax(280px, 1fr);
+  align-items: center;
+}
+
+.hero-text .tag,
+.section-description {
+  display: inline-flex;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+.hero-text h1,
+.section-title {
+  font-size: clamp(2.8rem, 4vw, 4.2rem);
+  line-height: 1.05;
+  color: #0f172a;
+}
+
+.hero-text h1 span,
+.section-title span {
+  color: #2563eb;
+}
+
+.subtitle,
+.card p,
+.project-card p,
+.certificate-card p,
+.contact-card p,
+.resume-preview p,
+.form-group label,
+.profile-card p {
+  color: #475569;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.btn,
+button,
+input[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 26px;
+  border-radius: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  text-decoration: none;
+  border: 1px solid transparent;
+}
+
+.btn:hover,
+button:hover,
+input[type="submit"]:hover {
+  transform: translateY(-1px);
+}
+
+.btn.primary,
+.btn-primary,
+button.primary {
+  color: #ffffff;
+  background: #2563eb;
+  box-shadow: 0 14px 30px rgba(37,99,235,0.18);
+}
+
+.btn.secondary,
+.btn-outline,
+button.secondary {
+  color: #2563eb;
+  background: #eff6ff;
+  border-color: #c7d2fe;
+}
+
+.card,
+.project-card,
+.certificate-card,
+.contact-card,
+.resume-card,
+.dashboard-card,
+.form-card,
+.profile-card {
+  background: #ffffff;
+  border-radius: 28px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.05);
+}
+
+.card,
+.form-card,
+.resume-card,
+.dashboard-card,
+.profile-card {
+  padding: 30px;
+}
+
+.hero-card {
+  padding: 32px;
+  display: grid;
+  gap: 18px;
+  justify-items: start;
+}
+
+.hero-card h3,
+.project-card h3,
+.certificate-card h2,
+.dashboard-card h2,
+.profile-card h2 {
+  margin-bottom: 14px;
+  font-size: 1.45rem;
+  color: #0f172a;
+}
+
+.profile-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #e0f2fe;
+  color: #0c4a6e;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.section-title {
+  margin-bottom: 18px;
+}
+
+.about-grid,
+.skills-grid,
+.project-grid,
+.certificate-grid,
+.dashboard-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.project-card,
+.certificate-card,
+.dashboard-card {
+  padding: 26px;
+}
+
+.project-card {
+  min-height: 220px;
+}
+
+.certificate-card {
+  min-height: 240px;
+}
+
+.info-card,
+.skill-card {
+  padding: 24px;
+  border-radius: 24px;
+  background: #f8fbff;
+  border: 1px solid #dbeafe;
+}
+
+.skill-card {
+  text-align: center;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.form-group {
+  margin-bottom: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.form-group label {
+  font-weight: 700;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 16px;
+  padding: 16px 18px;
+  background: #f8fafc;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+textarea {
+  min-height: 160px;
+  resize: vertical;
+}
+
+.resume-preview {
+  padding: 28px;
+  min-height: 320px;
+}
+
+.preview-row {
+  display: grid;
+  gap: 10px;
+}
+
+.preview-row strong {
+  color: #0f172a;
+}
+
+.info-list p {
+  margin-bottom: 10px;
+}
+
+.footer {
+  border-top: 1px solid #e2e8f0;
+  padding: 24px 0;
+  text-align: center;
+  background: #ffffff;
+  color: #475569;
+}
+
+.footer p {
+  margin: 0;
+}
+
+.nav-links .active {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+@media (max-width: 960px) {
+  .hero-grid,
+  .builder-grid,
+  .about-grid,
+  .project-grid,
+  .certificate-grid,
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    padding-top: 72px;
+  }
+}
+
+@media (max-width: 720px) {
+  .nav {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .menu-btn {
+    display: inline-flex;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    max-height: 0;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.97);
+    padding: 0 22px;
+    opacity: 0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .nav-links.open {
+    max-height: 480px;
+    opacity: 1;
+    padding-top: 16px;
+    padding-bottom: 18px;
+  }
+
+  .nav-links a {
+    width: 100%;
+    padding: 14px 0;
+  }
+
+  .theme-btn {
+    order: 2;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero-text h1,
+  .section-title {
+    font-size: 2.4rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+  }
+
+  .container {
+    width: calc(100% - 24px);
+  }
+}
+
+.dark-theme {
+  background: #0b1220;
+  color: #e2e8f0;
+}
+
+.dark-theme .header {
+  background: rgba(10, 16, 30, 0.94);
+  border-color: rgba(148, 163, 184, 0.12);
+}
+
+.dark-theme .nav-links a {
+  color: #cbd5e1;
+}
+
+.dark-theme .nav-links a:hover,
+.dark-theme .nav-links a.active {
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
+.dark-theme .card,
+.dark-theme .project-card,
+.dark-theme .certificate-card,
+.dark-theme .contact-card,
+.dark-theme .resume-card,
+.dark-theme .dashboard-card,
+.dark-theme .form-card,
+.dark-theme .profile-card,
+.dark-theme .hero-card,
+.dark-theme .info-card,
+.dark-theme .skill-card {
+  background: #111827;
+  border-color: #1f2937;
+  color: #e2e8f0;
+}
+
+.dark-theme .form-group input,
+.dark-theme .form-group textarea,
+.dark-theme .form-group select {
+  background: #111827;
+  border-color: #374151;
+  color: #d1d5db;
+}
+
+.dark-theme .form-group input:focus,
+.dark-theme .form-group textarea:focus,
+.dark-theme .form-group select:focus {
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.18);
+}
+
+.dark-theme .footer,
+.dark-theme .header {
+  background: rgba(10, 16, 30, 0.98);
+}
