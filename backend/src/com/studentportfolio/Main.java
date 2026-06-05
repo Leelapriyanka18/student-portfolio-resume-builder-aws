@@ -34,6 +34,7 @@ public class Main {
         );
 
         if (user != null) {
+
             System.out.println("Login Success");
             System.out.println("Name: " + user.getFullName());
             System.out.println("Email: " + user.getEmail());
@@ -74,6 +75,45 @@ public class Main {
                 System.out.println("Profile Read Failed");
             }
 
+            System.out.println("\n=== Resume Upload Test ===");
+
+            com.studentportfolio.controller.ResumeController resumeController =
+                    new com.studentportfolio.controller.ResumeController();
+
+            boolean resumeUploaded = resumeController.uploadResume(
+                    user.getId(),
+                    "Priyanka_Resume.pdf",
+                    "/resumes/Priyanka_Resume.pdf"
+            );
+
+            System.out.println(
+                    resumeUploaded
+                            ? "Resume Upload Success"
+                            : "Resume Upload Failed"
+            );
+
+            System.out.println("\n=== Resume Read Test ===");
+
+            java.util.List<com.studentportfolio.model.Resume> resumes =
+                    resumeController.getResumes(user.getId());
+
+            if (resumes != null && !resumes.isEmpty()) {
+
+                System.out.println("Resume Read Success");
+
+                for (com.studentportfolio.model.Resume resume : resumes) {
+
+                    System.out.println("Resume ID: " + resume.getId());
+                    System.out.println("Resume Name: " + resume.getResumeName());
+                    System.out.println("File Path: " + resume.getFilePath());
+                    System.out.println("Created At: " + resume.getCreatedAt());
+                    System.out.println("---");
+                }
+
+            } else {
+                System.out.println("Resume Read Failed");
+            }
+
         } else {
             System.out.println("Login Failed");
         }
@@ -99,7 +139,8 @@ public class Main {
                 TEST_PASSWORD
         );
 
-        System.out.println(duplicate
+        System.out.println(
+                duplicate
                         ? "ERROR: Duplicate Registration Allowed"
                         : "Duplicate Registration Blocked Successfully"
         );
