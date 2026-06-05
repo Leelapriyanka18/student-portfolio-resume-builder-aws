@@ -1,16 +1,24 @@
 package com.studentportfolio.dao;
 
-import com.studentportfolio.model.User;
-import com.studentportfolio.util.DBConnection;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.studentportfolio.model.User;
+import com.studentportfolio.util.DBConnection;
+import com.studentportfolio.util.PasswordUtil;
+
 public class UserDAO {
 
     public boolean registerUser(User user) {
+        if (user == null || user.getEmail() == null) return false;
+
+        // Prevent duplicate registration
+        if (emailExists(user.getEmail())) {
+            System.err.println("Registration failed: email already exists");
+            return false;
+        }
 
         String sql = "INSERT INTO users(full_name, email, password) VALUES (?, ?, ?)";
 
@@ -21,7 +29,9 @@ public class UserDAO {
 
             statement.setString(1, user.getFullName());
             statement.setString(2, user.getEmail());
-            statement.setString(3, user.getPassword());
+            // Hash the password before storing
+            String hashed = PasswordUtil.hashPassword(user.getPassword());
+            statement.setString(3, hashed);
 
             int rowsInserted = statement.executeUpdate();
 
@@ -31,6 +41,22 @@ public class UserDAO {
             System.err.println("Database error in UserDAO.registerUser: " + e.getMessage());
         }
 
+        return false;
+    }
+
+    public boolean emailExists(String email) {
+        if (email == null) return false;
+        String sql = "SELECT 1 FROM users WHERE email = ? LIMIT 1";
+        try (
+                Connection connection = DBConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+            statement.setString(1, email);
+            ResultSet rs = statement.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            System.err.println("Database error in UserDAO.emailExists: " + e.getMessage());
+        }
         return false;
     }
 

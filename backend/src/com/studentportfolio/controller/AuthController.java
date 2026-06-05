@@ -12,17 +12,35 @@ public class AuthController {
     }
 
     public boolean registerUser(String fullName, String email, String password) {
+        if (email == null) return false;
+
+        if (userService.emailExists(email)) {
+            System.out.println("User with this email already exists: " + email);
+            return false;
+        }
 
         User user = new User();
-
         user.setFullName(fullName);
         user.setEmail(email);
         user.setPassword(password);
 
-        return userService.registerUser(user);
+        boolean registered = userService.registerUser(user);
+        if (registered) {
+            System.out.println("User Registered Successfully");
+        }
+        return registered;
     }
 
-    public User loginUser(String email) {
-        return userService.getUserByEmail(email);
+    public User loginUser(String email, String password) {
+        if (email == null || password == null) {
+            System.out.println("Login failed: email and password are required.");
+            return null;
+        }
+
+        User user = userService.authenticate(email, password);
+        if (user == null) {
+            System.out.println("Login failed: invalid credentials.");
+        }
+        return user;
     }
 }
