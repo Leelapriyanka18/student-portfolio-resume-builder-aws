@@ -3,17 +3,20 @@ package com.studentportfolio;
 import java.util.List;
 
 import com.studentportfolio.controller.AuthController;
+import com.studentportfolio.controller.CertificateController;
 import com.studentportfolio.controller.ProfileController;
 import com.studentportfolio.controller.ProjectController;
 import com.studentportfolio.controller.ResumeController;
+import com.studentportfolio.model.Certificate;
 import com.studentportfolio.model.Profile;
 import com.studentportfolio.model.Project;
 import com.studentportfolio.model.Resume;
 import com.studentportfolio.model.User;
 
+
 public class Main {
 
-    private static final String TEST_EMAIL = "test996666666@gmail.com";
+   private static final String TEST_EMAIL = "priyanka_test01@gmail.com";
     private static final String TEST_NAME = "Priyanka";
     private static final String TEST_PASSWORD = "Password123!";
     private static final String WRONG_PASSWORD = "WrongPass123";
@@ -55,14 +58,14 @@ public class Main {
             ProfileController profileController = new ProfileController();
 
             boolean profileSaved = profileController.saveProfile(
-                    user.getId(),
-                    "Senior Software Engineer",
-                    "Experienced full-stack developer building scalable Java and AWS applications.",
-                    "+1-555-123-4567",
-                    "456 Innovation Drive, Tech City, USA",
-                    "https://linkedin.com/in/priyanka",
-                    "https://github.com/priyanka"
-            );
+        user.getId(),
+        "BTech AI & DS Student",
+        "Passionate AI & Data Science student with experience in Java, AWS, MySQL and Web Development.",
+        "+91-9876543210",
+        "Amalapuram, Andhra Pradesh, India",
+        "https://linkedin.com/in/leelapriyanka",
+        "https://github.com/Leelapriyanka18"
+);
 
             System.out.println(
                     profileSaved
@@ -175,6 +178,51 @@ public class Main {
             } else {
 
                 System.out.println("Project Read Failed");
+            }
+
+            // =========================
+            // CERTIFICATE MODULE TEST
+            // =========================
+
+            System.out.println("\n=== Certificate Save Test ===");
+
+            CertificateController certificateController =
+                    new CertificateController();
+
+            boolean certificateSaved = certificateController.addCertificate(
+                    user.getId(),
+                    "AWS Cloud Practitioner",
+                    "Amazon Web Services",
+                    new java.sql.Date(System.currentTimeMillis())
+            );
+
+            System.out.println(
+                    certificateSaved
+                            ? "Certificate Save Success"
+                            : "Certificate Save Failed"
+            );
+
+            System.out.println("\n=== Certificate Read Test ===");
+
+            List<Certificate> certificates =
+                    certificateController.getCertificates(user.getId());
+
+            if (certificates != null && !certificates.isEmpty()) {
+
+                System.out.println("Certificate Read Success");
+
+                for (Certificate certificate : certificates) {
+
+                    System.out.println("Certificate ID: " + certificate.getId());
+                    System.out.println("Certificate Name: " + certificate.getCertificateName());
+                    System.out.println("Issuer: " + certificate.getIssuer());
+                    System.out.println("Issue Date: " + certificate.getIssueDate());
+                    System.out.println("---");
+                }
+
+            } else {
+
+                System.out.println("Certificate Read Failed");
             }
 
         } else {

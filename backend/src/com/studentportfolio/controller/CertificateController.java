@@ -1,17 +1,17 @@
 package com.studentportfolio.controller;
 
-import com.studentportfolio.dao.CertificateDAO;
-import com.studentportfolio.model.Certificate;
-
 import java.sql.Date;
 import java.util.List;
 
+import com.studentportfolio.model.Certificate;
+import com.studentportfolio.service.CertificateService;
+
 public class CertificateController {
 
-    private CertificateDAO certificateDAO;
+    private CertificateService certificateService;
 
     public CertificateController() {
-        certificateDAO = new CertificateDAO();
+        certificateService = new CertificateService();
     }
 
     public boolean addCertificate(int userId,
@@ -26,10 +26,10 @@ public class CertificateController {
         certificate.setIssuer(issuer);
         certificate.setIssueDate(issueDate);
 
-        return certificateDAO.addCertificate(certificate);
+        return certificateService.addCertificate(certificate);
     }
 
     public List<Certificate> getCertificates(int userId) {
-        return certificateDAO.getCertificatesByUserId(userId);
+        return certificateService.getCertificatesByUserId(userId);
     }
 }
