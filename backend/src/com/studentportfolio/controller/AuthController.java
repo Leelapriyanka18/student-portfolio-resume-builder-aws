@@ -2,7 +2,13 @@ package com.studentportfolio.controller;
 
 import com.studentportfolio.model.User;
 import com.studentportfolio.service.UserService;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+@RestController
+@CrossOrigin(origins = "http://127.0.0.1:5500")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     private final UserService userService;

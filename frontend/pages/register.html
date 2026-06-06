@@ -41,7 +41,7 @@
         <aside class="card form-card">
           <h2>Register</h2>
           <p class="subtitle">Create your account and get ready to publish a polished portfolio.</p>
-          <form>
+          <form id="registerForm">
             <div class="form-group">
               <label for="fullname">Full Name</label>
               <input id="fullname" type="text" placeholder="Full Name" />
@@ -61,12 +61,53 @@
     </div>
   </main>
 
-  <footer class="footer">
+    <footer class="footer">
     <div class="container">
       <p>© 2026 Student Portfolio and Resume Builder</p>
     </div>
   </footer>
 
+  <script>
+    document.getElementById("registerForm")
+    .addEventListener("submit", async function(e){
+
+      e.preventDefault();
+
+      const data = {
+        fullName: document.getElementById("fullname").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value
+      };
+
+      try{
+
+        const response = await fetch(
+          "http://localhost:8080/api/auth/register",
+          {
+            method:"POST",
+            headers:{
+              "Content-Type":"application/json"
+            },
+            body:JSON.stringify(data)
+          }
+        );
+
+        if(response.ok){
+          alert("Registration Successful!");
+          window.location.href="login.html";
+        }else{
+          const error=await response.text();
+          alert(error);
+        }
+
+      }catch(err){
+        alert("Unable to connect to server.");
+      }
+
+    });
+  </script>
+
   <script src="../assets/js/script.js"></script>
+
 </body>
 </html>
