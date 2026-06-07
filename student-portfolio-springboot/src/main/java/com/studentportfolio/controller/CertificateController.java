@@ -1,19 +1,25 @@
 package com.studentportfolio.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.studentportfolio.dto.CertificateRequest;
+import com.studentportfolio.model.Certificate;
 import com.studentportfolio.service.CertificateService;
 
 import jakarta.validation.Valid;
 
 @RestController
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RequestMapping("/api/certificate")
 public class CertificateController {
 
@@ -32,6 +38,11 @@ public class CertificateController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body("Certificate Saved Successfully");
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Certificate>> getAllCertificates() {
+        return ResponseEntity.ok(certificateService.getAllCertificates());
     }
 
     @ExceptionHandler({

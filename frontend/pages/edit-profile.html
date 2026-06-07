@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+
+<header class="header">
+  <div class="container nav">
+    <a href="../index.html" class="logo">LP<span>Portfolio</span></a>
+  </div>
+</header>
+
+<main class="page-section">
+
+<div class="container">
+
+<div class="card">
+
+<h2>Edit Profile</h2>
+
+<form id="profileForm">
+
+<div class="form-group">
+<label>Headline</label>
+<input type="text" id="headline">
+</div>
+
+<div class="form-group">
+<label>Bio</label>
+<textarea id="bio"></textarea>
+</div>
+
+<div class="form-group">
+<label>Phone</label>
+<input type="text" id="phone">
+</div>
+
+<div class="form-group">
+<label>Address</label>
+<textarea id="address"></textarea>
+</div>
+
+<div class="form-group">
+<label>LinkedIn URL</label>
+<input type="text" id="linkedin">
+</div>
+
+<div class="form-group">
+<label>GitHub URL</label>
+<input type="text" id="github">
+</div>
+
+<button type="submit" class="btn primary">
+Save Profile
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</main>
+
+<script>
+
+document.getElementById("profileForm")
+.addEventListener("submit", async function(e){
+
+e.preventDefault();
+
+const data = {
+
+headline:
+document.getElementById("headline").value,
+
+bio:
+document.getElementById("bio").value,
+
+phone:
+document.getElementById("phone").value,
+
+address:
+document.getElementById("address").value,
+
+linkedinUrl:
+document.getElementById("linkedin").value,
+
+githubUrl:
+document.getElementById("github").value
+
+};
+
+const response = await fetch(
+"http://localhost:8080/api/profile",
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(data)
+
+}
+
+);
+
+const result = await response.text();
+
+alert(result);
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,5 +1,7 @@
 package com.studentportfolio.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +28,15 @@ public class CertificateService {
 
         certificate.setCertificateName(request.getCertificateName());
         certificate.setIssuer(request.getIssuer());
-        certificate.setIssueDate(request.getIssueDate());
 
         boolean saved = certificateDAO.saveCertificate(certificate);
 
         if (!saved) {
             throw new IllegalStateException("Unable to save certificate");
         }
+    }
+
+    public List<Certificate> getAllCertificates() {
+        return certificateDAO.getAllCertificates();
     }
 }

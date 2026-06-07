@@ -1,5 +1,7 @@
 package com.studentportfolio.dao;
 
+import java.util.List;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -30,5 +32,29 @@ public class ResumeDAO {
         );
 
         return rows > 0;
+    }
+
+    public List<Resume> getAllResumes() {
+
+        String sql = """
+                SELECT *
+                FROM resumes
+                ORDER BY id DESC
+                """;
+
+        return jdbcTemplate.query(
+                sql,
+                (rs, rowNum) -> {
+                    Resume resume = new Resume();
+
+                    resume.setId(rs.getInt("id"));
+                    resume.setUserId(rs.getInt("user_id"));
+                    resume.setResumeName(rs.getString("resume_name"));
+                    resume.setFilePath(rs.getString("file_path"));
+                    resume.setCreatedAt(rs.getTimestamp("created_at"));
+
+                    return resume;
+                }
+        );
     }
 }

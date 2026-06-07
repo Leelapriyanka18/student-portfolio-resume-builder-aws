@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 public class Project {
 
+    private int id;
     private int userId;
     private String title;
     private String description;
@@ -11,6 +12,14 @@ public class Project {
     private Timestamp createdAt;
 
     public Project() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getUserId() {

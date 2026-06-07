@@ -12,37 +12,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.studentportfolio.dto.ProjectRequest;
-import com.studentportfolio.model.Project;
-import com.studentportfolio.service.ProjectService;
+import com.studentportfolio.dto.ContactRequest;
+import com.studentportfolio.model.Contact;
+import com.studentportfolio.service.ContactService;
 
 import jakarta.validation.Valid;
 
 @RestController
 @CrossOrigin(origins = "http://127.0.0.1:5500")
-@RequestMapping("/api/project")
-public class ProjectController {
+@RequestMapping("/api/contact")
+public class ContactController {
 
-    private final ProjectService projectService;
+    private final ContactService contactService;
 
-    public ProjectController(ProjectService projectService) {
-        this.projectService = projectService;
+    public ContactController(ContactService contactService) {
+        this.contactService = contactService;
     }
 
     @PostMapping
-    public ResponseEntity<String> saveProject(
-            @Valid @RequestBody ProjectRequest request) {
+    public ResponseEntity<String> saveContact(
+            @Valid @RequestBody ContactRequest request) {
 
-        projectService.saveProject(request);
+        contactService.saveContact(request);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body("Project Saved Successfully");
+                .body("Message Sent Successfully");
     }
 
     @GetMapping
-    public ResponseEntity<List<Project>> getAllProjects() {
-        return ResponseEntity.ok(projectService.getAllProjects());
+    public ResponseEntity<List<Contact>> getAllContacts() {
+        return ResponseEntity.ok(contactService.getAllContacts());
     }
 
     @ExceptionHandler({

@@ -1,182 +1,184 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard | Student Portfolio</title>
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Student Portfolio</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
 
-  <script>
-    // Login check
-    if (localStorage.getItem("loggedIn") != "true") {
-      alert("Please login first!");
-      window.location.href = "login.html";
-    }
+    <script>
+      // Login check
+      if (localStorage.getItem("loggedIn") != "true") {
+        alert("Please login first!");
+        window.location.href = "login.html";
+      }
 
-    // Logout
-    function logout() {
-      localStorage.clear();
-      alert("Logged out successfully!");
-      window.location.href = "login.html";
-    }
-  </script>
+      // Logout
+      function logout() {
+        localStorage.clear();
+        alert("Logged out successfully!");
+        window.location.href = "login.html";
+      }
+    </script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container nav">
+        <a href="../index.html" class="logo">LP<span>Portfolio</span></a>
 
-</head>
-<body>
+        <button class="menu-btn" id="menuToggle">☰</button>
 
-<header class="header">
-  <div class="container nav">
-    <a href="../index.html" class="logo">LP<span>Portfolio</span></a>
+        <nav class="nav-links" id="navLinks">
+          <a href="../index.html#home">Home</a>
+          <a href="about.html">About</a>
+          <a href="projects.html">Projects</a>
+          <a href="resume-builder.html">Resume Builder</a>
+          <a href="certificates.html">Certificates</a>
+          <a href="contact.html">Contact</a>
+        </nav>
 
-    <button class="menu-btn" id="menuToggle">☰</button>
+        <button class="theme-btn" id="themeToggle">🌙</button>
+      </div>
+    </header>
 
-    <nav class="nav-links" id="navLinks">
-      <a href="../index.html#home">Home</a>
-      <a href="about.html">About</a>
-      <a href="projects.html">Projects</a>
-      <a href="resume-builder.html">Resume Builder</a>
-      <a href="certificates.html">Certificates</a>
-      <a href="contact.html">Contact</a>
-    </nav>
+    <main class="page-section">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <span class="tag">Dashboard</span>
 
-    <button class="theme-btn" id="themeToggle">🌙</button>
-  </div>
-</header>
+            <h1>Welcome to Student Portfolio</h1>
 
-<main class="page-section">
+            <p class="subtitle">
+              Successfully logged in. Manage your projects, certificates, resume
+              and portfolio from one place.
+            </p>
 
-  <div class="container">
+            <h3 id="welcomeUser"></h3>
 
-    <div class="hero-grid">
+            <div class="hero-actions">
+              <a href="projects.html" class="btn primary"> View Projects </a>
 
-      <div>
+              <a href="certificates.html" class="btn secondary">
+                See Certificates
+              </a>
 
-        <span class="tag">Dashboard</span>
+              <button class="btn secondary" onclick="logout()">Logout</button>
+            </div>
+          </div>
 
-        <h1>Welcome to Student Portfolio</h1>
+          <aside class="hero-card">
+            <h3>Quick Summary</h3>
 
-        <p class="subtitle">
-          Successfully logged in.
-          Manage your projects, certificates,
-          resume and portfolio from one place.
-        </p>
+            <p class="subtitle">
+              Stay organized while building your student portfolio.
+            </p>
 
-        <h3 id="welcomeUser"></h3>
+            <div class="info-list">
+              <p>
+                <strong>Next Goal:</strong>
+                Add more projects.
+              </p>
 
-        <div class="hero-actions">
+              <p>
+                <strong>Certificate Focus:</strong>
+                AWS Cloud.
+              </p>
 
-          <a href="projects.html" class="btn primary">
-            View Projects
-          </a>
-
-          <a href="certificates.html" class="btn secondary">
-            See Certificates
-          </a>
-
-          <button class="btn secondary" onclick="logout()">
-            Logout
-          </button>
-
+              <p>
+                <strong>Status:</strong>
+                Logged In Successfully.
+              </p>
+            </div>
+          </aside>
         </div>
 
+        <section class="section">
+          <div class="dashboard-grid">
+            <article class="dashboard-card">
+              <h2>Projects</h2>
+
+              <p id="projectCount">Loading...</p>
+            </article>
+
+            <article class="dashboard-card">
+              <h2>Certificates</h2>
+
+              <p id="certificateCount">Loading...</p>
+            </article>
+
+            <article class="dashboard-card">
+              <h2>Resumes</h2>
+
+              <p id="resumeCount">Loading...</p>
+            </article>
+
+            <article class="dashboard-card">
+              <h2>Contacts</h2>
+
+              <p id="contactCount">Loading...</p>
+            </article>
+
+            <article class="dashboard-card">
+              <h2>Skills</h2>
+
+              <p>Highlight your technical skills.</p>
+            </article>
+          </div>
+        </section>
       </div>
+    </main>
 
-      <aside class="hero-card">
-
-        <h3>Quick Summary</h3>
-
-        <p class="subtitle">
-          Stay organized while building
-          your student portfolio.
-        </p>
-
-        <div class="info-list">
-
-          <p>
-            <strong>Next Goal:</strong>
-            Add more projects.
-          </p>
-
-          <p>
-            <strong>Certificate Focus:</strong>
-            AWS Cloud.
-          </p>
-
-          <p>
-            <strong>Status:</strong>
-            Logged In Successfully.
-          </p>
-
-        </div>
-
-      </aside>
-
-    </div>
-
-    <section class="section">
-
-      <div class="dashboard-grid">
-
-        <article class="dashboard-card">
-
-          <h2>Projects</h2>
-
-          <p>
-            Showcase your technical work.
-          </p>
-
-        </article>
-
-        <article class="dashboard-card">
-
-          <h2>Certificates</h2>
-
-          <p>
-            Display verified achievements.
-          </p>
-
-        </article>
-
-        <article class="dashboard-card">
-
-          <h2>Skills</h2>
-
-          <p>
-            Highlight your technical skills.
-          </p>
-
-        </article>
-
+    <footer class="footer">
+      <div class="container">
+        <p>© 2026 Student Portfolio and Resume Builder</p>
       </div>
+    </footer>
 
-    </section>
+    <script>
+      const email = localStorage.getItem("userEmail");
 
-  </div>
+      if (email) {
+        document.getElementById("welcomeUser").innerHTML =
+          "Logged in as : " + email;
+      }
 
-</main>
+      async function loadDashboard() {
+        try {
+          const projects = await fetch("http://localhost:8080/api/project");
+          const projectData = await projects.json();
+          document.getElementById("projectCount").innerText =
+            projectData.length + " Projects";
 
-<footer class="footer">
+          const certificates = await fetch(
+            "http://localhost:8080/api/certificate",
+          );
+          const certificateData = await certificates.json();
+          document.getElementById("certificateCount").innerText =
+            certificateData.length + " Certificates";
 
-  <div class="container">
+          const resumes = await fetch("http://localhost:8080/api/resume");
+          const resumeData = await resumes.json();
+          document.getElementById("resumeCount").innerText =
+            resumeData.length + " Resumes";
 
-    <p>
-      © 2026 Student Portfolio and Resume Builder
-    </p>
+          const contacts = await fetch("http://localhost:8080/api/contact");
+          const contactData = await contacts.json();
+          document.getElementById("contactCount").innerText =
+            contactData.length + " Messages";
+        } catch (error) {
+          console.error(error);
 
-  </div>
+          document.getElementById("projectCount").innerText = "API Error";
+          document.getElementById("certificateCount").innerText = "API Error";
+          document.getElementById("resumeCount").innerText = "API Error";
+          document.getElementById("contactCount").innerText = "API Error";
+        }
+      }
 
-</footer>
+      loadDashboard();
+    </script>
 
-<script>
-  const email = localStorage.getItem("userEmail");
-
-  if(email){
-    document.getElementById("welcomeUser").innerHTML =
-    "Logged in as : " + email;
-  }
-</script>
-
-<script src="../assets/js/script.js"></script>
-
-</body>
+    <script src="../assets/js/script.js"></script>
+  </body>
 </html>

@@ -1,102 +1,188 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Certificates | Student Portfolio</title>
-  <link rel="stylesheet" href="../assets/css/style.css" />
-</head>
-<body>
-  <header class="header">
-    <div class="container nav">
-      <a href="../index.html" class="logo">LP<span>Portfolio</span></a>
-      <button class="menu-btn" id="menuToggle" type="button" aria-label="Open menu">☰</button>
-      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
-        <a href="../index.html">Home</a>
-        <a href="profile.html">Profile</a>
-        <a href="projects.html">Projects</a>
-        <a href="resume-builder.html">Resume Builder</a>
-        <a href="certificates.html" class="active">Certificates</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-      <button class="theme-btn" id="themeToggle" type="button" aria-label="Toggle theme">🌙</button>
-    </div>
-  </header>
-
-  <main class="page-section certificates">
-    <div class="container">
-      <div class="hero-grid">
-        <div>
-          <span class="tag">Professional Growth • Verified Skills</span>
-          <h1>Certificates & Achievements</h1>
-          <p class="subtitle">
-            Showcase your certifications, courses, and learning milestones with a polished academic profile.
-          </p>
-          <div class="hero-actions">
-            <a href="profile.html" class="btn primary">View Profile</a>
-            <a href="resume-builder.html" class="btn secondary">Build Resume</a>
-          </div>
-        </div>
-        <aside class="hero-card">
-          <h3>Certified Learning Path</h3>
-          <p class="subtitle">
-            Use this page to highlight credible certifications for internships and student portfolios.
-          </p>
-        </aside>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Certificates | Student Portfolio</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container nav">
+        <a href="../index.html" class="logo">LP<span>Portfolio</span></a>
+        <button
+          class="menu-btn"
+          id="menuToggle"
+          type="button"
+          aria-label="Open menu"
+        >
+          ☰
+        </button>
+        <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+          <a href="../index.html">Home</a>
+          <a href="profile.html">Profile</a>
+          <a href="projects.html">Projects</a>
+          <a href="resume-builder.html">Resume Builder</a>
+          <a href="certificates.html" class="active">Certificates</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+        <button
+          class="theme-btn"
+          id="themeToggle"
+          type="button"
+          aria-label="Toggle theme"
+        >
+          🌙
+        </button>
       </div>
+    </header>
 
-      <section class="section">
-        <h2 class="section-title">Validations & Training</h2>
-        <p class="section-description">
-          These certificates reflect core skills in cloud computing, web development, Java programming, and data science.
-        </p>
-        <div class="certificate-grid">
-          <article class="certificate-card">
-            <h2>AWS Certified Cloud Practitioner</h2>
-            <p class="certificate-issuer">Amazon Web Services</p>
-            <p class="certificate-date">Issued May 2026</p>
-            <p class="certificate-details">
-              Completed comprehensive AWS fundamentals training covering services, security, and architecture.
+    <main class="page-section certificates">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <span class="tag">Professional Growth • Verified Skills</span>
+            <h1>Certificates & Achievements</h1>
+            <p class="subtitle">
+              Showcase your certifications, courses, and learning milestones
+              with a polished academic profile.
             </p>
-          </article>
-
-          <article class="certificate-card">
-            <h2>Responsive Web Design</h2>
-            <p class="certificate-issuer">FreeCodeCamp</p>
-            <p class="certificate-date">Issued March 2026</p>
-            <p class="certificate-details">
-              Built responsive website interfaces using CSS layout techniques and accessibility best practices.
+            <div class="hero-actions">
+              <a href="profile.html" class="btn primary">View Profile</a>
+              <a href="resume-builder.html" class="btn secondary"
+                >Build Resume</a
+              >
+            </div>
+          </div>
+          <aside class="hero-card">
+            <h3>Certified Learning Path</h3>
+            <p class="subtitle">
+              Use this page to highlight credible certifications for internships
+              and student portfolios.
             </p>
-          </article>
-
-          <article class="certificate-card">
-            <h2>Java Programming Basics</h2>
-            <p class="certificate-issuer">Coursera</p>
-            <p class="certificate-date">Issued January 2026</p>
-            <p class="certificate-details">
-              Developed Java fundamentals through object-oriented programming, collections, and database usage.
-            </p>
-          </article>
-
-          <article class="certificate-card">
-            <h2>SQL for Data Science</h2>
-            <p class="certificate-issuer">edX</p>
-            <p class="certificate-date">Issued February 2026</p>
-            <p class="certificate-details">
-              Applied SQL queries, joins, and aggregation techniques for structured data analysis.
-            </p>
-          </article>
+          </aside>
         </div>
-      </section>
-    </div>
-  </main>
 
-  <footer class="footer">
-    <div class="container">
-      <p>© 2026 Student Portfolio and Resume Builder</p>
-    </div>
-  </footer>
+        <section class="section">
+          <h2 class="section-title">Validations & Training</h2>
+          <p class="section-description">
+            These certificates reflect core skills in cloud computing, web
+            development, Java programming, and data science.
+          </p>
+          <div class="card">
+            <h2>Add Certificate</h2>
 
-  <script src="../assets/js/script.js"></script>
-</body>
+            <form id="certificateForm">
+              <div class="form-group">
+                <label>Certificate Name</label>
+                <input type="text" id="certificateName" required />
+              </div>
+
+              <div class="form-group">
+                <label>Issuing Organization</label>
+                <input type="text" id="issuer" required />
+              </div>
+
+              <div class="form-group">
+                <label>Issue Date</label>
+                <input type="text" id="issueDate" required />
+              </div>
+
+              <div class="form-group">
+                <label>Certificate URL</label>
+                <input type="text" id="certificateUrl" />
+              </div>
+
+              <button type="submit" class="btn primary">
+                Save Certificate
+              </button>
+            </form>
+          </div>
+
+          <br /><br />
+          <div class="certificate-grid" id="certificateList">
+  <p>Loading Certificates...</p>
+</div>
+                
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>© 2026 Student Portfolio and Resume Builder</p>
+      </div>
+    </footer>
+
+    <script src="../assets/js/script.js"></script>
+    <script>
+  document
+    .getElementById("certificateForm")
+    .addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const data = {
+  certificateName: document.getElementById("certificateName").value,
+  issuer: document.getElementById("issuer").value,
+  issueDate: document.getElementById("issueDate").value,
+};
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/certificate",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+
+        const result = await response.text();
+
+        alert(result);
+
+        document.getElementById("certificateForm").reset();
+
+        loadCertificates();
+      } catch (error) {
+        console.error(error);
+        alert("Unable to save certificate");
+      }
+    });
+
+  async function loadCertificates() {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/api/certificate"
+      );
+
+      const certificates = await response.json();
+
+      let html = "";
+
+      certificates.forEach((certificate) => {
+        html += `
+          <article class="certificate-card">
+            <h2>${certificate.certificateName}</h2>
+
+            <p class="certificate-issuer">
+              ${certificate.issuer}
+            </p>
+          </article>
+        `;
+      });
+
+      document.getElementById("certificateList").innerHTML = html;
+    } catch (error) {
+      console.error(error);
+
+      document.getElementById("certificateList").innerHTML =
+        "<p>Unable to load certificates</p>";
+    }
+  }
+
+  loadCertificates();
+</script>
+  </body>
 </html>

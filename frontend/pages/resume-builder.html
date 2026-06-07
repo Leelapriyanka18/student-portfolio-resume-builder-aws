@@ -1,106 +1,246 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Resume Builder | Student Portfolio</title>
-  <link rel="stylesheet" href="../assets/css/style.css" />
-</head>
-<body>
-  <header class="header">
-    <div class="container nav">
-      <a href="../index.html" class="logo">LP<span>Portfolio</span></a>
-      <button class="menu-btn" id="menuToggle" type="button" aria-label="Open menu">☰</button>
-      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
-        <a href="../index.html#home">Home</a>
-        <a href="about.html">About</a>
-        <a href="projects.html">Projects</a>
-        <a href="resume-builder.html" class="active">Resume Builder</a>
-        <a href="certificates.html">Certificates</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-      <button class="theme-btn" id="themeToggle" type="button" aria-label="Toggle theme">🌙</button>
-    </div>
-  </header>
-
-  <main class="page-section">
-    <div class="container">
-      <div class="hero-grid">
-        <div>
-          <span class="tag">Resume Builder</span>
-          <h1>Create a polished student resume</h1>
-          <p class="subtitle">
-            Add your details and preview a clean resume summary instantly.
-          </p>
-          <div class="hero-actions">
-            <a href="projects.html" class="btn primary">View Projects</a>
-            <a href="certificates.html" class="btn secondary">View Certificates</a>
-          </div>
-        </div>
-
-        <aside class="hero-card">
-          <h3>Resume Preview</h3>
-          <p class="subtitle">
-            Use the form to build your profile, skills, education, and projects in one polished layout.
-          </p>
-        </aside>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resume Builder | Student Portfolio</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container nav">
+        <a href="../index.html" class="logo">LP<span>Portfolio</span></a>
+        <button
+          class="menu-btn"
+          id="menuToggle"
+          type="button"
+          aria-label="Open menu"
+        >
+          ☰
+        </button>
+        <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+          <a href="../index.html#home">Home</a>
+          <a href="about.html">About</a>
+          <a href="projects.html">Projects</a>
+          <a href="resume-builder.html" class="active">Resume Builder</a>
+          <a href="certificates.html">Certificates</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+        <button
+          class="theme-btn"
+          id="themeToggle"
+          type="button"
+          aria-label="Toggle theme"
+        >
+          🌙
+        </button>
       </div>
+    </header>
 
-      <section class="section">
-        <div class="builder-grid">
-          <form class="form-card card" id="resumeForm">
-            <h2>Build Your Resume</h2>
-            <p class="subtitle">Complete the fields below and update the preview live.</p>
-            <div class="form-group">
-              <label for="name">Full Name</label>
-              <input id="name" type="text" placeholder="Enter your name" />
-            </div>
-            <div class="form-group">
-              <label for="role">Role / Title</label>
-              <input id="role" type="text" placeholder="AI & DS Student" />
-            </div>
-            <div class="form-group">
-              <label for="summary">Summary</label>
-              <textarea id="summary" placeholder="Short profile summary..."></textarea>
-            </div>
-            <div class="form-group">
-              <label for="skillsInput">Skills</label>
-              <input id="skillsInput" type="text" placeholder="HTML, CSS, JavaScript" />
-            </div>
-            <div class="form-group">
-              <label for="education">Education</label>
-              <input id="education" type="text" placeholder="BTech AI & DS, BVC Engineering College" />
-            </div>
-            <div class="form-group">
-              <label for="projectsInput">Projects</label>
-              <input id="projectsInput" type="text" placeholder="Portfolio Website, Resume Builder" />
-            </div>
+    <main class="page-section">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <span class="tag">Resume Builder</span>
+            <h1>Create a polished student resume</h1>
+            <p class="subtitle">
+              Add your details and preview a clean resume summary instantly.
+            </p>
             <div class="hero-actions">
-              <button type="submit" class="btn primary">Update Preview</button>
-              <button type="button" class="btn secondary" id="downloadBtn">Download Text</button>
+              <a href="projects.html" class="btn primary">View Projects</a>
+              <a href="certificates.html" class="btn secondary"
+                >View Certificates</a
+              >
             </div>
-          </form>
-
-          <div class="resume-preview card" id="previewContent">
-            <h3>Live Resume Preview</h3>
-            <div class="preview-row"><strong>Name:</strong> Your Name</div>
-            <div class="preview-row"><strong>Title:</strong> AI & DS Student</div>
-            <div class="preview-row"><strong>Summary:</strong> A motivated student building polished portfolios and resume tools.</div>
-            <div class="preview-row"><strong>Skills:</strong> HTML, CSS, JavaScript</div>
-            <div class="preview-row"><strong>Education:</strong> BTech AI & DS, BVC Engineering College</div>
-            <div class="preview-row"><strong>Projects:</strong> Portfolio Website, Resume Builder</div>
           </div>
+
+          <aside class="hero-card">
+            <h3>Resume Preview</h3>
+            <p class="subtitle">
+              Use the form to build your profile, skills, education, and
+              projects in one polished layout.
+            </p>
+          </aside>
         </div>
-      </section>
-    </div>
-  </main>
 
-  <footer class="footer">
-    <div class="container">
-      <p>© 2026 Student Portfolio and Resume Builder</p>
-    </div>
-  </footer>
+        <section class="section">
+          <div class="builder-grid">
+            <form class="form-card card" id="resumeForm">
+              <h2>Build Your Resume</h2>
+              <p class="subtitle">
+                Complete the fields below and update the preview live.
+              </p>
+              <div class="form-group">
+                <label for="profilePhoto">Profile Photo</label>
+                <input type="file" id="profilePhoto" accept="image/*" />
+              </div>
+              <div class="form-group">
+                <label for="name">Full Name</label>
+                <input id="name" type="text" placeholder="Enter your name" />
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" type="email" placeholder="Enter your email" />
+              </div>
 
-  <script src="../assets/js/script.js"></script>
-</body>
+              <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input
+                  id="phone"
+                  type="text"
+                  placeholder="Enter your phone number"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="address">Address</label>
+                <textarea
+                  id="address"
+                  placeholder="Enter your address"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="role">Role / Title</label>
+                <input id="role" type="text" placeholder="AI & DS Student" />
+              </div>
+              <div class="form-group">
+                <label for="summary">Summary</label>
+                <textarea
+                  id="summary"
+                  placeholder="Short profile summary..."
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="college">College</label>
+                <input
+                  id="college"
+                  type="text"
+                  placeholder="BVC Engineering College"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="degree">Degree</label>
+                <input id="degree" type="text" placeholder="BTech AI & DS" />
+              </div>
+              <div class="form-group">
+                <label for="branch">Branch / Specialization</label>
+                <input
+                  id="branch"
+                  type="text"
+                  placeholder="Artificial Intelligence & Data Science"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="graduationYear">Graduation Year</label>
+                <input id="graduationYear" type="text" placeholder="2027" />
+              </div>
+
+              <div class="form-group">
+                <label for="cgpa">CGPA</label>
+                <input id="cgpa" type="text" placeholder="8.5" />
+              </div>
+
+              <div class="form-group">
+                <label for="skillsInput">Skills</label>
+                <input
+                  id="skillsInput"
+                  type="text"
+                  placeholder="HTML, CSS, JavaScript"
+                />
+              </div>
+              <div class="form-group">
+                <label for="projectsInput">Projects</label>
+                <input
+                  id="projectsInput"
+                  type="text"
+                  placeholder="Portfolio Website, Resume Builder"
+                />
+              </div>
+              <div class="form-group">
+                <label for="certificatesInput">Certificates</label>
+                <input
+                  id="certificatesInput"
+                  type="text"
+                  placeholder="AWS, IBM, NPTEL"
+                />
+              </div>
+
+              <div class="hero-actions">
+                <button type="submit" class="btn primary">
+                  Update Preview
+                </button>
+                <button type="button" class="btn secondary" id="downloadBtn">
+                  Download Text
+                </button>
+              </div>
+            </form>
+
+            <div class="resume-preview card" id="previewContent">
+              <h3>Live Resume Preview</h3>
+              <div class="preview-row"><strong>Name:</strong> Your Name</div>
+              <div class="preview-row">
+                <strong>Title:</strong> AI & DS Student
+              </div>
+              <div class="preview-row">
+                <strong>Summary:</strong> A motivated student building polished
+                portfolios and resume tools.
+              </div>
+              <div class="preview-row">
+                <strong>Skills:</strong> HTML, CSS, JavaScript
+              </div>
+              <div class="preview-row">
+                <strong>Education:</strong> BTech AI & DS, BVC Engineering
+                College
+              </div>
+              <div class="preview-row">
+                <strong>Projects:</strong> Portfolio Website, Resume Builder
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>© 2026 Student Portfolio and Resume Builder</p>
+      </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="../assets/js/script.js"></script>
+    <script>
+      document
+        .getElementById("resumeForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const data = {
+            resumeName: document.getElementById("name").value,
+            filePath: "resume.pdf",
+          };
+
+          try {
+            const response = await fetch("http://localhost:8080/api/resume", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            });
+
+            const result = await response.text();
+
+            alert(result);
+          } catch (error) {
+            console.error(error);
+
+            alert("Unable to save resume");
+          }
+        });
+    </script>
+  </body>
 </html>

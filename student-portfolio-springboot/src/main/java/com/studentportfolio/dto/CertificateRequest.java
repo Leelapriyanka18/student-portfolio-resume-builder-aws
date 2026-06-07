@@ -10,7 +10,7 @@ public class CertificateRequest {
     @NotBlank(message = "Issuer is required")
     private String issuer;
 
-    @NotBlank(message = "Issue date is required")
+   
     private String issueDate;
 
     public String getCertificateName() {

@@ -1,5 +1,7 @@
 package com.studentportfolio.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,5 +34,9 @@ public class ResumeService {
         if (!saved) {
             throw new IllegalStateException("Unable to save resume");
         }
+    }
+
+    public List<Resume> getAllResumes() {
+        return resumeDAO.getAllResumes();
     }
 }

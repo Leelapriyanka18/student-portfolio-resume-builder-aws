@@ -1,13 +1,24 @@
 package com.studentportfolio.model;
 
+import java.sql.Timestamp;
+
 public class Certificate {
 
+    private int id;
     private int userId;
     private String certificateName;
     private String issuer;
-    private String issueDate;
+    private Timestamp createdAt;
 
     public Certificate() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getUserId() {
@@ -34,11 +45,11 @@ public class Certificate {
         this.issuer = issuer;
     }
 
-    public String getIssueDate() {
-        return issueDate;
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
-    public void setIssueDate(String issueDate) {
-        this.issueDate = issueDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 }

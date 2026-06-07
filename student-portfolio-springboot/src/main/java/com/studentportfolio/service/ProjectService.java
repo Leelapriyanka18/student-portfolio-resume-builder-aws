@@ -1,5 +1,7 @@
 package com.studentportfolio.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,5 +35,9 @@ public class ProjectService {
         if (!saved) {
             throw new IllegalStateException("Unable to save project");
         }
+    }
+
+    public List<Project> getAllProjects() {
+        return projectDAO.getAllProjects();
     }
 }

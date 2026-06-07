@@ -1,75 +1,180 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projects | Student Portfolio</title>
-  <link rel="stylesheet" href="../assets/css/style.css" />
-</head>
-<body>
-  <header class="header">
-    <div class="container nav">
-      <a href="../index.html" class="logo">LP<span>Portfolio</span></a>
-      <button class="menu-btn" id="menuToggle" type="button" aria-label="Open menu">☰</button>
-      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
-        <a href="../index.html#home">Home</a>
-        <a href="about.html">About</a>
-        <a href="projects.html" class="active">Projects</a>
-        <a href="resume-builder.html">Resume Builder</a>
-        <a href="certificates.html">Certificates</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-      <button class="theme-btn" id="themeToggle" type="button" aria-label="Toggle theme">🌙</button>
-    </div>
-  </header>
-
-  <main class="page-section">
-    <div class="container">
-      <div class="hero-grid">
-        <div>
-          <span class="tag">Student Work</span>
-          <h1>Featured Projects</h1>
-          <p class="subtitle">
-            Explore student projects that demonstrate responsive design, cloud awareness, and practical development skills.
-          </p>
-          <div class="hero-actions">
-            <a href="resume-builder.html" class="btn primary">Build Your Resume</a>
-            <a href="certificates.html" class="btn secondary">View Certificates</a>
-          </div>
-        </div>
-        <aside class="hero-card">
-          <h3>Project Highlights</h3>
-          <p class="subtitle">
-            These examples focus on student-ready applications, simple user flows, and polished presentation.
-          </p>
-        </aside>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects | Student Portfolio</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container nav">
+        <a href="../index.html" class="logo">LP<span>Portfolio</span></a>
+        <button
+          class="menu-btn"
+          id="menuToggle"
+          type="button"
+          aria-label="Open menu"
+        >
+          ☰
+        </button>
+        <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+          <a href="../index.html#home">Home</a>
+          <a href="about.html">About</a>
+          <a href="projects.html" class="active">Projects</a>
+          <a href="resume-builder.html">Resume Builder</a>
+          <a href="certificates.html">Certificates</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+        <button
+          class="theme-btn"
+          id="themeToggle"
+          type="button"
+          aria-label="Toggle theme"
+        >
+          🌙
+        </button>
       </div>
+    </header>
 
-      <section class="section">
-        <div class="project-grid">
-          <article class="project-card">
-            <h3>Placement Prep Portal</h3>
-            <p>A responsive portal with practice tests, challenges, and interview readiness content for students.</p>
-          </article>
-          <article class="project-card">
-            <h3>Internship Match Engine</h3>
-            <p>An AI-inspired project that recommends internship opportunities based on skills and interests.</p>
-          </article>
-          <article class="project-card">
-            <h3>Resume Builder Interface</h3>
-            <p>A form-driven resume builder designed to help students create professional summaries quickly.</p>
-          </article>
+    <main class="page-section">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <span class="tag">Student Work</span>
+            <h1>Featured Projects</h1>
+            <p class="subtitle">
+              Explore student projects that demonstrate responsive design, cloud
+              awareness, and practical development skills.
+            </p>
+            <div class="hero-actions">
+              <a href="resume-builder.html" class="btn primary"
+                >Build Your Resume</a
+              >
+              <a href="certificates.html" class="btn secondary"
+                >View Certificates</a
+              >
+            </div>
+          </div>
+          <aside class="hero-card">
+            <h3>Project Highlights</h3>
+            <p class="subtitle">
+              These examples focus on student-ready applications, simple user
+              flows, and polished presentation.
+            </p>
+          </aside>
         </div>
-      </section>
-    </div>
-  </main>
 
-  <footer class="footer">
-    <div class="container">
-      <p>© 2026 Student Portfolio and Resume Builder</p>
-    </div>
-  </footer>
+        <section class="section">
+          <div class="card">
+            <h2>Add Project</h2>
 
-  <script src="../assets/js/script.js"></script>
-</body>
+            <form id="projectForm">
+              <div class="form-group">
+                <label>Project Title</label>
+                <input type="text" id="title" required />
+              </div>
+
+              <div class="form-group">
+                <label>Description</label>
+                <textarea id="description" required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label>GitHub Link</label>
+                <input type="text" id="githubLink" />
+              </div>
+
+              <button type="submit" class="btn primary">Save Project</button>
+            </form>
+          </div>
+
+          <br /><br />
+
+          <div class="project-grid" id="projectList">
+            <p>Loading Projects...</p>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>© 2026 Student Portfolio and Resume Builder</p>
+      </div>
+    </footer>
+
+    <script src="../assets/js/script.js"></script>
+    <script>
+      document
+        .getElementById("projectForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const data = {
+            title: document.getElementById("title").value,
+            description: document.getElementById("description").value,
+            githubLink: document.getElementById("githubLink").value,
+          };
+
+          try {
+            const response = await fetch("http://localhost:8080/api/project", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            });
+
+            const result = await response.text();
+
+            alert(result);
+
+            document.getElementById("projectForm").reset();
+
+            loadProjects();
+          } catch (error) {
+            console.error(error);
+            alert("Unable to save project");
+          }
+        });
+
+      async function loadProjects() {
+        try {
+          const response = await fetch("http://localhost:8080/api/project");
+
+          const projects = await response.json();
+
+          let html = "";
+
+          projects.forEach((project) => {
+            html += `
+          <article class="project-card">
+            <h3>${project.title}</h3>
+
+            <p>${project.description}</p>
+
+            <br>
+
+            <a href="${project.githubLink}"
+               target="_blank"
+               class="btn secondary">
+               View GitHub
+            </a>
+          </article>
+        `;
+          });
+
+          document.getElementById("projectList").innerHTML = html;
+        } catch (error) {
+          console.error(error);
+
+          document.getElementById("projectList").innerHTML =
+            "<p>Unable to load projects</p>";
+        }
+      }
+
+      loadProjects();
+    </script>
+  </body>
 </html>
