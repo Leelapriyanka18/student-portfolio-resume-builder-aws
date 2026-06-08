@@ -18,18 +18,56 @@ public class ResumeDAO {
 
     public boolean saveResume(Resume resume) {
 
-        String sql = """
-                INSERT INTO resumes
-                (user_id, resume_name, file_path)
-                VALUES (?, ?, ?)
-                """;
+       String sql = """
+        INSERT INTO resumes
+        (
+        user_id,
+        resume_name,
+        email,
+        phone,
+        address,
+        role,
+        summary,
+        college,
+        degree,
+        branch,
+        graduation_year,
+        cgpa,
+        skills,
+        projects,
+        project_description,
+        certificates,
+        certificate_details,
+        languages,
+        hobbies,
+        file_path
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """;
 
         int rows = jdbcTemplate.update(
-                sql,
-                resume.getUserId(),
-                resume.getResumeName(),
-                resume.getFilePath()
-        );
+        sql,
+        resume.getUserId(),
+        resume.getResumeName(),
+        resume.getEmail(),
+        resume.getPhone(),
+        resume.getAddress(),
+        resume.getRole(),
+        resume.getSummary(),
+        resume.getCollege(),
+        resume.getDegree(),
+        resume.getBranch(),
+        resume.getGraduationYear(),
+        resume.getCgpa(),
+        resume.getSkills(),
+        resume.getProjects(),
+        resume.getProjectDescription(),
+        resume.getCertificates(),
+        resume.getCertificateDetails(),
+        resume.getLanguages(),
+        resume.getHobbies(),
+        resume.getFilePath()
+);
 
         return rows > 0;
     }

@@ -28,6 +28,23 @@ public class ResumeService {
 
         resume.setResumeName(request.getResumeName().trim());
         resume.setFilePath(request.getFilePath());
+        resume.setEmail(request.getEmail());
+        resume.setPhone(request.getPhone());
+        resume.setAddress(request.getAddress());
+        resume.setRole(request.getRole());
+        resume.setSummary(request.getSummary());
+        resume.setCollege(request.getCollege());
+        resume.setDegree(request.getDegree());
+        resume.setBranch(request.getBranch());
+        resume.setGraduationYear(request.getGraduationYear());
+        resume.setCgpa(request.getCgpa());
+        resume.setSkills(request.getSkills());
+        resume.setProjects(request.getProjects());
+        resume.setProjectDescription(request.getProjectDescription());
+        resume.setCertificates(request.getCertificates());
+        resume.setCertificateDetails(request.getCertificateDetails());
+        resume.setLanguages(request.getLanguages());
+        resume.setHobbies(request.getHobbies());
 
         boolean saved = resumeDAO.saveResume(resume);
 

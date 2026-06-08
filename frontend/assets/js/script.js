@@ -144,12 +144,52 @@ ${hobbies}
   };
 
   if (resumeForm) {
-    resumeForm.addEventListener("submit", (event) => {
-      event.preventDefault();
+    resumeForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-      renderPreview();
-    });
+  renderPreview();
+
+ const data = {
+  userId: 1,
+  resumeName: getValue("name", ""),
+  email: getValue("email", ""),
+  phone: getValue("phone", ""),
+  address: getValue("address", ""),
+  role: getValue("role", ""),
+  summary: getValue("summary", ""),
+  college: getValue("college", ""),
+  degree: getValue("degree", ""),
+  branch: getValue("branch", ""),
+  graduationYear: getValue("graduationYear", ""),
+  cgpa: getValue("cgpa", ""),
+  skills: getValue("skillsInput", ""),
+  projects: getValue("projectsInput", ""),
+  projectDescription: getValue("projectDescription", ""),
+  certificates: getValue("certificatesInput", ""),
+  certificateDetails: getValue("certificateDetails", ""),
+  languages: getValue("languages", ""),
+  hobbies: getValue("hobbies", ""),
+  filePath: "resume.pdf"
+};
+  try {
+    const response = await fetch(
+      "http://localhost:8080/api/resume",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      },
+    );
+
+    alert(await response.text());
+    } catch (error) {
+    alert("Unable to save resume");
   }
+});
+} // resumeForm closes here
+
 
   if (downloadBtn) {
     downloadBtn.addEventListener("click", () => {
@@ -364,11 +404,7 @@ ${hobbies}
         doc.setTextColor(0, 0, 0);
         doc.setFontSize(9);
 
-        const projectLines = doc.splitTextToSize(projects, 115);
-        doc.text(projectLines, 70, y);
-
-        y += projectLines.length * 5 + 5;
-
+        y += 5;
         const projectDescLines = doc.splitTextToSize(projectDescription, 115);
         doc.text(projectDescLines, 70, y);
 
@@ -399,9 +435,10 @@ ${hobbies}
 
         doc.save("Professional_Resume.pdf");
       }
-      if (!photoFile) {
+           if (!photoFile) {
         generatePdfContent();
       }
     });
-  }
-});
+} // downloadBtn
+
+}); // DOMContentLoaded

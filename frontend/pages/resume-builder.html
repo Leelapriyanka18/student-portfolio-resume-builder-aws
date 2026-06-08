@@ -240,35 +240,5 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="../assets/js/script.js"></script>
-    <script>
-      document
-        .getElementById("resumeForm")
-        .addEventListener("submit", async function (e) {
-          e.preventDefault();
-
-          const data = {
-            resumeName: document.getElementById("name").value,
-            filePath: "resume.pdf",
-          };
-
-          try {
-            const response = await fetch("http://localhost:8080/api/resume", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(data),
-            });
-
-            const result = await response.text();
-
-            alert(result);
-          } catch (error) {
-            console.error(error);
-
-            alert("Unable to save resume");
-          }
-        });
-    </script>
-  </body>
+     </body>
 </html>
