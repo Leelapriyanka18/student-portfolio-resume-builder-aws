@@ -4,22 +4,25 @@ import jakarta.validation.constraints.NotBlank;
 
 public class ResumeRequest {
     private String email;
-private String phone;
-private String address;
-private String role;
-private String summary;
-private String college;
-private String degree;
-private String branch;
-private String graduationYear;
-private String cgpa;
-private String skills;
-private String projects;
-private String projectDescription;
-private String certificates;
-private String certificateDetails;
-private String languages;
-private String hobbies;
+    private String phone;
+    private String address;
+    private String role;
+    private String summary;
+    private String college;
+    private String degree;
+    private String branch;
+    private String graduationYear;
+    private String cgpa;
+    private String skills;
+    private String projects;
+    private String projectDescription;
+    private String certificates;
+    private String certificateDetails;
+    private String languages;
+    private String hobbies;
+    private String experience;
+    private String github;
+    private String linkedin;
 
     @NotBlank(message = "Resume name is required")
     private String resumeName;
@@ -177,4 +180,29 @@ private String hobbies;
     public void setHobbies(String hobbies) {
         this.hobbies = hobbies;
     }
+
+    public String getExperience() {
+        return experience;
+    }
+
+    public void setExperience(String experience) {
+        this.experience = experience;
+    }
+
+    public String getGithub() {
+        return github;
+    }
+
+    public void setGithub(String github) {
+        this.github = github;
+    }
+
+    public String getLinkedin() {
+        return linkedin;
+    }
+
+    public void setLinkedin(String linkedin) {
+        this.linkedin = linkedin;
+    }
+
 }

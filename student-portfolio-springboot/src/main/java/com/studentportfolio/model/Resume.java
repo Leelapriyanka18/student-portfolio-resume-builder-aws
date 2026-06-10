@@ -22,8 +22,12 @@ public class Resume {
     private String projectDescription;
     private String certificates;
     private String certificateDetails;
+
     private String languages;
     private String hobbies;
+    private String experience;
+    private String github;
+    private String linkedin;
     private String filePath;
     private Timestamp createdAt;
 
@@ -174,6 +178,30 @@ public class Resume {
         this.hobbies = hobbies;
     }
 
+    public String getExperience() {
+        return experience;
+    }
+
+    public void setExperience(String experience) {
+        this.experience = experience;
+    }
+
+    public String getGithub() {
+        return github;
+    }
+
+    public void setGithub(String github) {
+        this.github = github;
+    }
+
+    public String getLinkedin() {
+        return linkedin;
+    }
+
+    public void setLinkedin(String linkedin) {
+        this.linkedin = linkedin;
+    }
+
     public int getUserId() {
         return userId;
     }
@@ -205,4 +233,5 @@ public class Resume {
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
+
 }

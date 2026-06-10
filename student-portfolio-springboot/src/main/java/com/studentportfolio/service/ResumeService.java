@@ -45,6 +45,14 @@ public class ResumeService {
         resume.setCertificateDetails(request.getCertificateDetails());
         resume.setLanguages(request.getLanguages());
         resume.setHobbies(request.getHobbies());
+        resume.setExperience(
+                request.getExperience());
+
+        resume.setGithub(
+                request.getGithub());
+
+        resume.setLinkedin(
+                request.getLinkedin());
 
         boolean saved = resumeDAO.saveResume(resume);
 

@@ -74,6 +74,9 @@
     const skills = getValue("skillsInput", "HTML, CSS, JavaScript");
     const projects = getValue("projectsInput", "Portfolio Website");
     const certificates = getValue("certificatesInput", "AWS, IBM");
+    const experience = getValue("experience", "Fresher");
+    const github = getValue("github", "Not Provided");
+    const linkedin = getValue("linkedin", "Not Provided");
 
     const projectDescription = getValue(
       "projectDescription",
@@ -140,56 +143,86 @@ ${languages}
 <strong>Hobbies:</strong>
 ${hobbies}
 </div>
+<div class="preview-row">
+<strong>Experience:</strong>
+${experience}
+</div>
+<div class="preview-row">
+<strong>GitHub:</strong> ${github}
+</div>
+
+<div class="preview-row">
+<strong>LinkedIn:</strong> ${linkedin}
+</div>
+
   `;
   };
 
   if (resumeForm) {
     resumeForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
+      event.preventDefault();
+      const name = getValue("name", "");
+      const email = getValue("email", "");
+      const phone = getValue("phone", "");
+      if (name === "") {
+        alert("Please enter your name");
+        return;
+      }
+      if (email === "") {
+        alert("Please enter your email");
+        return;
+      }
 
-  renderPreview();
+      if (!email.includes("@")) {
+        alert("Please enter a valid email");
+        return;
+      }
+      if (!/^\d{10}$/.test(phone)) {
+        alert("Enter a valid 10-digit phone number");
+        return;
+      }
+      renderPreview();
 
- const data = {
-  userId: 1,
-  resumeName: getValue("name", ""),
-  email: getValue("email", ""),
-  phone: getValue("phone", ""),
-  address: getValue("address", ""),
-  role: getValue("role", ""),
-  summary: getValue("summary", ""),
-  college: getValue("college", ""),
-  degree: getValue("degree", ""),
-  branch: getValue("branch", ""),
-  graduationYear: getValue("graduationYear", ""),
-  cgpa: getValue("cgpa", ""),
-  skills: getValue("skillsInput", ""),
-  projects: getValue("projectsInput", ""),
-  projectDescription: getValue("projectDescription", ""),
-  certificates: getValue("certificatesInput", ""),
-  certificateDetails: getValue("certificateDetails", ""),
-  languages: getValue("languages", ""),
-  hobbies: getValue("hobbies", ""),
-  filePath: "resume.pdf"
-};
-  try {
-    const response = await fetch(
-      "http://localhost:8080/api/resume",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      },
-    );
+      const data = {
+        userId: 1,
+        resumeName: getValue("name", ""),
+        email: getValue("email", ""),
+        phone: getValue("phone", ""),
+        address: getValue("address", ""),
+        role: getValue("role", ""),
+        summary: getValue("summary", ""),
+        college: getValue("college", ""),
+        degree: getValue("degree", ""),
+        branch: getValue("branch", ""),
+        graduationYear: getValue("graduationYear", ""),
+        cgpa: getValue("cgpa", ""),
+        skills: getValue("skillsInput", ""),
+        projects: getValue("projectsInput", ""),
+        projectDescription: getValue("projectDescription", ""),
+        certificates: getValue("certificatesInput", ""),
+        certificateDetails: getValue("certificateDetails", ""),
+        experience: getValue("experience", ""),
+        github: getValue("github", ""),
+        linkedin: getValue("linkedin", ""),
+        languages: getValue("languages", ""),
+        hobbies: getValue("hobbies", ""),
+        filePath: "resume.pdf",
+      };
+      try {
+        const response = await fetch("http://localhost:8080/api/resume", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
 
-    alert(await response.text());
-    } catch (error) {
-    alert("Unable to save resume");
-  }
-});
-} // resumeForm closes here
-
+        alert(await response.text());
+      } catch (error) {
+        alert("Unable to save resume");
+      }
+    });
+  } // resumeForm closes here
 
   if (downloadBtn) {
     downloadBtn.addEventListener("click", () => {
@@ -217,6 +250,10 @@ ${hobbies}
       const languages = getValue("languages", "");
 
       const hobbies = getValue("hobbies", "");
+      const experience = getValue("experience", "Fresher");
+      const github = getValue("github", "Not Provided");
+      const linkedin = getValue("linkedin", "Not Provided");
+
       const photoInput = document.getElementById("profilePhoto");
       const photoFile = photoInput.files[0];
 
@@ -260,79 +297,92 @@ ${hobbies}
         doc.setTextColor(220, 220, 220);
         doc.setFont(undefined, "normal");
         doc.text(role || "Data Scientist", 30, 58, { align: "center" });
+        let leftY = 70;
         // ===== CONTACT =====
         doc.setFillColor(16, 185, 129);
-        doc.rect(5, 70, 50, 8, "F");
+        doc.rect(5, leftY, 50, 8, "F");
 
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(13);
         doc.setFont(undefined, "bold");
-        doc.text("CONTACT", 30, 76, { align: "center" });
+        doc.text("CONTACT", 30, leftY + 6, {
+          align: "center",
+        });
 
+        leftY += 18;
         doc.setFontSize(8);
         doc.setFont(undefined, "normal");
 
         const emailLines = doc.splitTextToSize(email, 45);
-        doc.text(emailLines, 8, 88);
+        doc.text(emailLines, 8, leftY);
+        leftY += emailLines.length * 5;
 
-        doc.text(phone, 8, 102);
+        doc.text(phone, 8, leftY);
+        leftY += 8;
 
         const addressLines = doc.splitTextToSize(address, 45);
-        doc.text(addressLines, 8, 112);
-
+        doc.text(addressLines, 8, leftY);
+        leftY += addressLines.length * 5 + 10;
         // ===== SKILLS =====
         doc.setFillColor(16, 185, 129);
-        doc.rect(5, 140, 50, 8, "F");
+        doc.rect(5, leftY, 50, 8, "F");
 
         doc.setFontSize(13);
         doc.setFont(undefined, "bold");
-        doc.text("SKILLS", 30, 146, { align: "center" });
+        doc.text("SKILLS", 30, leftY + 6, {
+          align: "center",
+        });
 
-        let skillY = 156;
+        leftY += 18;
 
         doc.setFontSize(8);
         doc.setFont(undefined, "normal");
 
         skills.split(",").forEach((skill) => {
-          doc.text("• " + skill.trim(), 8, skillY);
-          skillY += 6;
+          doc.text("• " + skill.trim(), 8, leftY);
+          leftY += 6;
         });
+        leftY += 10;
 
         // ===== LANGUAGES =====
         doc.setFillColor(16, 185, 129);
-        doc.rect(5, 190, 50, 8, "F");
+        doc.rect(5, leftY, 50, 8, "F");
 
         doc.setFontSize(13);
         doc.setFont(undefined, "bold");
-        doc.text("LANGUAGES", 30, 196, { align: "center" });
+        doc.text("LANGUAGES", 30, leftY + 6, {
+          align: "center",
+        });
 
+        leftY += 18;
         doc.setFontSize(8);
         doc.setFont(undefined, "normal");
-
-        let langY = 208;
 
         languages.split(",").forEach((language) => {
-          doc.text("• " + language.trim(), 8, langY);
-          langY += 6;
+          doc.text("• " + language.trim(), 8, leftY);
+          leftY += 6;
         });
-
+        leftY += 10;
         // ===== HOBBIES =====
         doc.setFillColor(16, 185, 129);
-        doc.rect(5, 225, 50, 8, "F");
+        doc.rect(5, leftY, 50, 8, "F");
 
         doc.setFontSize(13);
         doc.setFont(undefined, "bold");
-        doc.text("INTERESTS", 30, 231, { align: "center" });
+        doc.text("INTERESTS", 30, leftY + 6, {
+          align: "center",
+        });
+
+        leftY += 18;
 
         doc.setFontSize(8);
         doc.setFont(undefined, "normal");
 
-        let hobbyY = 243;
-
         hobbies.split(",").forEach((hobby) => {
-          doc.text("• " + hobby.trim(), 8, hobbyY);
-          hobbyY += 6;
+          doc.text("• " + hobby.trim(), 8, leftY);
+          leftY += 6;
         });
+        leftY += 10;
         // ===========================
         // RIGHT SIDE
         // ===========================
@@ -351,11 +401,11 @@ ${hobbies}
         y += 15;
 
         doc.setTextColor(0, 0, 0);
-        doc.setFontSize(10);
+        doc.setFontSize(9);
         doc.setFont(undefined, "normal");
 
-        const summaryLines = doc.splitTextToSize(summary, 115);
-        doc.text(summaryLines, 70, y);
+        const summaryLines = doc.splitTextToSize(summary, 105);
+        doc.text(summaryLines, 72, y);
 
         y += summaryLines.length * 5 + 10;
 
@@ -395,20 +445,25 @@ ${hobbies}
         doc.setFont(undefined, "bold");
         doc.text("PROJECTS", 130, y + 6, { align: "center" });
 
-        y += 15;
+        y += 10;
         projects.split(",").forEach((project) => {
           doc.setFont(undefined, "bold");
-          doc.text("• " + project.trim(), 70, y);
+          doc.text("• " + project.trim(), 72, y);
           y += 7;
         });
+        doc.setFont(undefined, "normal");
         doc.setTextColor(0, 0, 0);
-        doc.setFontSize(9);
+        doc.setFontSize(8);
 
-        y += 5;
-        const projectDescLines = doc.splitTextToSize(projectDescription, 115);
-        doc.text(projectDescLines, 70, y);
+        
+        const projectDescLines = doc.splitTextToSize(projectDescription, 105);
+        doc.text(projectDescLines, 72, y);
 
         y += projectDescLines.length * 5 + 10;
+        if (y > 250) {
+          doc.addPage();
+          y = 20;
+        }
 
         // CERTIFICATIONS
         doc.setFillColor(16, 185, 129);
@@ -419,26 +474,93 @@ ${hobbies}
         doc.setFont(undefined, "bold");
         doc.text("CERTIFICATIONS", 130, y + 6, { align: "center" });
 
-        y += 15;
+        y += 10;
+        certificates.split(",").forEach((cert) => {
+          doc.text("• " + cert.trim(), 72, y);
+          y += 7;
+        });
+        doc.setFont(undefined, "normal");
+
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(8);
+
+      
+
+        const certDetailLines = doc.splitTextToSize(certificateDetails, 105);
+
+        doc.text(certDetailLines, 72, y);
+        y += certDetailLines.length * 5 + 10;
+        if (y > 250) {
+          doc.addPage();
+          y = 20;
+        }
+
+        // EXPERIENCE
+
+        doc.setFillColor(16, 185, 129);
+        doc.rect(70, y, 120, 8, "F");
+
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(13);
+        doc.setFont(undefined, "bold");
+        doc.text("EXPERIENCE", 130, y + 6, {
+          align: "center",
+        });
+
+        y += 10;
+
+
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(8);
+        doc.setFont(undefined, "normal");
+
+        const expLines = doc.splitTextToSize(experience, 105);
+
+        doc.text(expLines, 72, y);
+
+        y += expLines.length * 5 + 10;
+        y += 5;
+
+
+        if (y > 250) {
+          doc.addPage();
+          y = 20;
+        }
+        doc.setFillColor(16, 185, 129);
+        doc.rect(70, y, 120, 8, "F");
+
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(13);
+        doc.setFont(undefined, "bold");
+       
+        doc.text("PROFESSIONAL PROFILES", 130, y + 6, {
+          align: "center",
+        });
+
+        y += 12;
 
         doc.setTextColor(0, 0, 0);
         doc.setFontSize(9);
 
-        const certLines = doc.splitTextToSize(certificates, 115);
-        doc.text(certLines, 70, y);
+        doc.text("GitHub:", 70, y);
+        const githubLines = doc.splitTextToSize(github, 90);
+        doc.text(githubLines, 95, y);
 
-        y += certLines.length * 5 + 5;
+        y += githubLines.length * 5;
 
-        const certDetailLines = doc.splitTextToSize(certificateDetails, 115);
+        y += 7;
 
-        doc.text(certDetailLines, 70, y);
+        doc.text("LinkedIn:", 70, y);
 
-        doc.save("Professional_Resume.pdf");
+        const linkedinLines = doc.splitTextToSize(linkedin, 90);
+        doc.text(linkedinLines, 95, y);
+        y += 10;
+
+        doc.save((name || "Resume") + "_Resume.pdf");
       }
-           if (!photoFile) {
+      if (!photoFile) {
         generatePdfContent();
       }
     });
-} // downloadBtn
-
+  } // downloadBtn
 }); // DOMContentLoaded
