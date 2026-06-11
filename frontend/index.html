@@ -1,179 +1,315 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cloud-Based Student Portfolio and Resume Builder System Using AWS</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
-</head>
-<body>
-  <header class="header">
-    <div class="container nav">
-      <a href="#home" class="logo">Student<span>Portfolio</span></a>
-      <nav class="nav-links" id="navLinks">
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#skills">Skills</a>
-        <a href="#projects">Projects</a>
-        <a href="#resume-builder">Resume Builder</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <button class="theme-btn" id="themeToggle" type="button">🌙</button>
-      <button class="menu-btn" id="menuToggle" type="button">☰</button>
-    </div>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Cloud-Based Student Portfolio and Resume Builder System Using AWS
+    </title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container nav">
+        <a href="#home" class="logo">Student<span>Portfolio</span></a>
+        <nav class="nav-links" id="navLinks">
+          <a href="#home">Home</a>
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#projects">Projects</a>
+          <a href="#resume-builder">Resume Builder</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <button class="theme-btn" id="themeToggle" type="button">🌙</button>
+        <button class="menu-btn" id="menuToggle" type="button">☰</button>
+      </div>
+    </header>
 
-  <main>
-    <section class="hero section" id="home">
-      <div class="container hero-grid">
-        <div class="hero-text">
-          <span class="tag">AI & DS Student • AWS Learner • Developer</span>
-          <h1>Empowering Students to Build Professional Portfolios</h1> <span></span>
-          <p class="subtitle">
-            I create polished student portfolios, resume tools, and cloud-aware web experiences.
-            Explore the project showcase, build your resume, and connect for collaboration.
+    <main>
+      <section class="hero section" id="home">
+        <div class="container hero-grid">
+          <div class="hero-text">
+            <span class="tag">AI & DS Student • AWS Learner • Developer</span>
+            <h1>Empowering Students to Build Professional Portfolios</h1>
+            <span></span>
+            <p class="subtitle">
+              I create polished student portfolios, resume tools, and
+              cloud-aware web experiences. Explore the project showcase, build
+              your resume, and connect for collaboration.
+            </p>
+            <div class="hero-actions">
+              <a href="#resume-builder" class="btn primary">Build Resume</a>
+              <a href="#projects" class="btn secondary">View Projects</a>
+            </div>
+          </div>
+
+          <aside class="card hero-card">
+            <div class="profile-circle">SP</div>
+            <h3>Student Portfolio Platform</h3>
+            <p class="subtitle">
+              BTech AI & DS focused on frontend, Java, and AWS fundamentals.
+            </p>
+            <div
+              class="hero-actions"
+              style="justify-content: center; gap: 10px; margin-top: 18px"
+            >
+              <a
+                href="https://github.com/your-username"
+                class="btn secondary"
+                target="_blank"
+                rel="noopener"
+                >GitHub</a
+              >
+              <a
+                href="https://www.linkedin.com/in/your-username"
+                class="btn secondary"
+                target="_blank"
+                rel="noopener"
+                >LinkedIn</a
+              >
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section about" id="about">
+        <div class="container">
+          <h2 class="section-title">About Me</h2>
+          <p class="section-description">
+            I am a BTech student building cloud-ready portfolios and modern
+            resume tools for learners. This platform simplifies portfolio
+            presentation, skill tracking, and resume generation.
           </p>
-          <div class="hero-actions">
-            <a href="#resume-builder" class="btn primary">Build Resume</a>
-            <a href="#projects" class="btn secondary">View Projects</a>
-          </div>
-        </div>
-
-        <aside class="card hero-card">
-          <div class="profile-circle">SP</div>
-          <h3>Student Portfolio Platform</h3>
-          <p class="subtitle">BTech AI & DS focused on frontend, Java, and AWS fundamentals.</p>
-          <div class="hero-actions" style="justify-content:center; gap:10px; margin-top:18px;">
-            <a href="https://github.com/your-username" class="btn secondary" target="_blank" rel="noopener">GitHub</a>
-            <a href="https://www.linkedin.com/in/your-username" class="btn secondary" target="_blank" rel="noopener">LinkedIn</a>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <section class="section about" id="about">
-      <div class="container">
-        <h2 class="section-title">About Me</h2>
-        <p class="section-description">
-          I am a BTech student building cloud-ready portfolios and modern resume tools for learners.
-          This platform simplifies portfolio presentation, skill tracking, and resume generation.
-        </p>
-        <div class="about-grid">
-          <div class="card info-card">
-            <h3>Student Portfolio</h3>
-            <p>Display academic achievements, projects, and certificates in a modern web format.</p>
-          </div>
-          <div class="card info-card">
-            <h3>Resume Builder</h3>
-            <p>Quickly create resume content that highlights skills, education, and projects.</p>
-          </div>
-          <div class="card info-card">
-            <h3>Cloud Learning</h3>
-            <p>Designed for students exploring AWS, cloud deployment, and technical documentation.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section skills" id="skills">
-      <div class="container">
-        <h2 class="section-title">Skills</h2>
-        <p class="section-description">A core skill set for building student-facing portfolio and resume systems.</p>
-        <div class="skills-grid">
-          <div class="skill-card">HTML</div>
-          <div class="skill-card">CSS</div>
-          <div class="skill-card">JavaScript</div>
-          <div class="skill-card">Java</div>
-          <div class="skill-card">AWS Basics</div>
-          <div class="skill-card">Git & GitHub</div>
-          <div class="skill-card">MySQL</div>
-          <div class="skill-card">Responsive Design</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section projects" id="projects">
-      <div class="container">
-        <h2 class="section-title">Projects</h2>
-        <p class="section-description">Featured work that highlights portfolio and resume development.</p>
-        <div class="project-grid">
-          <article class="project-card">
-            <h3>Student Portfolio</h3>
-            <p>A modern student portfolio with responsive layout and streamlined navigation.</p>
-          </article>
-          <article class="project-card">
-            <h3>Resume Builder</h3>
-            <p>A form-driven resume builder with a live preview experience.</p>
-          </article>
-          <article class="project-card">
-            <h3>AWS Deployment Ready</h3>
-            <p>A static site setup designed for S3, CloudFront, and Route 53 deployments.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section builder" id="resume-builder">
-      <div class="container">
-        <h2 class="section-title">Resume Builder</h2>
-        <p class="section-description">Build and preview your resume content in a clean student dashboard.</p>
-        <div class="builder-grid">
-          <form class="builder-form card" id="resumeForm">
-            <label>Full Name
-              <input type="text" id="name" placeholder="Enter your name" />
-            </label>
-            <label>Role / Title
-              <input type="text" id="role" placeholder="Example: AI & DS Student" />
-            </label>
-            <label>Summary
-              <textarea id="summary" rows="4" placeholder="Short profile summary..."></textarea>
-            </label>
-            <label>Skills (comma separated)
-              <input type="text" id="skillsInput" placeholder="HTML, CSS, JavaScript" />
-            </label>
-            <label>Education
-              <input type="text" id="education" placeholder="BTech AI & DS, BVC Engineering College" />
-            </label>
-            <label>Projects
-              <input type="text" id="projectsInput" placeholder="Portfolio Website, Resume Builder" />
-            </label>
-            <button class="btn primary" type="submit">Update Preview</button>
-            <button class="btn secondary" type="button" id="downloadBtn">Download Resume Text</button>
-          </form>
-          <div class="preview card">
-            <h3>Live Resume Preview</h3>
-            <div id="previewContent">
-              <p><strong>Name:</strong> Your Name</p>
-              <p><strong>Role:</strong> Your Role</p>
-              <p><strong>Summary:</strong> Your summary will appear here.</p>
-              <p><strong>Skills:</strong> HTML, CSS, JavaScript</p>
-              <p><strong>Education:</strong> Your education details</p>
-              <p><strong>Projects:</strong> Your projects</p>
+          <div class="about-grid">
+            <div class="card info-card">
+              <h3>Student Portfolio</h3>
+              <p>
+                Display academic achievements, projects, and certificates in a
+                modern web format.
+              </p>
+            </div>
+            <div class="card info-card">
+              <h3>Resume Builder</h3>
+              <p>
+                Quickly create resume content that highlights skills, education,
+                and projects.
+              </p>
+            </div>
+            <div class="card info-card">
+              <h3>Cloud Learning</h3>
+              <p>
+                Designed for students exploring AWS, cloud deployment, and
+                technical documentation.
+              </p>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="section contact" id="contact">
-      <div class="container">
-        <h2 class="section-title">Contact</h2>
-        <p class="section-description">Reach out for feedback, collaboration, or portfolio support.</p>
-        <div class="contact-card card">
-          <p><strong>Email:</strong> Student@gmail.com</p>
-          <p><strong>GitHub:</strong> StudentGitHub</p>
-          <p><strong>Location:</strong> India</p>
+      <section class="section skills" id="skills">
+        <div class="container">
+          <h2 class="section-title">Skills</h2>
+          <p class="section-description">
+            A core skill set for building student-facing portfolio and resume
+            systems.
+          </p>
+          <div class="skills-grid">
+            <div class="skill-card">HTML</div>
+            <div class="skill-card">CSS</div>
+            <div class="skill-card">JavaScript</div>
+            <div class="skill-card">Java</div>
+            <div class="skill-card">AWS Basics</div>
+            <div class="skill-card">Git & GitHub</div>
+            <div class="skill-card">MySQL</div>
+            <div class="skill-card">Responsive Design</div>
+          </div>
         </div>
+      </section>
+
+      <section class="section projects" id="projects">
+        <div class="container">
+          <h2 class="section-title">Projects</h2>
+          <p class="section-description">
+            Featured work that highlights portfolio and resume development.
+          </p>
+          <div class="project-grid">
+            <article class="project-card">
+              <h3>Student Portfolio</h3>
+              <p>
+                A modern student portfolio with responsive layout and
+                streamlined navigation.
+              </p>
+            </article>
+            <article class="project-card">
+              <h3>Resume Builder</h3>
+              <p>
+                A form-driven resume builder with a live preview experience.
+              </p>
+            </article>
+            <article class="project-card">
+              <h3>AWS Deployment Ready</h3>
+              <p>
+                A static site setup designed for S3, CloudFront, and Route 53
+                deployments.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section builder" id="resume-builder">
+        <div class="container">
+          <h2 class="section-title">Resume Builder</h2>
+          <p class="section-description">
+            Build and preview your resume content in a clean student dashboard.
+          </p>
+          <div class="builder-grid">
+            <form class="builder-form card" id="resumeForm">
+              <label
+                >Full Name
+                <input type="text" id="name" placeholder="Enter your name" />
+              </label>
+              <label
+                >Role / Title
+                <input
+                  type="text"
+                  id="role"
+                  placeholder="Example: AI & DS Student"
+                />
+              </label>
+              <label
+                >Summary
+                <textarea
+                  id="summary"
+                  rows="4"
+                  placeholder="Short profile summary..."
+                ></textarea>
+              </label>
+              <label
+                >Skills (comma separated)
+                <input
+                  type="text"
+                  id="skillsInput"
+                  placeholder="HTML, CSS, JavaScript"
+                />
+              </label>
+              <label
+                >Education
+                <input
+                  type="text"
+                  id="education"
+                  placeholder="BTech AI & DS, BVC Engineering College"
+                />
+              </label>
+              <label
+                >Projects
+                <input
+                  type="text"
+                  id="projectsInput"
+                  placeholder="Portfolio Website, Resume Builder"
+                />
+              </label>
+              <label for="projectDescription">Project Description</label>
+              <input
+                type="text"
+                id="projectDescription"
+                placeholder="Project Description"
+              />
+              <label
+                >Certificates
+                <input
+                  type="text"
+                  id="certificatesInput"
+                  placeholder="AWS, IBM, Microsoft AI Skills Fest"
+                />
+              </label>
+
+              <label
+                >Certificate Details
+                <input
+                  type="text"
+                  id="certificateDetails"
+                  placeholder="AWS Academy - 2026, IBM SkillsBuild - 2025"
+                />
+              </label>
+              <button class="btn primary" type="submit">Update Preview</button>
+              <button class="btn secondary" type="button" id="downloadBtn">
+                Download Resume Text
+              </button>
+            </form>
+            <div class="preview card">
+              <h3>Live Resume Preview</h3>
+              <div id="previewContent">
+                <p><strong>Name:</strong> Your Name</p>
+                <p><strong>Role:</strong> Your Role</p>
+                <p><strong>Summary:</strong> Your summary will appear here.</p>
+                <p><strong>Skills:</strong> HTML, CSS, JavaScript</p>
+                <p><strong>Education:</strong> Your education details</p>
+                <p><strong>Projects:</strong> Your projects</p>
+                <p><strong>Project Description:</strong> Project Description</p>
+                <p><strong>Certificates:</strong> AWS, IBM</p>
+                <p><strong>Certificate Details:</strong> Certificate details</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section contact" id="contact">
+        <div class="container">
+          <h2 class="section-title">Contact</h2>
+          <p class="section-description">
+            Reach out for feedback, collaboration, or portfolio support.
+          </p>
+          <div class="contact-card card">
+           <label>
+  Email
+  <input
+    type="email"
+    id="contactEmail"
+    placeholder="Enter your email"
+  />
+</label>
+
+<label>
+  GitHub
+  <input
+    type="text"
+    id="contactGithub"
+    placeholder="GitHub profile"
+  />
+</label>
+
+<label>
+  LinkedIn
+  <input
+    type="text"
+    id="contactLinkedin"
+    placeholder="LinkedIn profile"
+  />
+</label>
+
+<label>
+  Location
+  <input
+    type="text"
+    id="contactLocation"
+    placeholder="Your location"
+  />
+</label>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          © 2026 Student • Cloud-Based Student Portfolio and Resume Builder
+          System Using AWS
+        </p>
       </div>
-    </section>
-  </main>
+    </footer>
 
-  <footer class="footer">
-    <div class="container">
-      <p>© 2026 Student • Cloud-Based Student Portfolio and Resume Builder System Using AWS</p>
-    </div>
-  </footer>
-
-  <script src="assets/js/script.js"></script>
-</body>
+    <script src="assets/js/script.js"></script>
+  </body>
 </html>
