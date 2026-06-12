@@ -29,8 +29,8 @@
       <section class="hero section" id="home">
         <div class="container hero-grid">
           <div class="hero-text">
-            <span class="tag">AI & DS Student • AWS Learner • Developer</span>
-            <h1>Empowering Students to Build Professional Portfolios</h1>
+            <span class="tag">Students • Developers • Cloud Learners • Resume Builders</span>
+            <h1>Empowering Students to Build Professional Portfolios and Resumes</h1>
             <span></span>
             <p class="subtitle">
               I create polished student portfolios, resume tools, and
@@ -44,11 +44,14 @@
           </div>
 
           <aside class="card hero-card">
-            <div class="profile-circle">SP</div>
-            <h3>Student Portfolio Platform</h3>
-            <p class="subtitle">
-              BTech AI & DS focused on frontend, Java, and AWS fundamentals.
-            </p>
+           <div class="profile-circle">SP</div>
+
+<h3>Student Portfolio Platform</h3>
+
+<p class="subtitle">
+  Build professional portfolios and resumes for students with modern web and cloud technologies.
+</p>
+                      
             <div
               class="hero-actions"
               style="justify-content: center; gap: 10px; margin-top: 18px"
@@ -165,18 +168,17 @@
           </p>
           <div class="builder-grid">
             <form class="builder-form card" id="resumeForm">
-              <label
-                >Full Name
-                <input type="text" id="name" placeholder="Enter your name" />
-              </label>
-              <label
-                >Role / Title
-                <input
-                  type="text"
-                  id="role"
-                  placeholder="Example: AI & DS Student"
-                />
-              </label>
+              <label for="name">Full Name</label>
+<input type="text" id="name" placeholder="Enter your name">
+
+<label for="email">Email</label>
+<input type="email" id="email" placeholder="Enter your email">
+
+<label for="phone">Phone</label>
+<input type="tel" id="phone" placeholder="Enter your phone number">
+
+<label for="role">Role / Title</label>
+<input type="text" id="role" placeholder="Example: Data Scientist">
               <label
                 >Summary
                 <textarea
@@ -232,6 +234,14 @@
                   placeholder="AWS Academy - 2026, IBM SkillsBuild - 2025"
                 />
               </label>
+              <label>
+  Experience
+  <input
+    type="text"
+    id="experience"
+    placeholder="Internships, Training, Workshops"
+  />
+</label>
               <button class="btn primary" type="submit">Update Preview</button>
               <button class="btn secondary" type="button" id="downloadBtn">
                 Download Resume Text
@@ -261,15 +271,15 @@
           <p class="section-description">
             Reach out for feedback, collaboration, or portfolio support.
           </p>
-          <div class="contact-card card">
-           <label>
-  Email
-  <input
-    type="email"
-    id="contactEmail"
-    placeholder="Enter your email"
-  />
-</label>
+           <div class="contact-card card">
+      <label>
+        Email
+        <input
+          type="email"
+          id="contactEmail"
+          placeholder="Enter your email"
+        />
+      </label>
 
 <label>
   GitHub
@@ -310,6 +320,7 @@
       </div>
     </footer>
 
-    <script src="assets/js/script.js"></script>
+    <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="./assets/js/script.js"></script>
   </body>
 </html>
