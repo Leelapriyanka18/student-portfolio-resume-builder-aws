@@ -1,5 +1,6 @@
 package com.studentportfolio.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class ContactRequest {
@@ -8,8 +9,8 @@ public class ContactRequest {
     private String name;
 
     @NotBlank(message = "Email is required")
+    @Email(message = "Enter a valid email")
     private String email;
-
     @NotBlank(message = "Subject is required")
     private String subject;
 

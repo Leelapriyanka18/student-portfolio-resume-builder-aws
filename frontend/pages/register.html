@@ -4,21 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Register | Student Portfolio</title>
-  <link rel="stylesheet" href="../assets/css/style.css" />
+<link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
   <header class="header">
     <div class="container nav">
-      <a href="../index.html" class="logo">LP<span>Portfolio</span></a>
-      <button class="menu-btn" id="menuToggle" type="button" aria-label="Open menu">☰</button>
-      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
-        <a href="../index.html#home">Home</a>
-        <a href="about.html">About</a>
-        <a href="projects.html">Projects</a>
-        <a href="resume-builder.html">Resume Builder</a>
-        <a href="certificates.html">Certificates</a>
-        <a href="contact.html">Contact</a>
-      </nav>
+    <a href="../index.html" class="logo">SP<span></span></a>
+     <button class="menu-btn" id="menuToggle" type="button" aria-label="Open menu">☰</button>
+      <nav class="nav-links" id="navLinks">
+    <a href="../index.html#home">Home</a>
+    <a href="about.html">About</a>
+    <a href="projects.html">Projects</a>
+    <a href="resume-builder.html">Resume Builder</a>
+    <a href="certificates.html">Certificates</a>
+    <a href="contact.html">Contact</a>
+
+    <a href="login.html">Login</a>
+    <a href="register.html">Register</a>
+</nav>
       <button class="theme-btn" id="themeToggle" type="button" aria-label="Toggle theme">🌙</button>
     </div>
   </header>
@@ -82,7 +85,7 @@
       try{
 
         const response = await fetch(
-          "http://localhost:8080/api/auth/register",
+         "http://98.83.139.108:8080/api/auth/register",
           {
             method:"POST",
             headers:{
@@ -107,7 +110,7 @@
     });
   </script>
 
-  <script src="../assets/js/script.js"></script>
+ <script src="../assets/js/script.js"></script>
 
 </body>
 </html>

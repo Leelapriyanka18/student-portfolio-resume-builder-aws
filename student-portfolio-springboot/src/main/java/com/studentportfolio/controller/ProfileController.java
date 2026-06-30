@@ -14,7 +14,9 @@ import com.studentportfolio.service.ProfileService;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = {
+    "http://student-portfolio-priyanka-4501.s3-website-us-east-1.amazonaws.com"
+})
 @RequestMapping("/api/profile")
 public class ProfileController {
 

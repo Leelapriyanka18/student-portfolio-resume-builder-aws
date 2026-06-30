@@ -34,8 +34,30 @@ public class ProjectDAO {
 
         return rows > 0;
     }
-
     public List<Project> getAllProjects() {
+
+    String sql = """
+            SELECT *
+            FROM projects
+            ORDER BY id DESC
+            """;
+
+    return jdbcTemplate.query(
+            sql,
+            (rs, rowNum) -> {
+                Project project = new Project();
+
+                project.setId(rs.getInt("id"));
+                project.setUserId(rs.getInt("user_id"));
+                project.setTitle(rs.getString("title"));
+                project.setDescription(rs.getString("description"));
+                project.setGithubLink(rs.getString("github_link"));
+
+                return project;
+            }
+    );
+}
+    public List<Project> getProjectsByUserId(int userId) {
 
         String sql = """
                 SELECT *

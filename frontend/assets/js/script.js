@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // To use a real backend, set this before this script tag in index.html:
   // <script>window.APP_CONFIG = { apiBase: "https://your-api.example.com" };</script>
   const API_BASE =
-    (window.APP_CONFIG && window.APP_CONFIG.apiBase) || "http://localhost:8080";
+    (window.APP_CONFIG && window.APP_CONFIG.apiBase) || "http://98.83.139.108:8080";
 
   // ── XSS-safe escape helper ──
   const esc = (str) =>

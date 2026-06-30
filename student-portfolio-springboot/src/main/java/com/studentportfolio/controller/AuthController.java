@@ -1,15 +1,24 @@
 package com.studentportfolio.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.studentportfolio.dto.LoginRequest;
 import com.studentportfolio.dto.RegisterRequest;
 import com.studentportfolio.service.UserService;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = {
+    "http://student-portfolio-priyanka-4501.s3-website-us-east-1.amazonaws.com"
+})
 @RequestMapping("/api/auth")
 public class AuthController {
 
@@ -21,7 +30,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(
-            @RequestBody RegisterRequest request) {
+            @Valid @RequestBody RegisterRequest request) {
 
         userService.register(request);
 
@@ -32,8 +41,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(
-            @RequestBody LoginRequest request) {
-
+            @Valid @RequestBody LoginRequest request) {
         boolean success = userService.login(request);
 
         if (success) {

@@ -24,7 +24,7 @@ public class ProjectService {
         Project project = new Project();
 
         // Temporary user id
-        project.setUserId(1);
+        project.setUserId(request.getUserId());
 
         project.setTitle(request.getTitle());
         project.setDescription(request.getDescription());

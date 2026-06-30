@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "http://student-portfolio-priyanka-4501.s3-website-us-east-1.amazonaws.com")
 @RequestMapping("/api/auth")
 public class AuthController {
 

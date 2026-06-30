@@ -128,7 +128,7 @@
 };
       try {
         const response = await fetch(
-          "http://localhost:8080/api/certificate",
+          "http://98.83.139.108:8080/api/certificate",
           {
             method: "POST",
             headers: {
@@ -154,7 +154,7 @@
   async function loadCertificates() {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/certificate"
+        "http://98.83.139.108:8080/api/certificate"
       );
 
       const certificates = await response.json();

@@ -1,12 +1,12 @@
 package com.studentportfolio.dao;
 
-import com.studentportfolio.model.User;
-import com.studentportfolio.util.PasswordUtil;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
+import com.studentportfolio.model.User;
+import com.studentportfolio.util.PasswordUtil;
 
 @Repository
 public class UserDAO {
@@ -51,17 +51,27 @@ public class UserDAO {
         return count != null && count > 0;
     }
 
-    public User getUserByEmail(String email) {
-        String sql = "SELECT id, full_name, email, password, created_at FROM users WHERE email = ?";
+   public User getUserByEmail(String email) {
 
+    String sql = "SELECT id, full_name, email, password, created_at FROM users WHERE email = ?";
+
+    try {
         return jdbcTemplate.queryForObject(sql, userRowMapper(), email);
+    } catch (EmptyResultDataAccessException e) {
+        return null;
     }
+}
 
     public User getUserById(int id) {
-        String sql = "SELECT id, full_name, email, password, created_at FROM users WHERE id = ?";
 
+    String sql = "SELECT id, full_name, email, password, created_at FROM users WHERE id = ?";
+
+    try {
         return jdbcTemplate.queryForObject(sql, userRowMapper(), id);
+    } catch (EmptyResultDataAccessException e) {
+        return null;
     }
+}
 
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {

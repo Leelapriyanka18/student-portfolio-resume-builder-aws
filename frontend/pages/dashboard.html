@@ -145,24 +145,24 @@
 
       async function loadDashboard() {
         try {
-          const projects = await fetch("http://localhost:8080/api/project");
+          const projects = await fetch("http://98.83.139.108:8080/api/project");
           const projectData = await projects.json();
           document.getElementById("projectCount").innerText =
             projectData.length + " Projects";
 
           const certificates = await fetch(
-            "http://localhost:8080/api/certificate",
+            "http://98.83.139.108:8080/api/certificate",
           );
           const certificateData = await certificates.json();
           document.getElementById("certificateCount").innerText =
             certificateData.length + " Certificates";
 
-          const resumes = await fetch("http://localhost:8080/api/resume");
+          const resumes = await fetch("http://98.83.139.108:8080/api/resume");
           const resumeData = await resumes.json();
           document.getElementById("resumeCount").innerText =
             resumeData.length + " Resumes";
 
-          const contacts = await fetch("http://localhost:8080/api/contact");
+          const contacts = await fetch("http://98.83.139.108:8080/api/contact");
           const contactData = await contacts.json();
           document.getElementById("contactCount").innerText =
             contactData.length + " Messages";

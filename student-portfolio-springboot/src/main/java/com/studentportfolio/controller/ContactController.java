@@ -19,7 +19,9 @@ import com.studentportfolio.service.ContactService;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = {
+    "http://student-portfolio-priyanka-4501.s3-website-us-east-1.amazonaws.com"
+})
 @RequestMapping("/api/contact")
 public class ContactController {
 
