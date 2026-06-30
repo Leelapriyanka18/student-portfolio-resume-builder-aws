@@ -6,18 +6,11 @@
     <title>Dashboard | Student Portfolio</title>
     <link rel="stylesheet" href="../assets/css/style.css" />
 
+    <script src="../assets/js/auth.js"></script>
     <script>
-      // Login check
-      if (localStorage.getItem("loggedIn") != "true") {
-        alert("Please login first!");
-        window.location.href = "login.html";
-      }
-
-      // Logout
-      function logout() {
-        localStorage.clear();
-        alert("Logged out successfully!");
-        window.location.href = "login.html";
+      // Route guard — runs before page paints
+      if (!Auth.requireAuth("login.html")) {
+        document.write(""); // stop further rendering; redirect already triggered
       }
     </script>
   </head>
@@ -63,7 +56,7 @@
                 See Certificates
               </a>
 
-              <button class="btn secondary" onclick="logout()">Logout</button>
+              <button class="btn secondary" id="logoutBtn">Logout</button>
             </div>
           </div>
 
@@ -98,25 +91,25 @@
             <article class="dashboard-card">
               <h2>Projects</h2>
 
-              <p id="projectCount">Loading...</p>
+              <p id="projectCount">⏳ Loading…</p>
             </article>
 
             <article class="dashboard-card">
               <h2>Certificates</h2>
 
-              <p id="certificateCount">Loading...</p>
+              <p id="certificateCount">⏳ Loading…</p>
             </article>
 
             <article class="dashboard-card">
               <h2>Resumes</h2>
 
-              <p id="resumeCount">Loading...</p>
+              <p id="resumeCount">⏳ Loading…</p>
             </article>
 
             <article class="dashboard-card">
               <h2>Contacts</h2>
 
-              <p id="contactCount">Loading...</p>
+              <p id="contactCount">⏳ Loading…</p>
             </article>
 
             <article class="dashboard-card">
@@ -136,44 +129,128 @@
     </footer>
 
     <script>
-      const email = localStorage.getItem("userEmail");
+      // ────────────────────────────────────────────────────────
+      // 1. Strict session verification — never trust a partial session
+      // ────────────────────────────────────────────────────────
+      const user = Auth.getUser();
 
-      if (email) {
-        document.getElementById("welcomeUser").innerHTML =
-          "Logged in as : " + email;
+      if (!user || !user.userId || user.userId === "null" || user.userId === "undefined") {
+        Auth.logout("login.html");
+        throw new Error("Invalid session — redirecting to login.");
+      }
+
+      // ────────────────────────────────────────────────────────
+      // 6. Welcome section — name, falls back to email only
+      // ────────────────────────────────────────────────────────
+      const welcomeEl = document.getElementById("welcomeUser");
+      welcomeEl.innerText = user.userName
+        ? `Logged in as: ${user.userName} (${user.userEmail || "no email"})`
+        : `Logged in as: ${user.userEmail || "Unknown user"}`;
+
+      // ────────────────────────────────────────────────────────
+      // 7. Logout — Auth.logout() already removes ONLY
+      //    loggedIn / userId / userName / userEmail (see auth.js),
+      //    theme and other preferences are untouched.
+      // ────────────────────────────────────────────────────────
+      document.getElementById("logoutBtn").addEventListener("click", () => Auth.logout());
+
+      // ────────────────────────────────────────────────────────
+      // 5. Safely normalize any API response shape into a count
+      // ────────────────────────────────────────────────────────
+      function normalizeCount(payload) {
+        if (payload === null || payload === undefined) return 0;
+        if (Array.isArray(payload)) return payload.length;
+        if (typeof payload === "object") {
+          if (Array.isArray(payload.data)) return payload.data.length;
+          if (Array.isArray(payload.items)) return payload.items.length;
+          if (Array.isArray(payload.content)) return payload.content.length;
+          if (typeof payload.count === "number") return payload.count;
+        }
+        return 0;
+      }
+
+      // ────────────────────────────────────────────────────────
+      // 3. Fetch a count with full error-path handling + timeout
+      // ────────────────────────────────────────────────────────
+      async function fetchCount(endpoint, label) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+        try {
+          const res = await fetch(
+            `${window.API_BASE}${endpoint}?userId=${encodeURIComponent(user.userId)}`,
+            { signal: controller.signal }
+          );
+          clearTimeout(timeoutId);
+
+          if (res.status === 401) {
+            showToast(`Session expired while loading ${label}. Please log in again.`, "error");
+            Auth.logout("login.html");
+            return null;
+          }
+          if (res.status === 403) {
+            showToast(`You don't have access to ${label}.`, "error");
+            return null;
+          }
+          if (res.status >= 500) {
+            showToast(`Server error while loading ${label}. Please try again later.`, "error");
+            return null;
+          }
+          if (!res.ok) {
+            showToast(`Unable to load ${label} (status ${res.status}).`, "error");
+            return null;
+          }
+
+          let json;
+          try {
+            json = await res.json();
+          } catch (parseErr) {
+            console.error(`${label} JSON parse error:`, parseErr);
+            showToast(`${label} returned an unreadable response.`, "error");
+            return null;
+          }
+
+          return normalizeCount(json);
+        } catch (err) {
+          clearTimeout(timeoutId);
+          if (err.name === "AbortError") {
+            showToast(`Loading ${label} timed out. Check your connection.`, "error");
+          } else {
+            console.error(`${label} fetch error:`, err);
+            showToast(`Unable to connect to server for ${label}.`, "error");
+          }
+          return null;
+        }
+      }
+
+      // ────────────────────────────────────────────────────────
+      // 4 + 11. Loading state + reusable DOM update helper
+      // ────────────────────────────────────────────────────────
+      const countEls = {
+        project:     document.getElementById("projectCount"),
+        certificate: document.getElementById("certificateCount"),
+        resume:      document.getElementById("resumeCount"),
+        contact:     document.getElementById("contactCount"),
+      };
+
+      function setCount(key, count, label) {
+        countEls[key].innerText = count === null ? "Unavailable" : `${count} ${label}`;
       }
 
       async function loadDashboard() {
-        try {
-          const projects = await fetch("http://98.83.139.108:8080/api/project");
-          const projectData = await projects.json();
-          document.getElementById("projectCount").innerText =
-            projectData.length + " Projects";
+        Object.values(countEls).forEach((el) => (el.innerText = "⏳ Loading…"));
 
-          const certificates = await fetch(
-            "http://98.83.139.108:8080/api/certificate",
-          );
-          const certificateData = await certificates.json();
-          document.getElementById("certificateCount").innerText =
-            certificateData.length + " Certificates";
+        const [projectCount, certificateCount, resumeCount, contactCount] = await Promise.all([
+          fetchCount("/api/project", "Projects"),
+          fetchCount("/api/certificate", "Certificates"),
+          fetchCount("/api/resume", "Resumes"),
+          fetchCount("/api/contact", "Contacts"),
+        ]);
 
-          const resumes = await fetch("http://98.83.139.108:8080/api/resume");
-          const resumeData = await resumes.json();
-          document.getElementById("resumeCount").innerText =
-            resumeData.length + " Resumes";
-
-          const contacts = await fetch("http://98.83.139.108:8080/api/contact");
-          const contactData = await contacts.json();
-          document.getElementById("contactCount").innerText =
-            contactData.length + " Messages";
-        } catch (error) {
-          console.error(error);
-
-          document.getElementById("projectCount").innerText = "API Error";
-          document.getElementById("certificateCount").innerText = "API Error";
-          document.getElementById("resumeCount").innerText = "API Error";
-          document.getElementById("contactCount").innerText = "API Error";
-        }
+        setCount("project", projectCount, "Projects");
+        setCount("certificate", certificateCount, "Certificates");
+        setCount("resume", resumeCount, "Resumes");
+        setCount("contact", contactCount, "Messages");
       }
 
       loadDashboard();

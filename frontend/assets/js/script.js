@@ -7,9 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ── API Base ──
   // To use a real backend, set this before this script tag in index.html:
   // <script>window.APP_CONFIG = { apiBase: "https://your-api.example.com" };</script>
-  const API_BASE =
-    (window.APP_CONFIG && window.APP_CONFIG.apiBase) || "http://98.83.139.108:8080";
-
+  const API_BASE = window.API_BASE;
   // ── XSS-safe escape helper ──
   const esc = (str) =>
     String(str ?? "").replace(/[&<>"']/g, (c) => ({
@@ -19,30 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ────────────────────────────────────────────────────────
   // TOAST NOTIFICATIONS  (replaces alert())
   // ────────────────────────────────────────────────────────
-  function showToast(msg, type = "error") {
-    let container = document.getElementById("toast-container");
-    if (!container) {
-      container = document.createElement("div");
-      container.id = "toast-container";
-      container.style.cssText =
-        "position:fixed;top:1rem;right:1rem;z-index:9999;" +
-        "display:flex;flex-direction:column;gap:.5rem;max-width:320px;";
-      document.body.appendChild(container);
-    }
-    const bg    = type === "success" ? "#EAF3DE" : type === "info" ? "#E6F1FB" : "#FCEBEB";
-    const color = type === "success" ? "#3B6D11" : type === "info" ? "#185FA5" : "#A32D2D";
-    const toast = document.createElement("div");
-    toast.style.cssText =
-      `background:${bg};color:${color};padding:.75rem 1.25rem;border-radius:8px;` +
-      `font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.14);word-break:break-word;` +
-      `border-left:3px solid ${color};transition:opacity .3s;`;
-    toast.textContent = msg;
-    container.appendChild(toast);
-    setTimeout(() => {
-      toast.style.opacity = "0";
-      setTimeout(() => toast.remove(), 300);
-    }, 4000);
-  }
+  const showToast = window.showToast;
 
   // ────────────────────────────────────────────────────────
   // NAVIGATION
@@ -249,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderPreview();
 
       const payload = {
-        userId:             1,
+        userId: Auth.getUser().userId,
         resumeName:         name,
         email:              email,
         phone:              phone,
