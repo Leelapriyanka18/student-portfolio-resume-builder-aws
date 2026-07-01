@@ -23,7 +23,6 @@ public class ProjectService {
 
         Project project = new Project();
 
-        // Temporary user id
         project.setUserId(request.getUserId());
 
         project.setTitle(request.getTitle());
@@ -39,5 +38,9 @@ public class ProjectService {
 
     public List<Project> getAllProjects() {
         return projectDAO.getAllProjects();
+    }
+
+    public List<Project> getProjectsByUserId(int userId) {
+        return projectDAO.getProjectsByUserId(userId);
     }
 }

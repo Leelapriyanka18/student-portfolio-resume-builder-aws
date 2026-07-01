@@ -1,15 +1,17 @@
 package com.studentportfolio.dto;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 public class ProjectRequest {
 
-    @NotBlank(message = "Project title is required")
+    @Min(value = 1, message = "User ID is required")
     private int userId;
+
+    @NotBlank(message = "Project title is required")
     private String title;
 
-    
-
+    @NotBlank(message = "Project description is required")
     private String description;
 
     private String githubLink;

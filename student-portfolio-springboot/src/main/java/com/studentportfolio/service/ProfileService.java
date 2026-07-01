@@ -17,11 +17,14 @@ public class ProfileService {
     }
 
     @Transactional
-    public void saveProfile(int userId, ProfileRequest request) {
+    public void saveProfile(ProfileRequest request) {
+        if (request.getUserId() <= 0) {
+            throw new IllegalArgumentException("User ID is required");
+        }
 
         Profile profile = new Profile();
 
-        profile.setUserId(userId);
+        profile.setUserId(request.getUserId());
         profile.setHeadline(request.getHeadline());
         profile.setBio(request.getBio());
         profile.setPhone(request.getPhone());
@@ -34,5 +37,9 @@ public class ProfileService {
         if (!saved) {
             throw new IllegalStateException("Unable to save profile");
         }
+    }
+
+    public Profile getProfileByUserId(int userId) {
+        return profileDAO.getProfileByUserId(userId);
     }
 }

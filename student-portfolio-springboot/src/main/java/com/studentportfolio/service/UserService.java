@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.studentportfolio.dao.UserDAO;
 import com.studentportfolio.dto.LoginRequest;
+import com.studentportfolio.dto.LoginResponse;
 import com.studentportfolio.dto.RegisterRequest;
 import com.studentportfolio.model.User;
 import com.studentportfolio.util.PasswordUtil;
@@ -39,19 +40,25 @@ public class UserService {
         }
     }
 
-    public boolean login(LoginRequest request) {
+    public LoginResponse login(LoginRequest request) {
 
         String email = request.getEmail().trim().toLowerCase();
 
         User user = userDAO.getUserByEmail(email);
 
         if (user == null) {
-            return false;
+            return null;
         }
 
-        return PasswordUtil.verifyPassword(
+        boolean validPassword = PasswordUtil.verifyPassword(
                 request.getPassword(),
                 user.getPassword()
         );
+
+        if (!validPassword) {
+            return null;
+        }
+
+        return new LoginResponse(user.getId(), user.getFullName(), user.getEmail());
     }
 }

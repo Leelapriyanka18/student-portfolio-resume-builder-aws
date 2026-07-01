@@ -5,11 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Projects | Student Portfolio</title>
     <link rel="stylesheet" href="../assets/css/style.css" />
+
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/config.js"></script>
+
+    <script>
+      if (!Auth.requireAuth("login.html")) {
+        document.write("");
+      }
+    </script>
   </head>
   <body>
     <header class="header">
       <div class="container nav">
-        <a href="../index.html" class="logo">LP<span>Portfolio</span></a>
+        <a href="../index.html" class="logo">SP<span>Portfolio</span></a>
         <button
           class="menu-btn"
           id="menuToggle"
@@ -21,6 +30,7 @@
         <nav class="nav-links" id="navLinks" aria-label="Main navigation">
           <a href="../index.html#home">Home</a>
           <a href="about.html">About</a>
+          <a href="dashboard.html">Dashboard</a>
           <a href="projects.html" class="active">Projects</a>
           <a href="resume-builder.html">Resume Builder</a>
           <a href="certificates.html">Certificates</a>
@@ -69,30 +79,32 @@
           <div class="card">
             <h2>Add Project</h2>
 
-            <form id="projectForm">
+            <form id="projectForm" autocomplete="off">
               <div class="form-group">
-                <label>Project Title</label>
+                <label for="title">Project Title</label>
                 <input type="text" id="title" required />
               </div>
 
               <div class="form-group">
-                <label>Description</label>
-                <textarea id="description" required></textarea>
+                <label for="description">Description</label>
+                <textarea id="description" rows="4" required></textarea>
               </div>
 
               <div class="form-group">
-                <label>GitHub Link</label>
-                <input type="text" id="githubLink" />
+                <label for="githubLink">GitHub Link</label>
+                <input type="url" id="githubLink" placeholder="https://github.com/yourusername/repo" />
               </div>
 
-              <button type="submit" class="btn primary">Save Project</button>
+              <button type="submit" class="btn primary" id="saveProjectBtn">
+                Save Project
+              </button>
             </form>
           </div>
 
           <br /><br />
 
           <div class="project-grid" id="projectList">
-            <p>Loading Projects...</p>
+            <p>⏳ Loading Projects...</p>
           </div>
         </section>
       </div>
@@ -103,78 +115,259 @@
         <p>© 2026 Student Portfolio and Resume Builder</p>
       </div>
     </footer>
+    
+   <script src="../assets/js/script.js"></script>
 
-    <script src="../assets/js/script.js"></script>
-    <script>
-      document
-        .getElementById("projectForm")
-        .addEventListener("submit", async function (e) {
-          e.preventDefault();
+<script>
+const baseUrl = window.API_BASE;
 
-          const data = {
-            title: document.getElementById("title").value,
-            description: document.getElementById("description").value,
-            githubLink: document.getElementById("githubLink").value,
-          };
+const projectForm = document.getElementById("projectForm");
+const projectList = document.getElementById("projectList");
+const saveProjectBtn = document.getElementById("saveProjectBtn");
+      function escapeHTML(str) {
+        if (str === null || str === undefined) return "";
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
 
-          try {
-            const response = await fetch("http://98.83.139.108:8080/api/project", {
+      function isValidGithubUrl(url) {
+        if (!url) return true;
+        try {
+          const parsed = new URL(url);
+          return (
+            (parsed.protocol === "http:" || parsed.protocol === "https:") &&
+            parsed.hostname.toLowerCase().includes("github.com")
+          );
+        } catch (err) {
+          return false;
+        }
+      }
+
+      function getSessionUserOrRedirect() {
+        const user = Auth.getUser ? Auth.getUser() : null;
+        if (!user || !user.userId) {
+          showToast("Session expired. Please log in again.", "error");
+          Auth.logout();
+          return null;
+        }
+        return user;
+      }
+
+      async function fetchWithTimeout(url, options = {}, timeout = 10000) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeout);
+        try {
+          const response = await fetch(url, {
+            ...options,
+            signal: controller.signal,
+          });
+          clearTimeout(timer);
+          return response;
+        } catch (err) {
+          clearTimeout(timer);
+          if (err.name === "AbortError") {
+            throw new Error("TIMEOUT");
+          }
+          throw new Error("NETWORK");
+        }
+      }
+
+      projectForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const user = getSessionUserOrRedirect();
+        if (!user) return;
+
+        const title = document.getElementById("title").value.trim();
+        const description = document.getElementById("description").value.trim();
+        const githubLink = document.getElementById("githubLink").value.trim();
+
+        if (!title) {
+          showToast("Project title is required.", "error");
+          return;
+        }
+
+        if (!description) {
+          showToast("Description is required.", "error");
+          return;
+        }
+
+        if (githubLink && !isValidGithubUrl(githubLink)) {
+          showToast("Please enter a valid GitHub URL.", "error");
+          return;
+        }
+
+        const data = {
+          title: title,
+          description: description,
+          githubLink: githubLink,
+          userId: user.userId,
+        };
+
+        const originalBtnText = saveProjectBtn.textContent;
+        saveProjectBtn.disabled = true;
+        saveProjectBtn.textContent = "Saving Project...";
+
+        try {
+          const response = await fetchWithTimeout(
+            `${baseUrl}/api/project`,
+            {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify(data),
-            });
+            }
+          );
 
-            const result = await response.text();
-
-            alert(result);
-
-            document.getElementById("projectForm").reset();
-
-            loadProjects();
-          } catch (error) {
-            console.error(error);
-            alert("Unable to save project");
+          if (response.status === 401) {
+            showToast("Session expired. Please log in again.", "error");
+            Auth.logout();
+            return;
           }
-        });
+
+          if (response.status === 403) {
+            showToast("Access denied.", "error");
+            return;
+          }
+
+          if (!response.ok) {
+            throw new Error("SERVER_" + response.status);
+          }
+
+          let result;
+          try {
+            result = await response.text();
+          } catch (parseErr) {
+            throw new Error("INVALID_RESPONSE");
+          }
+
+          showToast(result || "Project saved successfully.", "success");
+
+          projectForm.reset();
+          document.getElementById("title").focus();
+
+          await loadProjects();
+        } catch (error) {
+          console.error(error);
+
+          if (error.message === "TIMEOUT") {
+            showToast("Request timed out. Please try again.", "error");
+          } else if (error.message === "NETWORK") {
+            showToast("Network error. Check your connection.", "error");
+          } else if (error.message && error.message.startsWith("SERVER_")) {
+            showToast("Server error. Please try again later.", "error");
+          } else if (error.message === "INVALID_RESPONSE") {
+            showToast("Unexpected response from server.", "error");
+          } else {
+            showToast("Unable to save project.", "error");
+          }
+        } finally {
+          saveProjectBtn.disabled = false;
+          saveProjectBtn.textContent = originalBtnText;
+        }
+      });
 
       async function loadProjects() {
-        try {
-          const response = await fetch("http://98.83.139.108:8080/api/project");
+        const user = getSessionUserOrRedirect();
+        if (!user) return;
 
-          const projects = await response.json();
+        projectList.innerHTML = "<p>⏳ Loading Projects...</p>";
+
+        try {
+          const response = await fetchWithTimeout(
+           `${baseUrl}/api/project?userId=${encodeURIComponent(user.userId)}`,
+            { method: "GET" }
+          );
+
+          if (response.status === 401) {
+            showToast("Session expired. Please log in again.", "error");
+            Auth.logout();
+            return;
+          }
+
+          if (response.status === 403) {
+            showToast("Access denied.", "error");
+            projectList.innerHTML = "<p>Access denied.</p>";
+            return;
+          }
+
+          if (!response.ok) {
+            throw new Error("SERVER_" + response.status);
+          }
+
+          let projects;
+          try {
+            projects = await response.json();
+          } catch (parseErr) {
+            throw new Error("INVALID_RESPONSE");
+          }
+
+          if (!Array.isArray(projects) || projects.length === 0) {
+            projectList.innerHTML =
+              "<p>No projects found. Add your first project.</p>";
+            return;
+          }
 
           let html = "";
 
           projects.forEach((project) => {
+            const safeTitle = escapeHTML(project.title);
+            const safeDescription = escapeHTML(project.description);
+            const githubLink = project.githubLink?.trim();
+
             html += `
           <article class="project-card">
-            <h3>${project.title}</h3>
+            <h3>${safeTitle}</h3>
 
-            <p>${project.description}</p>
+            <p>${safeDescription}</p>
 
             <br>
 
-            <a href="${project.githubLink}"
+            ${
+              githubLink
+                ? `<a href="${escapeHTML(githubLink)}"
                target="_blank"
+               rel="noopener noreferrer"
                class="btn secondary">
                View GitHub
-            </a>
+            </a>`
+                : ""
+            }
           </article>
         `;
           });
 
-          document.getElementById("projectList").innerHTML = html;
+          projectList.innerHTML = html;
         } catch (error) {
           console.error(error);
 
-          document.getElementById("projectList").innerHTML =
-            "<p>Unable to load projects</p>";
+          if (error.message === "TIMEOUT") {
+            projectList.innerHTML = "<p>Request timed out. Please try again.</p>";
+            showToast("Request timed out while loading projects.", "error");
+          } else if (error.message === "NETWORK") {
+            projectList.innerHTML = "<p>Unable to load projects</p>";
+            showToast("Network error while loading projects.", "error");
+          } else if (error.message && error.message.startsWith("SERVER_")) {
+            projectList.innerHTML = "<p>Unable to load projects</p>";
+            showToast("Server error while loading projects.", "error");
+          } else if (error.message === "INVALID_RESPONSE") {
+            projectList.innerHTML = "<p>Unable to load projects</p>";
+            showToast("Unexpected response from server.", "error");
+          } else {
+            projectList.innerHTML = "<p>Unable to load projects</p>";
+            showToast("Unable to load projects.", "error");
+          }
         }
       }
 
-      loadProjects();
+      document.addEventListener("DOMContentLoaded", () => {
+        loadProjects();
+      });
     </script>
   </body>
 </html>

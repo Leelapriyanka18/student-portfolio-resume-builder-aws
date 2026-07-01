@@ -5,17 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About | Student Portfolio Resume Builder</title>
   <link rel="stylesheet" href="../assets/css/style.css" />
+
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+
+  <script>
+    if (!Auth.requireAuth("login.html")) {
+      document.write("");
+    }
+  </script>
 </head>
 <body>
   <header class="header">
     <div class="container nav">
-      <a href="../index.html" class="logo">LP<span>Portfolio</span></a>
+      <a href="../index.html" class="logo">SP<span>Portfolio</span></a>
       <button class="menu-btn" id="menuToggle" type="button" aria-label="Open menu">☰</button>
       <nav class="nav-links" id="navLinks" aria-label="Main navigation">
         <a href="../index.html#home">Home</a>
         <a href="about.html" class="active">About</a>
-        <a href="../index.html#projects">Projects</a>
         <a href="dashboard.html">Dashboard</a>
+        <a href="profile.html">Profile</a>
+        <a href="projects.html">Projects</a>
         <a href="resume-builder.html">Resume Builder</a>
         <a href="certificates.html">Certificates</a>
         <a href="contact.html">Contact</a>
@@ -28,12 +38,9 @@
     <div class="container">
       <div class="hero-grid">
         <div class="hero-text">
-          <span class="tag">AI & DS Student • AWS Learner • Frontend Developer</span>
-          <h1>About <span>Leela Priyanka</span></h1>
-          <p class="subtitle">
-            I am a BTech student who builds responsive web experiences, cloud-ready portfolio pages, and clean resume tools.
-            This site is designed to showcase technical learning and make it easy to present your achievements.
-          </p>
+          <span class="tag" id="aboutTag">Building Skills. Creating Opportunities.</span>
+          <h1>About <span id="aboutNameHeading">Student</span></h1>
+          <p class="subtitle" id="aboutBio">Welcome! Complete your profile to showcase your journey, skills, and achievements.</p>
           <div class="hero-actions">
             <a href="resume-builder.html" class="btn primary">Build Resume</a>
             <a href="projects.html" class="btn secondary">View Projects</a>
@@ -41,12 +48,12 @@
         </div>
 
         <aside class="profile-card">
-          <div class="profile-circle">LP</div>
-          <h2>Student Developer</h2>
-          <p>AI & DS | AWS | Java | Frontend | SQL</p>
-          <div class="hero-actions" style="justify-content:center; margin-top:18px; gap:10px;">
-            <a href="https://github.com/your-username" class="btn secondary" target="_blank" rel="noopener">GitHub</a>
-            <a href="https://www.linkedin.com/in/your-username" class="btn secondary" target="_blank" rel="noopener">LinkedIn</a>
+          <div class="profile-circle" id="aboutInitials">ST</div>
+          <h2 id="aboutRole">Aspiring Developer</h2>
+          <p id="aboutSkills">Add your technical skills to strengthen your portfolio.</p>
+          <p id="aboutLocation">Location not provided.</p>
+          <div class="hero-actions" style="justify-content:center; margin-top:18px; gap:10px;" id="aboutSocialLinks">
+            <!-- GitHub / LinkedIn links populated dynamically -->
           </div>
         </aside>
       </div>
@@ -91,7 +98,193 @@
       <p>© 2026 Student Portfolio and Resume Builder</p>
     </div>
   </footer>
-
   <script src="../assets/js/script.js"></script>
+  <script>
+    // Cached DOM elements — queried once, reused on every render.
+    const els = {
+      tag: document.getElementById("aboutTag"),
+      name: document.getElementById("aboutNameHeading"),
+      bio: document.getElementById("aboutBio"),
+      initials: document.getElementById("aboutInitials"),
+      role: document.getElementById("aboutRole"),
+      skills: document.getElementById("aboutSkills"),
+      location: document.getElementById("aboutLocation"),
+      social: document.getElementById("aboutSocialLinks"),
+    };
+
+    const FALLBACKS = {
+      name: "Student",
+      role: "Aspiring Developer",
+      tag: "Building Skills. Creating Opportunities.",
+      bio: "Welcome! Complete your profile to showcase your journey, skills, and achievements.",
+      skills: "Add your technical skills to strengthen your portfolio.",
+      location: "Location not provided.",
+      initials: "ST",
+      social: '<p class="subtitle">Add GitHub and LinkedIn to strengthen your profile.</p>',
+    };
+
+    function escapeHTML(str) {
+      if (str === null || str === undefined) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function isValidUrl(url) {
+      if (!url) return false;
+      try {
+        const parsed = new URL(url);
+        return parsed.protocol === "http:" || parsed.protocol === "https:";
+      } catch (err) {
+        return false;
+      }
+    }
+
+    function getInitials(name) {
+      const parts = name.trim().split(/\s+/).filter(Boolean);
+      if (parts.length === 0) return FALLBACKS.initials;
+      if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+
+    function getSessionUserOrRedirect() {
+      const user = Auth.getUser ? Auth.getUser() : null;
+      if (!user || !user.userId) {
+        showToast("Session expired. Please log in again.", "error");
+        Auth.logout();
+        return null;
+      }
+      return user;
+    }
+
+    async function fetchWithTimeout(url, options = {}, timeout = 10000) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeout);
+      try {
+        const response = await fetch(url, {
+          ...options,
+          signal: controller.signal,
+        });
+        clearTimeout(timer);
+        return response;
+      } catch (err) {
+        clearTimeout(timer);
+        if (err.name === "AbortError") throw new Error("TIMEOUT");
+        throw new Error("NETWORK");
+      }
+    }
+
+    function renderSocialLinks(profile) {
+      let html = "";
+
+      if (isValidUrl(profile.github)) {
+        html += `<a href="${escapeHTML(profile.github)}" class="btn secondary" target="_blank" rel="noopener noreferrer">GitHub</a>`;
+      }
+
+      if (isValidUrl(profile.linkedin)) {
+        html += `<a href="${escapeHTML(profile.linkedin)}" class="btn secondary" target="_blank" rel="noopener noreferrer">LinkedIn</a>`;
+      }
+
+      els.social.innerHTML = html || FALLBACKS.social;
+    }
+
+    function renderProfile(profile) {
+      const name = (profile.name || "").trim();
+
+      els.tag.textContent = (profile.headline || "").trim() || FALLBACKS.tag;
+      els.name.textContent = name || FALLBACKS.name;
+      els.bio.textContent = (profile.bio || "").trim() || FALLBACKS.bio;
+      els.initials.textContent = name ? getInitials(name) : FALLBACKS.initials;
+      els.role.textContent = (profile.role || "").trim() || FALLBACKS.role;
+      els.skills.textContent = (profile.skills || "").trim() || FALLBACKS.skills;
+      els.location.textContent = (profile.location || "").trim() || FALLBACKS.location;
+
+      renderSocialLinks(profile);
+    }
+
+    function renderFallbackState() {
+      els.tag.textContent = FALLBACKS.tag;
+      els.name.textContent = FALLBACKS.name;
+      els.bio.textContent = FALLBACKS.bio;
+      els.initials.textContent = FALLBACKS.initials;
+      els.role.textContent = FALLBACKS.role;
+      els.skills.textContent = FALLBACKS.skills;
+      els.location.textContent = FALLBACKS.location;
+      els.social.innerHTML = FALLBACKS.social;
+    }
+
+    async function loadProfile() {
+      const user = getSessionUserOrRedirect();
+      if (!user) return;
+
+      try {
+        const response = await fetchWithTimeout(
+          `${window.API_BASE}/api/profile?userId=${encodeURIComponent(user.userId)}`,
+          { method: "GET" }
+        );
+
+        if (response.status === 401) {
+          showToast("Session expired. Please log in again.", "error");
+          Auth.logout();
+          return;
+        }
+
+        if (response.status === 403) {
+          showToast("Access denied.", "error");
+          renderFallbackState();
+          return;
+        }
+
+        if (response.status === 404) {
+          showToast("Complete your profile to make your portfolio stand out.", "info");
+          renderFallbackState();
+          return;
+        }
+
+        if (response.status === 400) {
+          showToast("Invalid request. Please try again.", "error");
+          renderFallbackState();
+          return;
+        }
+
+        if (!response.ok) {
+          throw new Error("SERVER_" + response.status);
+        }
+
+        let profile;
+        try {
+          profile = await response.json();
+        } catch (parseErr) {
+          throw new Error("INVALID_RESPONSE");
+        }
+
+        if (!profile || typeof profile !== "object") {
+          throw new Error("INVALID_RESPONSE");
+        }
+
+        renderProfile(profile);
+      } catch (error) {
+        console.error(error);
+        renderFallbackState();
+
+        if (error.message === "TIMEOUT") {
+          showToast("Request timed out while loading profile.", "error");
+        } else if (error.message === "NETWORK") {
+          showToast("Network error while loading profile.", "error");
+        } else if (error.message && error.message.startsWith("SERVER_")) {
+          showToast("Server error while loading profile.", "error");
+        } else if (error.message === "INVALID_RESPONSE") {
+          showToast("Unexpected response from server.", "error");
+        } else {
+          showToast("Unable to load profile.", "error");
+        }
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadProfile);
+  </script>
 </body>
 </html>

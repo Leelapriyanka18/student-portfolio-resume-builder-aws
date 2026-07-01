@@ -70,6 +70,8 @@
     </div>
   </footer>
 
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/auth.js"></script>
   <script>
     document.getElementById("registerForm")
     .addEventListener("submit", async function(e){
@@ -84,16 +86,18 @@
 
       try{
 
-        const response = await fetch(
-         "http://98.83.139.108:8080/api/auth/register",
-          {
-            method:"POST",
-            headers:{
-              "Content-Type":"application/json"
-            },
-            body:JSON.stringify(data)
-          }
-        );
+       const baseUrl = window.API_BASE;
+
+const response = await fetch(
+    `${baseUrl}/api/auth/register`,
+    {
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify(data)
+    }
+);
 
         if(response.ok){
           alert("Registration Successful!");

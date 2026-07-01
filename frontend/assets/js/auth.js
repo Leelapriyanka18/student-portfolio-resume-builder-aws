@@ -4,8 +4,11 @@
 // ============================================================
 
 // ── Single source of truth for backend URL ──
-window.API_BASE =
-  (window.APP_CONFIG && window.APP_CONFIG.apiBase) || "http://32.192.209.255:8080";
+window.API_BASE = ((window.APP_CONFIG && window.APP_CONFIG.apiBase) || "").replace(/\/$/, "");
+
+if (!window.API_BASE) {
+  console.warn("Backend API base URL is not configured. Update frontend/assets/js/config.js.");
+}
 
 // ── Toast (shared implementation; script.js reuses this if present) ──
 window.showToast = window.showToast || function (msg, type = "error") {

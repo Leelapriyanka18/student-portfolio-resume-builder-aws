@@ -23,8 +23,11 @@ public class ResumeService {
 
         Resume resume = new Resume();
 
-        // Temporary user id
-        resume.setUserId(1);
+        if (request.getUserId() <= 0) {
+            throw new IllegalArgumentException("User ID is required");
+        }
+
+        resume.setUserId(request.getUserId());
 
         resume.setResumeName(request.getResumeName().trim());
         resume.setFilePath(request.getFilePath());
@@ -63,5 +66,9 @@ public class ResumeService {
 
     public List<Resume> getAllResumes() {
         return resumeDAO.getAllResumes();
+    }
+
+    public List<Resume> getResumesByUserId(int userId) {
+        return resumeDAO.getResumesByUserId(userId);
     }
 }

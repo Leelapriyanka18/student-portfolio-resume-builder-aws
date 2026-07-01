@@ -62,6 +62,7 @@ public class ProjectDAO {
         String sql = """
                 SELECT *
                 FROM projects
+                WHERE user_id = ?
                 ORDER BY id DESC
                 """;
 
@@ -78,6 +79,8 @@ public class ProjectDAO {
 
                     return project;
                 }
+                ,
+                userId
         );
     }
 }

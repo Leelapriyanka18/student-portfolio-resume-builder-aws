@@ -1,5 +1,7 @@
 package com.studentportfolio.controller;
 
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.studentportfolio.dto.LoginRequest;
+import com.studentportfolio.dto.LoginResponse;
 import com.studentportfolio.dto.RegisterRequest;
 import com.studentportfolio.service.UserService;
 
@@ -40,17 +43,17 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(
+    public ResponseEntity<?> login(
             @Valid @RequestBody LoginRequest request) {
-        boolean success = userService.login(request);
+        LoginResponse loginResponse = userService.login(request);
 
-        if (success) {
-            return ResponseEntity.ok("Login Successful");
+        if (loginResponse != null) {
+            return ResponseEntity.ok(loginResponse);
         }
 
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body("Invalid Email or Password");
+                .body(Map.of("message", "Invalid Email or Password"));
     }
 
     @ExceptionHandler({

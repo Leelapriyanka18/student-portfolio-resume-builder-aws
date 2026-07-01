@@ -20,12 +20,13 @@ public class ContactDAO {
 
         String sql = """
                 INSERT INTO contacts
-                (name, email, subject, message)
-                VALUES (?, ?, ?, ?)
+                (user_id, name, email, subject, message)
+                VALUES (?, ?, ?, ?, ?)
                 """;
 
         int rows = jdbcTemplate.update(
                 sql,
+                contact.getUserId(),
                 contact.getName(),
                 contact.getEmail(),
                 contact.getSubject(),
@@ -49,6 +50,7 @@ public class ContactDAO {
                     Contact contact = new Contact();
 
                     contact.setId(rs.getInt("id"));
+                    contact.setUserId(rs.getInt("user_id"));
                     contact.setName(rs.getString("name"));
                     contact.setEmail(rs.getString("email"));
                     contact.setSubject(rs.getString("subject"));
@@ -56,6 +58,33 @@ public class ContactDAO {
 
                     return contact;
                 }
+        );
+    }
+
+    public List<Contact> getContactsByUserId(int userId) {
+
+        String sql = """
+                SELECT *
+                FROM contacts
+                WHERE user_id = ?
+                ORDER BY id DESC
+                """;
+
+        return jdbcTemplate.query(
+                sql,
+                (rs, rowNum) -> {
+                    Contact contact = new Contact();
+
+                    contact.setId(rs.getInt("id"));
+                    contact.setUserId(rs.getInt("user_id"));
+                    contact.setName(rs.getString("name"));
+                    contact.setEmail(rs.getString("email"));
+                    contact.setSubject(rs.getString("subject"));
+                    contact.setMessage(rs.getString("message"));
+
+                    return contact;
+                },
+                userId
         );
     }
 }

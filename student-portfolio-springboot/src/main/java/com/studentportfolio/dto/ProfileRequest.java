@@ -1,8 +1,12 @@
 package com.studentportfolio.dto;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 public class ProfileRequest {
+
+    @Min(value = 1, message = "User ID is required")
+    private int userId;
 
     @NotBlank(message = "Headline is required")
     private String headline;
@@ -15,6 +19,14 @@ public class ProfileRequest {
     private String address;
     private String linkedinUrl;
     private String githubUrl;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
     public String getHeadline() {
         return headline;

@@ -1,9 +1,13 @@
 package com.studentportfolio.dto;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 public class ContactRequest {
+
+    @Min(value = 1, message = "User ID is required")
+    private int userId;
 
     @NotBlank(message = "Name is required")
     private String name;
@@ -18,6 +22,14 @@ public class ContactRequest {
     private String message;
 
     public ContactRequest() {
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getName() {

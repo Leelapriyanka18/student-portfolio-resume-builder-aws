@@ -23,11 +23,16 @@ public class CertificateService {
 
         Certificate certificate = new Certificate();
 
-        // Temporary user id
-        certificate.setUserId(1);
+        if (request.getUserId() <= 0) {
+            throw new IllegalArgumentException("User ID is required");
+        }
+
+        certificate.setUserId(request.getUserId());
 
         certificate.setCertificateName(request.getCertificateName());
         certificate.setIssuer(request.getIssuer());
+        certificate.setIssueDate(request.getIssueDate());
+        certificate.setCertificateUrl(request.getCertificateUrl());
 
         boolean saved = certificateDAO.saveCertificate(certificate);
 
@@ -38,5 +43,9 @@ public class CertificateService {
 
     public List<Certificate> getAllCertificates() {
         return certificateDAO.getAllCertificates();
+    }
+
+    public List<Certificate> getCertificatesByUserId(int userId) {
+        return certificateDAO.getCertificatesByUserId(userId);
     }
 }

@@ -97,7 +97,8 @@
     <p>© 2026 Student Portfolio and Resume Builder</p>
   </div>
 </footer>
-
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/auth.js"></script>
 <script>
 
 document.getElementById("loginForm")
@@ -114,39 +115,35 @@ document.getElementById("loginForm")
 
     try{
 
-        const response = await fetch(
+       const baseUrl = window.API_BASE;
 
-            "http://98.83.139.108:8080/api/auth/login",
+const response = await fetch(
+    `${baseUrl}/api/auth/login`,
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    }
+);
 
-            {
-
-                method:"POST",
-
-                headers:{
-                    "Content-Type":"application/json"
-                },
-
-                body: JSON.stringify(data)
-
-            }
-
-        );
-
-        const result = await response.text();
+        const contentType = response.headers.get("content-type") || "";
+        const result = contentType.includes("application/json")
+            ? await response.json()
+            : { message: await response.text() };
 
         if(response.ok){
 
-            // Save Login Session
-            localStorage.setItem("loggedIn","true");
-            localStorage.setItem("userEmail",data.email);
+            Auth.setSession(result);
 
-            alert(result);
+            alert("Login Successful");
 
             window.location.href="dashboard.html";
 
         }else{
 
-            alert(result);
+            alert(result.message || "Invalid Email or Password");
 
         }
 
@@ -159,8 +156,8 @@ document.getElementById("loginForm")
 });
 
 </script>
+
 <script src="../assets/js/script.js"></script>
 
 </body>
 </html>
-

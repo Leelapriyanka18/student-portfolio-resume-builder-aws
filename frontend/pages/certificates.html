@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Certificates | Student Portfolio</title>
     <link rel="stylesheet" href="../assets/css/style.css" />
+
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/auth.js"></script>
+
+    <script>
+      if (!Auth.requireAuth("login.html")) {
+        document.write("");
+      }
+    </script>
   </head>
   <body>
     <header class="header">
@@ -19,7 +28,9 @@
           ☰
         </button>
         <nav class="nav-links" id="navLinks" aria-label="Main navigation">
-          <a href="../index.html">Home</a>
+          <a href="../index.html#home">Home</a>
+          <a href="about.html">About</a>
+          <a href="dashboard.html">Dashboard</a>
           <a href="profile.html">Profile</a>
           <a href="projects.html">Projects</a>
           <a href="resume-builder.html">Resume Builder</a>
@@ -72,28 +83,32 @@
           <div class="card">
             <h2>Add Certificate</h2>
 
-            <form id="certificateForm">
+            <form id="certificateForm" autocomplete="off">
               <div class="form-group">
-                <label>Certificate Name</label>
+                <label for="certificateName">Certificate Name</label>
                 <input type="text" id="certificateName" required />
               </div>
 
               <div class="form-group">
-                <label>Issuing Organization</label>
+                <label for="issuer">Issuing Organization</label>
                 <input type="text" id="issuer" required />
               </div>
 
               <div class="form-group">
-                <label>Issue Date</label>
-                <input type="text" id="issueDate" required />
+                <label for="issueDate">Issue Date</label>
+                <input type="date" id="issueDate" required />
               </div>
 
               <div class="form-group">
-                <label>Certificate URL</label>
-                <input type="text" id="certificateUrl" />
+                <label for="certificateUrl">Certificate URL</label>
+                <input
+                  type="url"
+                  id="certificateUrl"
+                  placeholder="https://..."
+                />
               </div>
 
-              <button type="submit" class="btn primary">
+              <button type="submit" class="btn primary" id="saveCertificateBtn">
                 Save Certificate
               </button>
             </form>
@@ -101,9 +116,8 @@
 
           <br /><br />
           <div class="certificate-grid" id="certificateList">
-  <p>Loading Certificates...</p>
-</div>
-                
+            <p>⏳ Loading Certificates...</p>
+          </div>
         </section>
       </div>
     </main>
@@ -113,76 +127,289 @@
         <p>© 2026 Student Portfolio and Resume Builder</p>
       </div>
     </footer>
-
     <script src="../assets/js/script.js"></script>
     <script>
-  document
-    .getElementById("certificateForm")
-    .addEventListener("submit", async function (e) {
-      e.preventDefault();
+      const baseUrl = window.API_BASE;
+      const certificateForm = document.getElementById("certificateForm");
+      const certificateList = document.getElementById("certificateList");
+      const saveCertificateBtn = document.getElementById("saveCertificateBtn");
 
-      const data = {
-  certificateName: document.getElementById("certificateName").value,
-  issuer: document.getElementById("issuer").value,
-  issueDate: document.getElementById("issueDate").value,
-};
-      try {
-        const response = await fetch(
-          "http://98.83.139.108:8080/api/certificate",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
-
-        const result = await response.text();
-
-        alert(result);
-
-        document.getElementById("certificateForm").reset();
-
-        loadCertificates();
-      } catch (error) {
-        console.error(error);
-        alert("Unable to save certificate");
+      function escapeHTML(str) {
+        if (str === null || str === undefined) return "";
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
       }
-    });
 
-  async function loadCertificates() {
-    try {
-      const response = await fetch(
-        "http://98.83.139.108:8080/api/certificate"
-      );
+      function isValidCertificateUrl(url) {
+        if (!url) return true;
+        try {
+          const parsed = new URL(url);
+          return parsed.protocol === "http:" || parsed.protocol === "https:";
+        } catch (err) {
+          return false;
+        }
+      }
 
-      const certificates = await response.json();
+      function getSessionUserOrRedirect() {
+        const user = Auth.getUser ? Auth.getUser() : null;
+        if (!user || !user.userId) {
+          showToast("Session expired. Please log in again.", "error");
+          Auth.logout();
+          return null;
+        }
+        return user;
+      }
 
-      let html = "";
+      async function fetchWithTimeout(url, options = {}, timeout = 10000) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeout);
+        try {
+          const response = await fetch(url, {
+            ...options,
+            signal: controller.signal,
+          });
+          clearTimeout(timer);
+          return response;
+        } catch (err) {
+          clearTimeout(timer);
+          if (err.name === "AbortError") {
+            throw new Error("TIMEOUT");
+          }
+          throw new Error("NETWORK");
+        }
+      }
 
-      certificates.forEach((certificate) => {
-        html += `
-          <article class="certificate-card">
-            <h2>${certificate.certificateName}</h2>
+      certificateForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
 
-            <p class="certificate-issuer">
-              ${certificate.issuer}
-            </p>
-          </article>
-        `;
+        const user = getSessionUserOrRedirect();
+        if (!user) return;
+
+        const certificateName = document
+          .getElementById("certificateName")
+          .value.trim();
+        const issuer = document.getElementById("issuer").value.trim();
+        const issueDate = document.getElementById("issueDate").value.trim();
+        const certificateUrl = document
+          .getElementById("certificateUrl")
+          .value.trim();
+
+        if (!certificateName) {
+          showToast("Certificate name is required.", "error");
+          return;
+        }
+
+        if (!issuer) {
+          showToast("Issuing organization is required.", "error");
+          return;
+        }
+
+        if (!issueDate) {
+          showToast("Issue date is required.", "error");
+          return;
+        }
+
+        if (certificateUrl && !isValidCertificateUrl(certificateUrl)) {
+          showToast("Please enter a valid certificate URL.", "error");
+          return;
+        }
+
+        const data = {
+          certificateName: certificateName,
+          issuer: issuer,
+          issueDate: issueDate,
+          certificateUrl: certificateUrl,
+          userId: user.userId,
+        };
+
+        const originalBtnText = saveCertificateBtn.textContent;
+        saveCertificateBtn.disabled = true;
+        saveCertificateBtn.textContent = "Saving Certificate...";
+
+        try {
+          const response = await fetchWithTimeout(
+            `${baseUrl}/api/certificate`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            }
+          );
+          if (response.status === 401) {
+            showToast("Session expired. Please log in again.", "error");
+            Auth.logout();
+            return;
+          }
+
+          if (response.status === 403) {
+            showToast("Access denied.", "error");
+            return;
+          }
+
+          if (response.status === 404) {
+            showToast("Certificate endpoint not found.", "error");
+            return;
+          }
+
+          if (response.status === 400) {
+            showToast(
+              "Invalid certificate data. Please check your entries.",
+              "error",
+            );
+            return;
+          }
+
+          if (!response.ok) {
+            throw new Error("SERVER_" + response.status);
+          }
+
+          let result;
+          try {
+            result = await response.text();
+          } catch (parseErr) {
+            throw new Error("INVALID_RESPONSE");
+          }
+
+          showToast(result || "Certificate saved successfully.", "success");
+
+          certificateForm.reset();
+          document.getElementById("certificateName").focus();
+
+          await loadCertificates();
+        } catch (error) {
+          console.error(error);
+
+          if (error.message === "TIMEOUT") {
+            showToast("Request timed out. Please try again.", "error");
+          } else if (error.message === "NETWORK") {
+            showToast("Network error. Check your connection.", "error");
+          } else if (error.message && error.message.startsWith("SERVER_")) {
+            showToast("Server error. Please try again later.", "error");
+          } else if (error.message === "INVALID_RESPONSE") {
+            showToast("Unexpected response from server.", "error");
+          } else {
+            showToast("Unable to save certificate.", "error");
+          }
+        } finally {
+          saveCertificateBtn.disabled = false;
+          saveCertificateBtn.textContent = originalBtnText;
+        }
       });
 
-      document.getElementById("certificateList").innerHTML = html;
-    } catch (error) {
-      console.error(error);
+      async function loadCertificates() {
+        const user = getSessionUserOrRedirect();
+        if (!user) return;
 
-      document.getElementById("certificateList").innerHTML =
-        "<p>Unable to load certificates</p>";
-    }
-  }
+        certificateList.innerHTML = "<p>⏳ Loading Certificates...</p>";
 
-  loadCertificates();
-</script>
+        try {
+          const response = await fetchWithTimeout(
+            `${baseUrl}/api/certificate?userId=${encodeURIComponent(user.userId)}`,
+            { method: "GET" },
+          );
+
+          if (response.status === 401) {
+            showToast("Session expired. Please log in again.", "error");
+            Auth.logout();
+            return;
+          }
+
+          if (response.status === 403) {
+            showToast("Access denied.", "error");
+            certificateList.innerHTML = "<p>Access denied.</p>";
+            return;
+          }
+
+          if (response.status === 404) {
+            certificateList.innerHTML =
+              "<p>No certificates found. Add your first certificate.</p>";
+            return;
+          }
+
+          if (!response.ok) {
+            throw new Error("SERVER_" + response.status);
+          }
+
+          let certificates;
+          try {
+            certificates = await response.json();
+          } catch (parseErr) {
+            throw new Error("INVALID_RESPONSE");
+          }
+
+          if (!Array.isArray(certificates) || certificates.length === 0) {
+            certificateList.innerHTML =
+              "<p>No certificates found. Add your first certificate.</p>";
+            return;
+          }
+
+          let html = "";
+
+          certificates.forEach((certificate) => {
+            const safeName = escapeHTML(certificate.certificateName);
+            const safeIssuer = escapeHTML(certificate.issuer);
+            const safeDate = escapeHTML(certificate.issueDate);
+            const certificateUrl = certificate.certificateUrl?.trim() || "";
+
+            html += `
+          <article class="certificate-card">
+            <h2>${safeName}</h2>
+
+            <p class="certificate-issuer">
+              ${safeIssuer}
+            </p>
+
+            <p class="certificate-date">
+              ${safeDate}
+            </p>
+
+            ${
+              certificateUrl
+                ? `<a href="${escapeHTML(certificateUrl)}"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="btn secondary">
+               View Certificate
+            </a>`
+                : ""
+            }
+          </article>
+        `;
+          });
+
+          certificateList.innerHTML = html;
+        } catch (error) {
+          console.error(error);
+
+          if (error.message === "TIMEOUT") {
+            certificateList.innerHTML =
+              "<p>Request timed out. Please try again.</p>";
+            showToast("Request timed out while loading certificates.", "error");
+          } else if (error.message === "NETWORK") {
+            certificateList.innerHTML = "<p>Unable to load certificates</p>";
+            showToast("Network error while loading certificates.", "error");
+          } else if (error.message && error.message.startsWith("SERVER_")) {
+            certificateList.innerHTML = "<p>Unable to load certificates</p>";
+            showToast("Server error while loading certificates.", "error");
+          } else if (error.message === "INVALID_RESPONSE") {
+            certificateList.innerHTML = "<p>Unable to load certificates</p>";
+            showToast("Unexpected response from server.", "error");
+          } else {
+            certificateList.innerHTML = "<p>Unable to load certificates</p>";
+            showToast("Unable to load certificates.", "error");
+          }
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        loadCertificates();
+      });
+    </script>
   </body>
 </html>

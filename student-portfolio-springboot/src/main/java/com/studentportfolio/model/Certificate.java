@@ -8,6 +8,8 @@ public class Certificate {
     private int userId;
     private String certificateName;
     private String issuer;
+    private String issueDate;
+    private String certificateUrl;
     private Timestamp createdAt;
 
     public Certificate() {
@@ -43,6 +45,22 @@ public class Certificate {
 
     public void setIssuer(String issuer) {
         this.issuer = issuer;
+    }
+
+    public String getIssueDate() {
+        return issueDate;
+    }
+
+    public void setIssueDate(String issueDate) {
+        this.issueDate = issueDate;
+    }
+
+    public String getCertificateUrl() {
+        return certificateUrl;
+    }
+
+    public void setCertificateUrl(String certificateUrl) {
+        this.certificateUrl = certificateUrl;
     }
 
     public Timestamp getCreatedAt() {

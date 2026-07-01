@@ -1,8 +1,11 @@
 package com.studentportfolio.dto;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 public class ResumeRequest {
+    @Min(value = 1, message = "User ID is required")
+    private int userId;
     private String email;
     private String phone;
     private String address;
@@ -28,6 +31,14 @@ public class ResumeRequest {
     private String resumeName;
 
     private String filePath;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
     public String getResumeName() {
         return resumeName;

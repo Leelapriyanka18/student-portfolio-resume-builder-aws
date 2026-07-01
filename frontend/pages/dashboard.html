@@ -6,6 +6,7 @@
     <title>Dashboard | Student Portfolio</title>
     <link rel="stylesheet" href="../assets/css/style.css" />
 
+    <script src="../assets/js/config.js"></script>
     <script src="../assets/js/auth.js"></script>
     <script>
       // Route guard — runs before page paints
@@ -152,7 +153,7 @@
       //    loggedIn / userId / userName / userEmail (see auth.js),
       //    theme and other preferences are untouched.
       // ────────────────────────────────────────────────────────
-      document.getElementById("logoutBtn").addEventListener("click", () => Auth.logout());
+      
 
       // ────────────────────────────────────────────────────────
       // 5. Safely normalize any API response shape into a count
@@ -255,7 +256,6 @@
 
       loadDashboard();
     </script>
-
     <script src="../assets/js/script.js"></script>
   </body>
 </html>

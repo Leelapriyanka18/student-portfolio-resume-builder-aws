@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.studentportfolio.dto.ProjectRequest;
@@ -43,7 +44,12 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Project>> getAllProjects() {
+    public ResponseEntity<List<Project>> getAllProjects(
+            @RequestParam(required = false) Integer userId) {
+        if (userId != null) {
+            return ResponseEntity.ok(projectService.getProjectsByUserId(userId));
+        }
+
         return ResponseEntity.ok(projectService.getAllProjects());
     }
 

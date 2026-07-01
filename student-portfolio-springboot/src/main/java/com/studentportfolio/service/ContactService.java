@@ -23,6 +23,7 @@ public class ContactService {
 
         Contact contact = new Contact();
 
+        contact.setUserId(request.getUserId());
         contact.setName(request.getName());
         contact.setEmail(request.getEmail());
         contact.setSubject(request.getSubject());
@@ -37,5 +38,9 @@ public class ContactService {
 
     public List<Contact> getAllContacts() {
         return contactDAO.getAllContacts();
+    }
+
+    public List<Contact> getContactsByUserId(int userId) {
+        return contactDAO.getContactsByUserId(userId);
     }
 }

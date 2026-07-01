@@ -5,11 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Resume Builder | Student Portfolio</title>
     <link rel="stylesheet" href="../assets/css/style.css" />
+
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/auth.js"></script>
+
+    <script>
+      if (!Auth.requireAuth("login.html")) {
+        document.write("");
+      }
+    </script>
   </head>
   <body>
     <header class="header">
       <div class="container nav">
-        <a href="../index.html" class="logo">SP<span>Student Portfolio</span></a>
+        <a href="../index.html" class="logo"
+          >SP<span>Student Portfolio</span></a
+        >
         <button
           class="menu-btn"
           id="menuToggle"
@@ -21,6 +32,7 @@
         <nav class="nav-links" id="navLinks" aria-label="Main navigation">
           <a href="../index.html#home">Home</a>
           <a href="about.html">About</a>
+          <a href="dashboard.html">Dashboard</a>
           <a href="projects.html">Projects</a>
           <a href="resume-builder.html" class="active">Resume Builder</a>
           <a href="certificates.html">Certificates</a>
@@ -48,7 +60,9 @@
             </p>
             <div class="hero-actions">
               <a href="projects.html" class="btn primary">View Projects</a>
-              <a href="certificates.html" class="btn secondary">View Certificates</a>
+              <a href="certificates.html" class="btn secondary"
+                >View Certificates</a
+              >
             </div>
           </div>
 
@@ -63,8 +77,7 @@
 
         <section class="section">
           <div class="builder-grid">
-
-            <form class="form-card card" id="resumeForm">
+            <form class="form-card card" id="resumeForm" autocomplete="off">
               <h2>Build Your Resume</h2>
               <p class="subtitle">
                 Complete the fields below and update the preview live.
@@ -72,52 +85,99 @@
 
               <div class="form-group">
                 <label for="profilePhoto">Profile Photo</label>
-                <input type="file" id="profilePhoto" accept="image/*" />
+                <input
+                  type="file"
+                  id="profilePhoto"
+                  accept="image/*"
+                  aria-label="Upload profile photo"
+                />
               </div>
 
               <div class="form-group">
                 <label for="name">Full Name</label>
-                <input id="name" type="text" placeholder="Enter your name" />
+                <input
+                  id="name"
+                  type="text"
+                  placeholder="Enter your name"
+                  required
+                />
               </div>
 
               <div class="form-group">
                 <label for="email">Email</label>
-                <input id="email" type="email" placeholder="Enter your email" />
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  required
+                />
               </div>
 
               <div class="form-group">
                 <label for="phone">Phone Number</label>
-                <input id="phone" type="text" placeholder="Enter your phone number" />
+                <input
+                  id="phone"
+                  type="text"
+                  placeholder="Enter your phone number"
+                  required
+                />
               </div>
 
               <div class="form-group">
                 <label for="address">Address</label>
-                <textarea id="address" placeholder="Enter your address"></textarea>
+                <textarea
+                  id="address"
+                  placeholder="Enter your address"
+                  rows="3"
+                ></textarea>
               </div>
 
               <div class="form-group">
                 <label for="role">Role / Title</label>
-                <input id="role" type="text" placeholder="AI & DS Student" />
+                <input
+                  id="role"
+                  type="text"
+                  placeholder="AI & DS Student"
+                  required
+                />
               </div>
 
               <div class="form-group">
                 <label for="summary">Summary</label>
-                <textarea id="summary" placeholder="Short profile summary..."></textarea>
+                <textarea
+                  id="summary"
+                  rows="4"
+                  placeholder="Short profile summary..."
+                ></textarea>
               </div>
 
               <div class="form-group">
                 <label for="college">College</label>
-                <input id="college" type="text" placeholder="BVC Engineering College" />
+                <input
+                  id="college"
+                  type="text"
+                  placeholder="BVC Engineering College"
+                  required
+                />
               </div>
 
               <div class="form-group">
                 <label for="degree">Degree</label>
-                <input id="degree" type="text" placeholder="BTech AI & DS" />
+                <input
+                  id="degree"
+                  type="text"
+                  placeholder="BTech AI & DS"
+                  required
+                />
               </div>
 
               <div class="form-group">
                 <label for="branch">Branch / Specialization</label>
-                <input id="branch" type="text" placeholder="Artificial Intelligence & Data Science" />
+                <input
+                  id="branch"
+                  type="text"
+                  placeholder="Artificial Intelligence & Data Science"
+                />
               </div>
 
               <div class="form-group">
@@ -132,59 +192,104 @@
 
               <div class="form-group">
                 <label for="skillsInput">Skills</label>
-                <input id="skillsInput" type="text" placeholder="HTML, CSS, JavaScript" />
+                <input
+                  id="skillsInput"
+                  type="text"
+                  placeholder="HTML, CSS, JavaScript"
+                />
               </div>
 
               <div class="form-group">
                 <label for="projectsInput">Projects</label>
-                <textarea id="projectsInput" placeholder="Enter project names separated by commas..."></textarea>
+                <textarea
+                  id="projectsInput"
+                  rows="3"
+                  placeholder="Enter project names separated by commas..."
+                ></textarea>
               </div>
 
               <div class="form-group">
                 <label for="projectDescription">Project Description</label>
-                <textarea id="projectDescription" placeholder="Describe your project..."></textarea>
+                <textarea
+                  id="projectDescription"
+                  rows="4"
+                  placeholder="Describe your project..."
+                ></textarea>
               </div>
 
               <div class="form-group">
                 <label for="certificatesInput">Certificates</label>
-                <textarea id="certificatesInput" placeholder="Enter certificate names separated by commas..."></textarea>
+                <textarea
+                  id="certificatesInput"
+                  rows="3"
+                  placeholder="Enter certificate names separated by commas..."
+                ></textarea>
               </div>
 
               <div class="form-group">
                 <label for="certificateDetails">Certificate Details</label>
-                <textarea id="certificateDetails" placeholder="Certificate details..."></textarea>
+                <textarea
+                  id="certificateDetails"
+                  rows="4"
+                  placeholder="Certificate details..."
+                ></textarea>
               </div>
 
               <div class="form-group">
                 <label for="experience">Experience / Internship</label>
-                <textarea id="experience" placeholder="Data Science Intern at XYZ Company..."></textarea>
+                <textarea
+                  id="experience"
+                  rows="4"
+                  placeholder="Data Science Intern at XYZ Company..."
+                ></textarea>
               </div>
 
               <div class="form-group">
                 <label for="github">GitHub Profile</label>
-                <input id="github" type="url" placeholder="https://github.com/yourusername" />
+                <input
+                  id="github"
+                  type="url"
+                  placeholder="https://github.com/yourusername"
+                />
               </div>
 
               <div class="form-group">
                 <label for="linkedin">LinkedIn Profile</label>
-                <input id="linkedin" type="url" placeholder="https://linkedin.com/in/yourprofile" />
+                <input
+                  id="linkedin"
+                  type="url"
+                  placeholder="https://linkedin.com/in/yourprofile"
+                />
               </div>
 
               <div class="form-group">
                 <label for="languages">Languages</label>
-                <input id="languages" type="text" placeholder="English, Telugu, Hindi" />
+                <input
+                  id="languages"
+                  type="text"
+                  placeholder="English, Telugu, Hindi"
+                />
               </div>
 
               <div class="form-group">
                 <label for="hobbies">Hobbies / Interests</label>
-                <input id="hobbies" type="text" placeholder="Data Science, AI, Analytics" />
+                <input
+                  id="hobbies"
+                  type="text"
+                  placeholder="Data Science, AI, Analytics"
+                />
               </div>
 
               <div class="hero-actions">
                 <button type="submit" class="btn primary">
                   Update Preview
                 </button>
-                <button type="button" class="btn secondary" id="downloadBtn">
+                <button
+                  type="button"
+                  class="btn secondary"
+                  id="downloadBtn"
+                  aria-label="Download Resume PDF"
+                >
                   Download Resume PDF
                 </button>
               </div>
@@ -211,7 +316,6 @@
                 <strong>Projects:</strong> Portfolio Website, Resume Builder
               </div>
             </div>
-
           </div>
         </section>
       </div>
@@ -222,8 +326,9 @@
         <p>© 2026 Student Portfolio and Resume Builder</p>
       </div>
     </footer>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    
     <script src="../assets/js/script.js"></script>
   </body>
 </html>

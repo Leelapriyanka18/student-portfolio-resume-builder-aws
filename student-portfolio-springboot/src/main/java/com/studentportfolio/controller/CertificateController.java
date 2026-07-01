@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.studentportfolio.dto.CertificateRequest;
@@ -43,7 +44,12 @@ public class CertificateController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Certificate>> getAllCertificates() {
+    public ResponseEntity<List<Certificate>> getAllCertificates(
+            @RequestParam(required = false) Integer userId) {
+        if (userId != null) {
+            return ResponseEntity.ok(certificateService.getCertificatesByUserId(userId));
+        }
+
         return ResponseEntity.ok(certificateService.getAllCertificates());
     }
 
