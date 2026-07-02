@@ -3,6 +3,7 @@ package com.studentportfolio.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class ContactRequest {
 
@@ -10,12 +11,16 @@ public class ContactRequest {
     private int userId;
 
     @NotBlank(message = "Name is required")
+    @Size(max = 150, message = "Name must be at most 150 characters")
     private String name;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Enter a valid email")
+    @Size(max = 150, message = "Email must be at most 150 characters")
     private String email;
+
     @NotBlank(message = "Subject is required")
+    @Size(max = 200, message = "Subject must be at most 200 characters")
     private String subject;
 
     @NotBlank(message = "Message is required")

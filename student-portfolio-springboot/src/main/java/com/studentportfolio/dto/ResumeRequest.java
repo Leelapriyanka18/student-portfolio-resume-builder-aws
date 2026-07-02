@@ -1,35 +1,68 @@
 package com.studentportfolio.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 public class ResumeRequest {
     @Min(value = 1, message = "User ID is required")
     private int userId;
+
+    @Email(message = "Enter a valid email")
+    @Size(max = 150, message = "Email must be at most 150 characters")
     private String email;
+
+    @Size(max = 30, message = "Phone must be at most 30 characters")
+    @Pattern(regexp = "^(|\\+?[0-9()\\-\\s.]{7,30})$", message = "Enter a valid phone number")
     private String phone;
     private String address;
+
+    @Size(max = 150, message = "Role must be at most 150 characters")
     private String role;
     private String summary;
+
+    @Size(max = 200, message = "College must be at most 200 characters")
     private String college;
+
+    @Size(max = 150, message = "Degree must be at most 150 characters")
     private String degree;
+
+    @Size(max = 150, message = "Branch must be at most 150 characters")
     private String branch;
+
+    @Size(max = 20, message = "Graduation year must be at most 20 characters")
     private String graduationYear;
+
+    @Size(max = 20, message = "CGPA must be at most 20 characters")
     private String cgpa;
     private String skills;
     private String projects;
     private String projectDescription;
     private String certificates;
     private String certificateDetails;
+
+    @Size(max = 255, message = "Languages must be at most 255 characters")
     private String languages;
+
+    @Size(max = 255, message = "Hobbies must be at most 255 characters")
     private String hobbies;
     private String experience;
+
+    @Size(max = 500, message = "GitHub URL must be at most 500 characters")
+    @Pattern(regexp = "^(|(?i:https?)://\\S+)$", message = "Enter a valid GitHub URL")
     private String github;
+
+    @Size(max = 500, message = "LinkedIn URL must be at most 500 characters")
+    @Pattern(regexp = "^(|(?i:https?)://\\S+)$", message = "Enter a valid LinkedIn URL")
     private String linkedin;
 
     @NotBlank(message = "Resume name is required")
+    @Size(max = 200, message = "Resume name must be at most 200 characters")
     private String resumeName;
 
+    @Size(max = 500, message = "File path must be at most 500 characters")
     private String filePath;
 
     public int getUserId() {

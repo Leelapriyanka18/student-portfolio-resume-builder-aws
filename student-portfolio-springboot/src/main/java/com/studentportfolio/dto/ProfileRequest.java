@@ -2,6 +2,8 @@ package com.studentportfolio.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 public class ProfileRequest {
 
@@ -9,15 +11,24 @@ public class ProfileRequest {
     private int userId;
 
     @NotBlank(message = "Headline is required")
+    @Size(max = 255, message = "Headline must be at most 255 characters")
     private String headline;
 
     private String bio;
 
     @NotBlank(message = "Phone is required")
+    @Size(max = 30, message = "Phone must be at most 30 characters")
+    @Pattern(regexp = "^\\+?[0-9()\\-\\s.]{7,30}$", message = "Enter a valid phone number")
     private String phone;
 
     private String address;
+
+    @Size(max = 500, message = "LinkedIn URL must be at most 500 characters")
+    @Pattern(regexp = "^(|(?i:https?)://\\S+)$", message = "Enter a valid LinkedIn URL")
     private String linkedinUrl;
+
+    @Size(max = 500, message = "GitHub URL must be at most 500 characters")
+    @Pattern(regexp = "^(|(?i:https?)://\\S+)$", message = "Enter a valid GitHub URL")
     private String githubUrl;
 
     public int getUserId() {
