@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.studentportfolio.dto.LoginRequest;
 import com.studentportfolio.dto.LoginResponse;
 import com.studentportfolio.dto.RegisterRequest;
+import com.studentportfolio.security.JwtUtil;
 import com.studentportfolio.service.UserService;
 
 import jakarta.validation.Valid;
@@ -22,9 +23,11 @@ import jakarta.validation.Valid;
 public class AuthController {
 
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/register")
@@ -44,7 +47,12 @@ public class AuthController {
         LoginResponse loginResponse = userService.login(request);
 
         if (loginResponse != null) {
-            return ResponseEntity.ok(loginResponse);
+            return ResponseEntity.ok(Map.of(
+                    "token", jwtUtil.generateToken(loginResponse.getEmail()),
+                    "userId", loginResponse.getUserId(),
+                    "fullName", loginResponse.getFullName(),
+                    "email", loginResponse.getEmail()
+            ));
         }
 
         return ResponseEntity
