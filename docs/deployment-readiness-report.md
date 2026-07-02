@@ -1,13 +1,13 @@
 # Deployment Readiness Report
 
-Date: 2026-07-01
+Date: 2026-07-02
 
 ## Current Architecture
 
 Amazon S3 static website frontend
 |
 v
-Amazon EC2 Spring Boot backend on current auto-assigned Public IPv4
+Amazon EC2 Spring Boot backend on Elastic IP
 |
 v
 Amazon RDS MySQL
@@ -17,7 +17,7 @@ Amazon RDS MySQL
 Current backend base URL:
 
 ```text
-http://52.91.250.168:8080
+http://34.199.78.202:8080
 ```
 
 Frontend switch point:
@@ -26,7 +26,7 @@ Frontend switch point:
 frontend/assets/js/config.js
 ```
 
-When Elastic IP access becomes available, update only `apiBase` in this file.
+Elastic IP is already assigned. Do not allocate another Elastic IP.
 
 ## Completed Code Stabilization
 
@@ -35,10 +35,12 @@ When Elastic IP access becomes available, update only `apiBase` in this file.
 - Updated active frontend API calls to use `window.API_BASE`.
 - Fixed login session flow so the backend returns `userId`, `email`, and `fullName`.
 - Updated frontend login to call `Auth.setSession(...)`.
-- Fixed certificate save flow to use `POST /api/certificate`.
+- Fixed certificate save flow to use `POST /api/certificates`.
 - Added missing `GET /api/profile?userId=...`.
 - Removed temporary hardcoded `userId = 1` from active profile, certificate, and resume save logic.
 - Added user-specific reads for projects, certificates, and resumes.
+- Bound Spring Boot to `0.0.0.0:8080` for EC2 network access.
+- Added global CORS for the S3 static website and local `127.0.0.1:5500`.
 - Fixed invalid validation annotation on project `userId`.
 
 ## Verification
@@ -53,15 +55,18 @@ When Elastic IP access becomes available, update only `apiBase` in this file.
 Live checks from this workstation:
 
 ```text
-GET http://52.91.250.168:8080/api/project
-TCP 52.91.250.168:8080
+GET http://34.199.78.202:8080/
+GET http://34.199.78.202:8080/api/auth/login
 ```
 
-Result: Reachable from this workstation on 2026-07-01.
+Expected result:
+
+- `/` returns Whitelabel 404, confirming Spring Boot is running.
+- `GET /api/auth/login` returns 405 Method Not Allowed, confirming the endpoint exists and expects POST.
 
 If this changes later, likely causes to check in AWS Academy:
 
-- EC2 instance stopped or restarted and public IPv4 changed.
+- EC2 instance stopped or Spring Boot service stopped.
 - Spring Boot service not running on EC2.
 - Security Group does not allow inbound TCP 8080.
 - EC2 operating system firewall blocks port 8080.
@@ -70,17 +75,18 @@ If this changes later, likely causes to check in AWS Academy:
 
 ## CORS
 
-The active backend controllers allow the S3 static website origin:
+The active backend global CORS configuration allows:
 
 ```text
 http://student-portfolio-priyanka-4501.s3-website-us-east-1.amazonaws.com
+http://127.0.0.1:5500
 ```
 
-Because the backend is currently unreachable on port 8080, live CORS behavior could not be verified end to end.
+Do not use wildcard CORS for this deployment.
 
 ## Remaining AWS Tasks
 
-- Confirm the current EC2 Public IPv4 is still `52.91.250.168`.
+- Confirm Elastic IP `34.199.78.202` is still associated with the backend EC2 instance.
 - Confirm Spring Boot is running on EC2.
 - Confirm inbound Security Group rule allows TCP 8080 from the required source.
 - Confirm EC2 can connect to Amazon RDS MySQL.

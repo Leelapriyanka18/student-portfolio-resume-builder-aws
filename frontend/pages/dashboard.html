@@ -242,8 +242,8 @@
         Object.values(countEls).forEach((el) => (el.innerText = "⏳ Loading…"));
 
         const [projectCount, certificateCount, resumeCount, contactCount] = await Promise.all([
-          fetchCount("/api/project", "Projects"),
-          fetchCount("/api/certificate", "Certificates"),
+          fetchCount("/api/projects", "Projects"),
+          fetchCount("/api/certificates", "Certificates"),
           fetchCount("/api/resume", "Resumes"),
           fetchCount("/api/contact", "Contacts"),
         ]);

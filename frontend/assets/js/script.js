@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ── API Base ──
   // To use a real backend, set this before this script tag in index.html:
   // <script>window.APP_CONFIG = { apiBase: "https://your-api.example.com" };</script>
-  const API_BASE = window.API_BASE;
+  const API_BASE = window.getApiBase ? window.getApiBase() : window.API_BASE;
   // ── XSS-safe escape helper ──
   const esc = (str) =>
     String(str ?? "").replace(/[&<>"']/g, (c) => ({
@@ -257,8 +257,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         const msg = await res.text();
         showToast(msg, res.ok ? "success" : "error");
-      } catch {
-        showToast("Unable to save resume. Check your connection.", "error");
+      } catch (error) {
+        showToast(
+          window.getNetworkErrorMessage
+            ? window.getNetworkErrorMessage(error)
+            : "Unable to save resume. Check your connection.",
+          "error"
+        );
       }
     });
   }

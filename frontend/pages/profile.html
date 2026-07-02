@@ -40,7 +40,7 @@
         <div>
           <span class="tag">Student Portfolio</span>
           <h1>About <span id="profileNameHeading">Student</span></h1>
-          <p class="subtitle" id="profileSummary">⏳ Loading profile...</p>
+          <p class="subtitle" id="profileBio">Loading profile...</p>
           <div class="hero-actions">
             <a href="projects.html" class="btn primary">View Projects</a>
             <a href="certificates.html" class="btn secondary">See Certificates</a>
@@ -48,9 +48,9 @@
         </div>
         <aside class="profile-card">
           <div class="profile-circle" id="profileInitials">--</div>
-          <h2 id="profileRole">Loading...</h2>
-          <p id="profileCollege">Loading...</p>
-          <p class="subtitle" id="profileInterestsShort">Loading...</p>
+          <h2 id="profileHeadline">Loading...</h2>
+          <p id="profileEmailShort">Loading...</p>
+          <p class="subtitle" id="profilePhoneShort">Loading...</p>
           <div class="hero-actions" style="justify-content:center; gap:12px; margin-top:18px;" id="profileSocialLinks">
             <!-- GitHub / LinkedIn links populated dynamically -->
           </div>
@@ -59,19 +59,23 @@
 
       <section class="section">
         <div class="card">
-          <h2>Profile Summary</h2>
+          <h2>Profile Details</h2>
           <div class="about-grid" id="profileInfoGrid">
             <div class="info-card">
-              <h3>Education</h3>
-              <p id="profileEducation">Loading...</p>
+              <h3>Headline</h3>
+              <p id="profileHeadlineDetail">Loading...</p>
             </div>
             <div class="info-card">
-              <h3>Interests</h3>
-              <p id="profileInterests">Loading...</p>
+              <h3>Bio</h3>
+              <p id="profileBioDetail">Loading...</p>
             </div>
             <div class="info-card">
               <h3>Contact</h3>
-              <p id="profileEmail">Loading...</p>
+              <p id="profileContact">Loading...</p>
+            </div>
+            <div class="info-card">
+              <h3>Address</h3>
+              <p id="profileAddress">Loading...</p>
             </div>
           </div>
         </div>
@@ -124,8 +128,7 @@
     }
 
     // Reads the first matching field from a list of possible key names.
-    // Protects the page against minor backend DTO naming differences
-    // (e.g. "name" vs "fullName", "college" vs "collegeName").
+    // Used only for project data, which may come from a different model shape.
     function pick(obj, keys) {
       for (const key of keys) {
         if (obj && obj[key] !== undefined && obj[key] !== null && obj[key] !== "") {
@@ -174,8 +177,8 @@
 
     function renderSocialLinks(profile) {
       const container = document.getElementById("profileSocialLinks");
-      const github = pick(profile, ["github", "githubLink", "githubUrl", "githubProfile"]);
-      const linkedin = pick(profile, ["linkedin", "linkedinLink", "linkedinUrl", "linkedinProfile"]);
+      const github = profile.githubUrl || "";
+      const linkedin = profile.linkedinUrl || "";
       let html = "";
 
       if (isValidUrl(github)) {
@@ -224,40 +227,44 @@
     }
 
     function renderProfile(profile) {
-      const name = safeText(pick(profile, ["name", "fullName", "studentName"]), "Student");
-      const role = safeText(pick(profile, ["role", "title", "jobTitle"]), "Student");
-      const college = safeText(pick(profile, ["college", "collegeName", "institution"]), "College not specified");
-      const education = safeText(pick(profile, ["education", "degree", "qualification"]), "Education details not available.");
-      const summary = safeText(pick(profile, ["summary", "bio", "about"]), "No summary provided yet.");
-      const interests = safeText(pick(profile, ["interests", "hobbies"]), "No interests listed.");
-      const rawEmail = pick(profile, ["email", "emailAddress"]);
+      const sessionUser = Auth.getUser ? Auth.getUser() : {};
+      const name = safeText(sessionUser.userName, "Student");
+      const headline = safeText(profile.headline, "Headline not added yet.");
+      const bio = safeText(profile.bio, "Bio not added yet.");
+      const phone = safeText(profile.phone, "Phone not added yet.");
+      const address = safeText(profile.address, "Address not added yet.");
+      const rawEmail = sessionUser.userEmail;
       const email = isValidEmail(rawEmail) ? rawEmail : "Not provided";
 
       document.getElementById("profileNameHeading").textContent = name;
-      document.getElementById("profileSummary").textContent = summary;
+      document.getElementById("profileBio").textContent = bio;
       document.getElementById("profileInitials").textContent = getInitials(name);
-      document.getElementById("profileRole").textContent = role;
-      document.getElementById("profileCollege").textContent = college;
-      document.getElementById("profileInterestsShort").textContent = interests;
-      document.getElementById("profileEducation").textContent = education;
-      document.getElementById("profileInterests").textContent = interests;
-      document.getElementById("profileEmail").textContent = email;
+      document.getElementById("profileHeadline").textContent = headline;
+      document.getElementById("profileEmailShort").textContent = email;
+      document.getElementById("profilePhoneShort").textContent = phone;
+      document.getElementById("profileHeadlineDetail").textContent = headline;
+      document.getElementById("profileBioDetail").textContent = bio;
+      document.getElementById("profileContact").textContent = `${email} | ${phone}`;
+      document.getElementById("profileAddress").textContent = address;
 
       renderSocialLinks(profile);
-
-      const projects = pick(profile, ["projects"]);
-      renderProjects(Array.isArray(projects) ? projects : []);
     }
 
     function showProfileLoadError(message) {
-      document.getElementById("profileNameHeading").textContent = "Unavailable";
-      document.getElementById("profileSummary").textContent = message;
-      document.getElementById("profileRole").textContent = "--";
-      document.getElementById("profileCollege").textContent = "--";
-      document.getElementById("profileInterestsShort").textContent = "--";
-      document.getElementById("profileEducation").textContent = "--";
-      document.getElementById("profileInterests").textContent = "--";
-      document.getElementById("profileEmail").textContent = "--";
+      const sessionUser = Auth.getUser ? Auth.getUser() : {};
+      const name = safeText(sessionUser.userName, "Student");
+      const email = isValidEmail(sessionUser.userEmail) ? sessionUser.userEmail : "Not provided";
+
+      document.getElementById("profileNameHeading").textContent = name;
+      document.getElementById("profileBio").textContent = message;
+      document.getElementById("profileInitials").textContent = getInitials(name);
+      document.getElementById("profileHeadline").textContent = "Profile not completed";
+      document.getElementById("profileEmailShort").textContent = email;
+      document.getElementById("profilePhoneShort").textContent = "Phone not added yet.";
+      document.getElementById("profileHeadlineDetail").textContent = "Headline not added yet.";
+      document.getElementById("profileBioDetail").textContent = message;
+      document.getElementById("profileContact").textContent = `${email} | Phone not added yet.`;
+      document.getElementById("profileAddress").textContent = "Address not added yet.";
       document.getElementById("profileSocialLinks").innerHTML = "";
       document.getElementById("profileProjectGrid").innerHTML =
         "<p>Unable to load projects</p>";
@@ -286,8 +293,7 @@
         }
 
         if (response.status === 404) {
-          showToast("Profile not found. Please complete your profile.", "error");
-          showProfileLoadError("Profile not found. Please complete your profile.");
+          showProfileLoadError("Complete your profile to showcase your bio and contact details.");
           return;
         }
 
@@ -335,8 +341,32 @@
       }
     }
 
+    async function loadProjects() {
+      const user = getSessionUserOrRedirect();
+      if (!user) return;
+
+      try {
+        const response = await fetchWithTimeout(
+          `${window.API_BASE}/api/projects?userId=${encodeURIComponent(user.userId)}`,
+          { method: "GET" }
+        );
+
+        if (!response.ok) {
+          throw new Error("SERVER_" + response.status);
+        }
+
+        const projects = await response.json();
+        renderProjects(Array.isArray(projects) ? projects : []);
+      } catch (error) {
+        console.error(error);
+        document.getElementById("profileProjectGrid").innerHTML =
+          "<p>Unable to load projects</p>";
+      }
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       loadProfile();
+      loadProjects();
     });
   </script>
 </body>

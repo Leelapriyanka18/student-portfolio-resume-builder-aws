@@ -86,7 +86,7 @@
 
       try{
 
-       const baseUrl = window.API_BASE;
+       const baseUrl = window.getApiBase();
 
 const response = await fetch(
     `${baseUrl}/api/auth/register`,
@@ -108,7 +108,7 @@ const response = await fetch(
         }
 
       }catch(err){
-        alert("Unable to connect to server.");
+        alert(window.getNetworkErrorMessage ? window.getNetworkErrorMessage(err) : "Unable to connect to server.");
       }
 
     });

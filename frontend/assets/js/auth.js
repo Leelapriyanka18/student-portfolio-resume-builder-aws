@@ -10,6 +10,21 @@ if (!window.API_BASE) {
   console.warn("Backend API base URL is not configured. Update frontend/assets/js/config.js.");
 }
 
+window.getApiBase = function () {
+  const apiBase = ((window.APP_CONFIG && window.APP_CONFIG.apiBase) || window.API_BASE || "").replace(/\/$/, "");
+  if (!apiBase) {
+    throw new Error("API_BASE_NOT_CONFIGURED");
+  }
+  return apiBase;
+};
+
+window.getNetworkErrorMessage = function (error) {
+  if (error && error.message === "API_BASE_NOT_CONFIGURED") {
+    return "Backend API URL is not configured. Please redeploy frontend/assets/js/config.js.";
+  }
+  return `Unable to connect to backend at ${window.API_BASE || "the configured API URL"}. Confirm the EC2 app is running, listening on 0.0.0.0:8080, and the security group allows TCP 8080.`;
+};
+
 // ── Toast (shared implementation; script.js reuses this if present) ──
 window.showToast = window.showToast || function (msg, type = "error") {
   let container = document.getElementById("toast-container");

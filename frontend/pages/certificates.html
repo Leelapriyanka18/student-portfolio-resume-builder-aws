@@ -232,7 +232,7 @@
 
         try {
           const response = await fetchWithTimeout(
-            `${baseUrl}/api/certificate`,
+            `${baseUrl}/api/certificates`,
             {
               method: "POST",
               headers: {
@@ -310,7 +310,7 @@
 
         try {
           const response = await fetchWithTimeout(
-            `${baseUrl}/api/certificate?userId=${encodeURIComponent(user.userId)}`,
+            `${baseUrl}/api/certificates?userId=${encodeURIComponent(user.userId)}`,
             { method: "GET" },
           );
 

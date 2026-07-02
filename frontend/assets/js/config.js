@@ -1,3 +1,3 @@
 window.APP_CONFIG = {
-    apiBase: "http://18.209.98.4:8080"
+    apiBase: "http://34.199.78.202:8080"
 };

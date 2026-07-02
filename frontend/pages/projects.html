@@ -6,8 +6,8 @@
     <title>Projects | Student Portfolio</title>
     <link rel="stylesheet" href="../assets/css/style.css" />
 
-    <script src="../assets/js/auth.js"></script>
     <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/auth.js"></script>
 
     <script>
       if (!Auth.requireAuth("login.html")) {
@@ -214,7 +214,7 @@ const saveProjectBtn = document.getElementById("saveProjectBtn");
 
         try {
           const response = await fetchWithTimeout(
-            `${baseUrl}/api/project`,
+            `${baseUrl}/api/projects`,
             {
               method: "POST",
               headers: {
@@ -280,7 +280,7 @@ const saveProjectBtn = document.getElementById("saveProjectBtn");
 
         try {
           const response = await fetchWithTimeout(
-           `${baseUrl}/api/project?userId=${encodeURIComponent(user.userId)}`,
+           `${baseUrl}/api/projects?userId=${encodeURIComponent(user.userId)}`,
             { method: "GET" }
           );
 

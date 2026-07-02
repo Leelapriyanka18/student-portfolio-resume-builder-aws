@@ -115,7 +115,7 @@ document.getElementById("loginForm")
 
     try{
 
-       const baseUrl = window.API_BASE;
+       const baseUrl = window.getApiBase();
 
 const response = await fetch(
     `${baseUrl}/api/auth/login`,
@@ -149,7 +149,7 @@ const response = await fetch(
 
     }catch(error){
 
-        alert("Unable to connect to server.");
+        alert(window.getNetworkErrorMessage ? window.getNetworkErrorMessage(error) : "Unable to connect to server.");
 
     }
 

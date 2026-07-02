@@ -180,27 +180,31 @@
     function renderSocialLinks(profile) {
       let html = "";
 
-      if (isValidUrl(profile.github)) {
-        html += `<a href="${escapeHTML(profile.github)}" class="btn secondary" target="_blank" rel="noopener noreferrer">GitHub</a>`;
+      const githubUrl = profile.githubUrl || profile.github || "";
+      const linkedinUrl = profile.linkedinUrl || profile.linkedin || "";
+
+      if (isValidUrl(githubUrl)) {
+        html += `<a href="${escapeHTML(githubUrl)}" class="btn secondary" target="_blank" rel="noopener noreferrer">GitHub</a>`;
       }
 
-      if (isValidUrl(profile.linkedin)) {
-        html += `<a href="${escapeHTML(profile.linkedin)}" class="btn secondary" target="_blank" rel="noopener noreferrer">LinkedIn</a>`;
+      if (isValidUrl(linkedinUrl)) {
+        html += `<a href="${escapeHTML(linkedinUrl)}" class="btn secondary" target="_blank" rel="noopener noreferrer">LinkedIn</a>`;
       }
 
       els.social.innerHTML = html || FALLBACKS.social;
     }
 
     function renderProfile(profile) {
-      const name = (profile.name || "").trim();
+      const user = Auth.getUser ? Auth.getUser() : {};
+      const name = (profile.name || profile.fullName || user.userName || "").trim();
 
       els.tag.textContent = (profile.headline || "").trim() || FALLBACKS.tag;
       els.name.textContent = name || FALLBACKS.name;
       els.bio.textContent = (profile.bio || "").trim() || FALLBACKS.bio;
       els.initials.textContent = name ? getInitials(name) : FALLBACKS.initials;
-      els.role.textContent = (profile.role || "").trim() || FALLBACKS.role;
+      els.role.textContent = (profile.role || profile.headline || "").trim() || FALLBACKS.role;
       els.skills.textContent = (profile.skills || "").trim() || FALLBACKS.skills;
-      els.location.textContent = (profile.location || "").trim() || FALLBACKS.location;
+      els.location.textContent = (profile.location || profile.address || "").trim() || FALLBACKS.location;
 
       renderSocialLinks(profile);
     }

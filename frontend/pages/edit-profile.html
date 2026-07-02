@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit Profile</title>
   <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script>
+    if (!Auth.requireAuth("login.html")) {
+      document.write("");
+    }
+  </script>
 </head>
 
 <body>
@@ -69,12 +76,62 @@ Save Profile
 
 <script>
 
+// Load the current user's saved profile once when the edit page opens.
+// A 404 is normal for first-time users, so it leaves the form blank silently.
+async function loadExistingProfile() {
+const user = Auth.getUser();
+if (!user || !user.userId) {
+  return;
+}
+
+try {
+  const response = await fetch(
+    window.API_BASE + "/api/profile?userId=" + encodeURIComponent(user.userId),
+    {
+      method: "GET"
+    }
+  );
+
+  if (response.status === 404) {
+    return;
+  }
+
+  if (!response.ok) {
+    showToast("Unable to load your saved profile. Please try again later.", "error");
+    return;
+  }
+
+  const profile = await response.json();
+
+  document.getElementById("headline").value = profile.headline || "";
+  document.getElementById("bio").value = profile.bio || "";
+  document.getElementById("phone").value = profile.phone || "";
+  document.getElementById("address").value = profile.address || "";
+  document.getElementById("linkedin").value = profile.linkedinUrl || "";
+  document.getElementById("github").value = profile.githubUrl || "";
+} catch (error) {
+  console.error(error);
+  showToast("Unable to connect to server while loading your profile.", "error");
+}
+}
+
+document.addEventListener("DOMContentLoaded", loadExistingProfile);
+
 document.getElementById("profileForm")
 .addEventListener("submit", async function(e){
 
 e.preventDefault();
 
+const user = Auth.getUser();
+if (!user || !user.userId) {
+  showToast("Session expired. Please log in again.", "error");
+  Auth.logout("login.html");
+  return;
+}
+
 const data = {
+
+userId: Number(user.userId),
 
 headline:
 document.getElementById("headline").value,
@@ -96,9 +153,10 @@ document.getElementById("github").value
 
 };
 
-const response = await fetch(
-window.APP_CONFIG.apiBase + "/api/profile",
-{
+try {
+  const response = await fetch(
+  window.API_BASE + "/api/profile",
+  {
 
 method:"POST",
 
@@ -108,17 +166,22 @@ headers:{
 
 body:JSON.stringify(data)
 
-}
+  }
 
-);
+  );
 
 const result = await response.text();
 
-alert(result);
+showToast(result || (response.ok ? "Profile saved successfully." : "Unable to save profile."), response.ok ? "success" : "error");
+} catch (error) {
+  console.error(error);
+  showToast("Unable to connect to server. Check your connection.", "error");
+}
 
 });
 
 </script>
+<script src="../assets/js/script.js"></script>
 
 </body>
 </html>
