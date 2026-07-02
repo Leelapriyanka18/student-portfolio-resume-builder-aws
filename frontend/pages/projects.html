@@ -82,7 +82,7 @@
             <form id="projectForm" autocomplete="off">
               <div class="form-group">
                 <label for="title">Project Title</label>
-                <input type="text" id="title" required />
+                <input type="text" id="title" maxlength="200" required />
               </div>
 
               <div class="form-group">
@@ -92,7 +92,12 @@
 
               <div class="form-group">
                 <label for="githubLink">GitHub Link</label>
-                <input type="url" id="githubLink" placeholder="https://github.com/yourusername/repo" />
+                <input
+                  type="url"
+                  id="githubLink"
+                  maxlength="500"
+                  placeholder="https://github.com/yourusername/repo"
+                />
               </div>
 
               <button type="submit" class="btn primary" id="saveProjectBtn">
@@ -236,7 +241,17 @@ const saveProjectBtn = document.getElementById("saveProjectBtn");
           }
 
           if (!response.ok) {
-            throw new Error("SERVER_" + response.status);
+            let message = "";
+            try {
+              message = await response.text();
+            } catch (readErr) {
+              message = "";
+            }
+            throw new Error(
+              response.status === 400
+                ? "VALIDATION_" + (message || "Invalid project details.")
+                : "SERVER_" + response.status
+            );
           }
 
           let result;
@@ -259,6 +274,8 @@ const saveProjectBtn = document.getElementById("saveProjectBtn");
             showToast("Request timed out. Please try again.", "error");
           } else if (error.message === "NETWORK") {
             showToast("Network error. Check your connection.", "error");
+          } else if (error.message && error.message.startsWith("VALIDATION_")) {
+            showToast(error.message.replace("VALIDATION_", ""), "error");
           } else if (error.message && error.message.startsWith("SERVER_")) {
             showToast("Server error. Please try again later.", "error");
           } else if (error.message === "INVALID_RESPONSE") {
