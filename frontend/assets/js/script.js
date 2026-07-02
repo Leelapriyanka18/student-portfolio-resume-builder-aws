@@ -216,8 +216,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!name)  { showToast("Please enter your full name.");  return; }
       if (!email) { showToast("Please enter your email.");      return; }
       if (!email.includes("@")) { showToast("Enter a valid email address."); return; }
-      if (phone && !/^\+?[\d\s\-]{7,15}$/.test(phone)) {
-        showToast("Enter a valid phone number (7–15 digits).");
+      if (phone && !/^\+?[0-9()\-\s.]{7,30}$/.test(phone)) {
+        showToast("Enter a valid phone number.");
         return;
       }
 

@@ -86,17 +86,17 @@
             <form id="certificateForm" autocomplete="off">
               <div class="form-group">
                 <label for="certificateName">Certificate Name</label>
-                <input type="text" id="certificateName" required />
+                <input type="text" id="certificateName" maxlength="200" required />
               </div>
 
               <div class="form-group">
                 <label for="issuer">Issuing Organization</label>
-                <input type="text" id="issuer" required />
+                <input type="text" id="issuer" maxlength="200" required />
               </div>
 
               <div class="form-group">
                 <label for="issueDate">Issue Date</label>
-                <input type="date" id="issueDate" required />
+                <input type="date" id="issueDate" />
               </div>
 
               <div class="form-group">
@@ -104,6 +104,7 @@
                 <input
                   type="url"
                   id="certificateUrl"
+                  maxlength="500"
                   placeholder="https://..."
                 />
               </div>
@@ -208,11 +209,6 @@
           return;
         }
 
-        if (!issueDate) {
-          showToast("Issue date is required.", "error");
-          return;
-        }
-
         if (certificateUrl && !isValidCertificateUrl(certificateUrl)) {
           showToast("Please enter a valid certificate URL.", "error");
           return;
@@ -258,10 +254,13 @@
           }
 
           if (response.status === 400) {
-            showToast(
-              "Invalid certificate data. Please check your entries.",
-              "error",
-            );
+            let message = "";
+            try {
+              message = await response.text();
+            } catch (readErr) {
+              message = "";
+            }
+            showToast(message || "Invalid certificate data. Please check your entries.", "error");
             return;
           }
 
