@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,9 +18,6 @@ import com.studentportfolio.service.UserService;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = {
-    "http://student-portfolio-priyanka-4501.s3-website-us-east-1.amazonaws.com"
-})
 @RequestMapping("/api/auth")
 public class AuthController {
 
