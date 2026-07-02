@@ -54,7 +54,9 @@ window.showToast = window.showToast || function (msg, type = "error") {
 // ── Session helpers ──
 const Auth = {
   isLoggedIn() {
-    return localStorage.getItem("loggedIn") === "true" && !!localStorage.getItem("userId");
+    return localStorage.getItem("loggedIn") === "true"
+      && !!localStorage.getItem("userId")
+      && !!localStorage.getItem("jwtToken");
   },
   getUser() {
     return {
@@ -63,17 +65,44 @@ const Auth = {
       userName:  localStorage.getItem("userName"),
     };
   },
-  setSession({ userId, email, fullName }) {
+  getToken() {
+    return localStorage.getItem("jwtToken");
+  },
+  setSession({ token, userId, email, fullName }) {
     localStorage.setItem("loggedIn", "true");
+    localStorage.setItem("jwtToken", token || "");
     localStorage.setItem("userId", String(userId));
     localStorage.setItem("userEmail", email || "");
     localStorage.setItem("userName", fullName || "");
   },
-  logout(redirectTo = "login.html") {
+  getAuthHeaders(headers = {}) {
+    const token = this.getToken();
+    return {
+      ...headers,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+  },
+  async authFetch(url, options = {}) {
+    const response = await fetch(url, {
+      ...options,
+      headers: this.getAuthHeaders(options.headers || {}),
+    });
+
+    if (response.status === 401) {
+      this.logout("login.html", "Your session has expired. Please log in again.");
+    }
+
+    return response;
+  },
+  logout(redirectTo = "login.html", message = "") {
     localStorage.removeItem("loggedIn");
+    localStorage.removeItem("jwtToken");
     localStorage.removeItem("userId");
     localStorage.removeItem("userEmail");
     localStorage.removeItem("userName");
+    if (message) {
+      localStorage.setItem("sessionMessage", message);
+    }
     window.location.href = redirectTo;
   },
   /** Call at the top of any protected page. Redirects to login if not authenticated. */
@@ -105,4 +134,11 @@ const Auth = {
 
 window.Auth = Auth;
 
-document.addEventListener("DOMContentLoaded", () => Auth.refreshNav());
+document.addEventListener("DOMContentLoaded", () => {
+  const message = localStorage.getItem("sessionMessage");
+  if (message) {
+    localStorage.removeItem("sessionMessage");
+    showToast(message, "error");
+  }
+  Auth.refreshNav();
+});

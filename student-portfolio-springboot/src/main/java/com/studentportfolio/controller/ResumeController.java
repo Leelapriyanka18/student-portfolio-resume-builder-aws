@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.studentportfolio.dto.ResumeRequest;
 import com.studentportfolio.model.Resume;
+import com.studentportfolio.security.AuthenticatedUserService;
 import com.studentportfolio.service.ResumeService;
 
 import jakarta.validation.Valid;
@@ -23,15 +24,18 @@ import jakarta.validation.Valid;
 public class ResumeController {
 
     private final ResumeService resumeService;
+    private final AuthenticatedUserService authenticatedUserService;
 
-    public ResumeController(ResumeService resumeService) {
+    public ResumeController(ResumeService resumeService, AuthenticatedUserService authenticatedUserService) {
         this.resumeService = resumeService;
+        this.authenticatedUserService = authenticatedUserService;
     }
 
     @PostMapping
     public ResponseEntity<String> saveResume(
             @Valid @RequestBody ResumeRequest request) {
 
+        request.setUserId(authenticatedUserService.getAuthenticatedUserId());
         resumeService.saveResume(request);
 
         return ResponseEntity
@@ -42,11 +46,8 @@ public class ResumeController {
     @GetMapping
     public ResponseEntity<List<Resume>> getAllResumes(
             @RequestParam(required = false) Integer userId) {
-        if (userId != null) {
-            return ResponseEntity.ok(resumeService.getResumesByUserId(userId));
-        }
-
-        return ResponseEntity.ok(resumeService.getAllResumes());
+        return ResponseEntity.ok(resumeService.getResumesByUserId(
+                authenticatedUserService.getAuthenticatedUserId()));
     }
 
     @ExceptionHandler({

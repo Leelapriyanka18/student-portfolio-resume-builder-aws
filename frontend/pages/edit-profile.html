@@ -85,7 +85,7 @@ if (!user || !user.userId) {
 }
 
 try {
-  const response = await fetch(
+  const response = await Auth.authFetch(
     window.API_BASE + "/api/profile?userId=" + encodeURIComponent(user.userId),
     {
       method: "GET"
@@ -154,7 +154,7 @@ document.getElementById("github").value
 };
 
 try {
-  const response = await fetch(
+  const response = await Auth.authFetch(
   window.API_BASE + "/api/profile",
   {
 

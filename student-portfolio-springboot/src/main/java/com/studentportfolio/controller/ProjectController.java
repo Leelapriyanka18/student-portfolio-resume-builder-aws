@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.studentportfolio.dto.ProjectRequest;
 import com.studentportfolio.model.Project;
+import com.studentportfolio.security.AuthenticatedUserService;
 import com.studentportfolio.service.ProjectService;
 
 import jakarta.validation.Valid;
@@ -23,15 +24,18 @@ import jakarta.validation.Valid;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final AuthenticatedUserService authenticatedUserService;
 
-    public ProjectController(ProjectService projectService) {
+    public ProjectController(ProjectService projectService, AuthenticatedUserService authenticatedUserService) {
         this.projectService = projectService;
+        this.authenticatedUserService = authenticatedUserService;
     }
 
     @PostMapping
     public ResponseEntity<String> saveProject(
             @Valid @RequestBody ProjectRequest request) {
 
+        request.setUserId(authenticatedUserService.getAuthenticatedUserId());
         projectService.saveProject(request);
 
         return ResponseEntity
@@ -42,11 +46,8 @@ public class ProjectController {
     @GetMapping
     public ResponseEntity<List<Project>> getAllProjects(
             @RequestParam(required = false) Integer userId) {
-        if (userId != null) {
-            return ResponseEntity.ok(projectService.getProjectsByUserId(userId));
-        }
-
-        return ResponseEntity.ok(projectService.getAllProjects());
+        return ResponseEntity.ok(projectService.getProjectsByUserId(
+                authenticatedUserService.getAuthenticatedUserId()));
     }
 
     @ExceptionHandler({

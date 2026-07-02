@@ -164,7 +164,7 @@
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), timeout);
       try {
-        const response = await fetch(url, {
+        const response = await Auth.authFetch(url, {
           ...options,
           signal: controller.signal,
         });

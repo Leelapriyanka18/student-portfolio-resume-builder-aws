@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.studentportfolio.dto.ContactRequest;
 import com.studentportfolio.model.Contact;
+import com.studentportfolio.security.AuthenticatedUserService;
 import com.studentportfolio.service.ContactService;
 
 import jakarta.validation.Valid;
@@ -23,15 +24,18 @@ import jakarta.validation.Valid;
 public class ContactController {
 
     private final ContactService contactService;
+    private final AuthenticatedUserService authenticatedUserService;
 
-    public ContactController(ContactService contactService) {
+    public ContactController(ContactService contactService, AuthenticatedUserService authenticatedUserService) {
         this.contactService = contactService;
+        this.authenticatedUserService = authenticatedUserService;
     }
 
     @PostMapping
     public ResponseEntity<String> saveContact(
             @Valid @RequestBody ContactRequest request) {
 
+        request.setUserId(authenticatedUserService.getAuthenticatedUserId());
         contactService.saveContact(request);
 
         return ResponseEntity
@@ -42,11 +46,8 @@ public class ContactController {
     @GetMapping
     public ResponseEntity<List<Contact>> getAllContacts(
             @RequestParam(required = false) Integer userId) {
-        if (userId != null) {
-            return ResponseEntity.ok(contactService.getContactsByUserId(userId));
-        }
-
-        return ResponseEntity.ok(contactService.getAllContacts());
+        return ResponseEntity.ok(contactService.getContactsByUserId(
+                authenticatedUserService.getAuthenticatedUserId()));
     }
 
     @ExceptionHandler({

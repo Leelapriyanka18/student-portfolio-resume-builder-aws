@@ -178,17 +178,12 @@
         const timeoutId = setTimeout(() => controller.abort(), 10000);
 
         try {
-          const res = await fetch(
+          const res = await Auth.authFetch(
             `${window.API_BASE}${endpoint}?userId=${encodeURIComponent(user.userId)}`,
             { signal: controller.signal }
           );
           clearTimeout(timeoutId);
 
-          if (res.status === 401) {
-            showToast(`Session expired while loading ${label}. Please log in again.`, "error");
-            Auth.logout("login.html");
-            return null;
-          }
           if (res.status === 403) {
             showToast(`You don't have access to ${label}.`, "error");
             return null;

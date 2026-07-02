@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       try {
-        const res = await fetch(`${API_BASE}/api/resume`, {
+        const res = await Auth.authFetch(`${API_BASE}/api/resume`, {
           method:  "POST",
           headers: { "Content-Type": "application/json" },
           body:    JSON.stringify(payload),

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.studentportfolio.dto.CertificateRequest;
 import com.studentportfolio.model.Certificate;
+import com.studentportfolio.security.AuthenticatedUserService;
 import com.studentportfolio.service.CertificateService;
 
 import jakarta.validation.Valid;
@@ -23,15 +24,20 @@ import jakarta.validation.Valid;
 public class CertificateController {
 
     private final CertificateService certificateService;
+    private final AuthenticatedUserService authenticatedUserService;
 
-    public CertificateController(CertificateService certificateService) {
+    public CertificateController(
+            CertificateService certificateService,
+            AuthenticatedUserService authenticatedUserService) {
         this.certificateService = certificateService;
+        this.authenticatedUserService = authenticatedUserService;
     }
 
     @PostMapping
     public ResponseEntity<String> saveCertificate(
             @Valid @RequestBody CertificateRequest request) {
 
+        request.setUserId(authenticatedUserService.getAuthenticatedUserId());
         certificateService.saveCertificate(request);
 
         return ResponseEntity
@@ -42,11 +48,8 @@ public class CertificateController {
     @GetMapping
     public ResponseEntity<List<Certificate>> getAllCertificates(
             @RequestParam(required = false) Integer userId) {
-        if (userId != null) {
-            return ResponseEntity.ok(certificateService.getCertificatesByUserId(userId));
-        }
-
-        return ResponseEntity.ok(certificateService.getAllCertificates());
+        return ResponseEntity.ok(certificateService.getCertificatesByUserId(
+                authenticatedUserService.getAuthenticatedUserId()));
     }
 
     @ExceptionHandler({

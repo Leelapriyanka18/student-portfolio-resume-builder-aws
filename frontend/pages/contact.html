@@ -157,7 +157,7 @@
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), timeout);
         try {
-          const response = await fetch(url, {
+          const response = await Auth.authFetch(url, {
             ...options,
             signal: controller.signal,
           });
@@ -226,12 +226,6 @@
               body: JSON.stringify(data),
             }
           );
-
-          if (response.status === 401) {
-            showToast("Session expired. Please log in again.", "error");
-            Auth.logout();
-            return;
-          }
 
           if (response.status === 403) {
             showToast("Access denied.", "error");

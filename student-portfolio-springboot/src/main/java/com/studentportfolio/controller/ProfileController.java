@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.studentportfolio.dto.ProfileRequest;
 import com.studentportfolio.model.Profile;
+import com.studentportfolio.security.AuthenticatedUserService;
 import com.studentportfolio.service.ProfileService;
 
 import jakarta.validation.Valid;
@@ -20,15 +21,18 @@ import jakarta.validation.Valid;
 public class ProfileController {
 
     private final ProfileService profileService;
+    private final AuthenticatedUserService authenticatedUserService;
 
-    public ProfileController(ProfileService profileService) {
+    public ProfileController(ProfileService profileService, AuthenticatedUserService authenticatedUserService) {
         this.profileService = profileService;
+        this.authenticatedUserService = authenticatedUserService;
     }
 
     @PostMapping
     public ResponseEntity<String> saveProfile(
             @Valid @RequestBody ProfileRequest request) {
 
+        request.setUserId(authenticatedUserService.getAuthenticatedUserId());
         profileService.saveProfile(request);
 
         return ResponseEntity
@@ -38,7 +42,7 @@ public class ProfileController {
 
     @GetMapping
     public ResponseEntity<Profile> getProfile(@RequestParam int userId) {
-        Profile profile = profileService.getProfileByUserId(userId);
+        Profile profile = profileService.getProfileByUserId(authenticatedUserService.getAuthenticatedUserId());
 
         if (profile == null) {
             return ResponseEntity.notFound().build();
