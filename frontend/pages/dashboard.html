@@ -25,10 +25,14 @@
         <nav class="nav-links" id="navLinks">
           <a href="../index.html#home">Home</a>
           <a href="about.html">About</a>
+          <a href="dashboard.html" class="active">Dashboard</a>
+          <a href="profile.html">Profile</a>
           <a href="projects.html">Projects</a>
           <a href="resume-builder.html">Resume Builder</a>
           <a href="certificates.html">Certificates</a>
           <a href="contact.html">Contact</a>
+          <a href="login.html" data-auth="guest">Login</a>
+          <a href="register.html" data-auth="guest">Register</a>
         </nav>
 
         <button class="theme-btn" id="themeToggle">🌙</button>
@@ -149,9 +153,8 @@
         : `Logged in as: ${user.userEmail || "Unknown user"}`;
 
       // ────────────────────────────────────────────────────────
-      // 7. Logout — Auth.logout() already removes ONLY
-      //    loggedIn / userId / userName / userEmail (see auth.js),
-      //    theme and other preferences are untouched.
+      // 7. Logout is handled by auth.js and clears all session keys while
+      //    preserving unrelated preferences such as theme.
       // ────────────────────────────────────────────────────────
       
 

@@ -19,6 +19,20 @@
 <header class="header">
   <div class="container nav">
     <a href="../index.html" class="logo">SP<span>Portfolio</span></a>
+    <button class="menu-btn" id="menuToggle" type="button" aria-label="Open menu">☰</button>
+    <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+      <a href="../index.html#home">Home</a>
+      <a href="about.html">About</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="profile.html">Profile</a>
+      <a href="projects.html">Projects</a>
+      <a href="resume-builder.html">Resume Builder</a>
+      <a href="certificates.html">Certificates</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html" data-auth="guest">Login</a>
+      <a href="register.html" data-auth="guest">Register</a>
+    </nav>
+    <button class="theme-btn" id="themeToggle" type="button" aria-label="Toggle theme">🌙</button>
   </div>
 </header>
 
@@ -130,6 +144,9 @@ if (!user || !user.userId) {
 }
 
 const data = {
+
+userId:
+Number(user.userId),
 
 headline:
 document.getElementById("headline").value,

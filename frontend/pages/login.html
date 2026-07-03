@@ -17,10 +17,14 @@
     <nav class="nav-links" id="navLinks">
       <a href="../index.html#home">Home</a>
       <a href="about.html">About</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="profile.html">Profile</a>
       <a href="projects.html">Projects</a>
       <a href="resume-builder.html">Resume Builder</a>
       <a href="certificates.html">Certificates</a>
       <a href="contact.html">Contact</a>
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
     </nav>
 
     <button class="theme-btn" id="themeToggle">🌙</button>
@@ -108,7 +112,7 @@ document.getElementById("loginForm")
 
     const data = {
 
-        email: document.getElementById("email").value,
+        email: document.getElementById("email").value.trim(),
         password: document.getElementById("password").value
 
     };
@@ -135,21 +139,26 @@ const response = await fetch(
 
         if(response.ok){
 
-            Auth.setSession(result);
+            try {
+                Auth.setSession(result);
+            } catch (sessionError) {
+                showToast("Login response did not include a user ID. Please contact support.", "error");
+                return;
+            }
 
-            alert("Login Successful");
+            showToast("Login successful.", "success");
 
             window.location.href="dashboard.html";
 
         }else{
 
-            alert(result.message || "Invalid Email or Password");
+            showToast(result.message || "Invalid Email or Password", "error");
 
         }
 
     }catch(error){
 
-        alert(window.getNetworkErrorMessage ? window.getNetworkErrorMessage(error) : "Unable to connect to server.");
+        showToast(window.getNetworkErrorMessage ? window.getNetworkErrorMessage(error) : "Unable to connect to server.", "error");
 
     }
 

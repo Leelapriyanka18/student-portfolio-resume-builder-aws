@@ -8,11 +8,6 @@
     <script src="../assets/js/config.js"></script>
     <script src="../assets/js/auth.js"></script>
 
-    <script>
-      if (!Auth.requireAuth("login.html")) {
-        document.write("");
-      }
-    </script>
   </head>
   <body>
     <header class="header">
@@ -35,6 +30,8 @@
           <a href="resume-builder.html">Resume Builder</a>
           <a href="certificates.html">Certificates</a>
           <a href="contact.html" class="active">Contact</a>
+          <a href="login.html" data-auth="guest">Login</a>
+          <a href="register.html" data-auth="guest">Register</a>
         </nav>
         <button
           class="theme-btn"
@@ -146,8 +143,6 @@
       function getSessionUserOrRedirect() {
         const user = Auth.getUser ? Auth.getUser() : null;
         if (!user || !user.userId) {
-          showToast("Session expired. Please log in again.", "error");
-          Auth.logout();
           return null;
         }
         return user;
@@ -176,7 +171,10 @@
         e.preventDefault();
 
         const user = getSessionUserOrRedirect();
-        if (!user) return;
+        if (!user) {
+          showToast("Please log in before sending a contact message.", "error");
+          return;
+        }
 
         const name = document.getElementById("name").value.trim();
         const email = document.getElementById("email").value.trim();
@@ -204,6 +202,7 @@
         }
 
         const data = {
+          userId: Number(user.userId),
           name: name,
           email: email,
           subject: subject,
@@ -216,7 +215,7 @@
 
         try {
           const response = await fetchWithTimeout(
-          `${baseUrl}/api/contact`,
+            `${baseUrl}/api/contact`,
             {
               method: "POST",
               headers: {

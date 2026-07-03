@@ -208,6 +208,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (resumeForm) {
     resumeForm.addEventListener("submit", async (e) => {
       e.preventDefault();
+      const user = window.Auth && Auth.getUser ? Auth.getUser() : null;
+      if (!user || !user.userId) {
+        showToast("Please log in before saving your resume.", "error");
+        Auth.logout(Auth.getLoginPath ? Auth.getLoginPath() : "login.html");
+        return;
+      }
 
       const name  = getValue("name");
       const email = getValue("email");
@@ -224,6 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderPreview();
 
       const payload = {
+        userId:             Number(user.userId),
         resumeName:         name,
         email:              email,
         phone:              phone,
@@ -794,6 +801,7 @@ document.addEventListener("DOMContentLoaded", () => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
+            userId: Number(user.userId),
             name: user.userName || "Portfolio user",
             email,
             subject: "Portfolio contact request",

@@ -53,27 +53,40 @@ window.showToast = window.showToast || function (msg, type = "error") {
 
 // Session helpers.
 const Auth = {
+  getLoginPath() {
+    return window.location.pathname.includes("/pages/") ? "login.html" : "pages/login.html";
+  },
   isLoggedIn() {
     return localStorage.getItem("loggedIn") === "true"
-      && !!localStorage.getItem("userId")
-      && !!localStorage.getItem("jwtToken");
+      && !!localStorage.getItem("userId");
   },
   getUser() {
     return {
       userId: localStorage.getItem("userId"),
-      userEmail: localStorage.getItem("userEmail"),
-      userName: localStorage.getItem("userName"),
+      userEmail: localStorage.getItem("userEmail") || localStorage.getItem("email"),
+      userName: localStorage.getItem("userName") || localStorage.getItem("fullName"),
     };
   },
   getToken() {
     return localStorage.getItem("jwtToken");
   },
-  setSession({ token, userId, email, fullName }) {
+  setSession(session = {}) {
+    const userId = session.userId ?? session.id ?? session.user?.id;
+    const email = session.email ?? session.userEmail ?? session.user?.email;
+    const fullName = session.fullName ?? session.userName ?? session.name ?? session.user?.fullName ?? session.user?.name;
+    const token = session.token ?? session.jwtToken ?? session.jwt ?? session.accessToken;
+
+    if (!userId) {
+      throw new Error("LOGIN_RESPONSE_MISSING_USER_ID");
+    }
+
     localStorage.setItem("loggedIn", "true");
     localStorage.setItem("jwtToken", token || "");
     localStorage.setItem("userId", String(userId));
     localStorage.setItem("userEmail", email || "");
     localStorage.setItem("userName", fullName || "");
+    localStorage.setItem("email", email || "");
+    localStorage.setItem("fullName", fullName || "");
   },
   getAuthHeaders(headers = {}) {
     const token = this.getToken();
@@ -89,7 +102,7 @@ const Auth = {
     });
 
     if (response.status === 401) {
-      this.logout("login.html", "Your session has expired. Please log in again.");
+      this.logout(this.getLoginPath(), "Your session has expired. Please log in again.");
     }
 
     return response;
@@ -100,6 +113,8 @@ const Auth = {
     localStorage.removeItem("userId");
     localStorage.removeItem("userEmail");
     localStorage.removeItem("userName");
+    localStorage.removeItem("email");
+    localStorage.removeItem("fullName");
     if (message) {
       localStorage.setItem("sessionMessage", message);
     }
