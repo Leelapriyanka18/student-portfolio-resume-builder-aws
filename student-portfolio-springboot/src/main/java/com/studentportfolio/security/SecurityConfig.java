@@ -2,6 +2,7 @@ package com.studentportfolio.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,16 +19,19 @@ import com.studentportfolio.util.PasswordUtil;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final AuthRateLimitFilter authRateLimitFilter;
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private final int authRateLimitMaxRequests;
+    private final long authRateLimitWindowMs;
 
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthenticationFilter,
-            AuthRateLimitFilter authRateLimitFilter,
-            JwtAuthenticationEntryPoint authenticationEntryPoint) {
+            JwtAuthenticationEntryPoint authenticationEntryPoint,
+            @Value("${app.auth.rate-limit.max-requests:20}") int authRateLimitMaxRequests,
+            @Value("${app.auth.rate-limit.window-ms:60000}") long authRateLimitWindowMs) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.authRateLimitFilter = authRateLimitFilter;
         this.authenticationEntryPoint = authenticationEntryPoint;
+        this.authRateLimitMaxRequests = authRateLimitMaxRequests;
+        this.authRateLimitWindowMs = authRateLimitWindowMs;
     }
 
     @Bean
@@ -45,7 +49,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/register").permitAll()
                         .anyRequest().authenticated())
-                .addFilterBefore(authRateLimitFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new AuthRateLimitFilter(authRateLimitMaxRequests, authRateLimitWindowMs), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
