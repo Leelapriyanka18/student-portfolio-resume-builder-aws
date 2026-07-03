@@ -18,7 +18,7 @@
 <body>
   <header class="header">
     <div class="container nav">
-      <a href="../index.html" class="logo">LP<span>Portfolio</span></a>
+      <a href="../index.html" class="logo">SP<span>Portfolio</span></a>
       <button class="menu-btn" id="menuToggle" type="button" aria-label="Open menu">☰</button>
       <nav class="nav-links" id="navLinks" aria-label="Main navigation">
         <a href="../index.html#home">Home</a>
@@ -84,7 +84,7 @@
       <section class="section">
         <h2 class="section-title">Selected Projects</h2>
         <div class="project-grid" id="profileProjectGrid">
-          <p>⏳ Loading Projects...</p>
+          <p>Loading Projects...</p>
         </div>
       </section>
     </div>
@@ -92,7 +92,7 @@
 
   <footer class="footer">
     <div class="container">
-      <p>© 2026 Student Portfolio and Resume Builder</p>
+      <p>&copy; 2026 Student Portfolio and Resume Builder</p>
     </div>
   </footer>
   <script src="../assets/js/script.js"></script>
@@ -276,7 +276,7 @@
 
       try {
         const response = await fetchWithTimeout(
-          `${window.API_BASE}/api/profile?userId=${encodeURIComponent(user.userId)}`,
+          `${window.API_BASE}/api/profile`,
           { method: "GET" }
         );
 
@@ -341,7 +341,7 @@
 
       try {
         const response = await fetchWithTimeout(
-          `${window.API_BASE}/api/projects?userId=${encodeURIComponent(user.userId)}`,
+          `${window.API_BASE}/api/projects`,
           { method: "GET" }
         );
 

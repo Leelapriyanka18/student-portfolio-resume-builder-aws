@@ -109,7 +109,7 @@
           <br /><br />
 
           <div class="project-grid" id="projectList">
-            <p>⏳ Loading Projects...</p>
+            <p>Loading Projects...</p>
           </div>
         </section>
       </div>
@@ -117,7 +117,7 @@
 
     <footer class="footer">
       <div class="container">
-        <p>© 2026 Student Portfolio and Resume Builder</p>
+        <p>&copy; 2026 Student Portfolio and Resume Builder</p>
       </div>
     </footer>
     
@@ -137,6 +137,16 @@ const saveProjectBtn = document.getElementById("saveProjectBtn");
           .replace(/>/g, "&gt;")
           .replace(/"/g, "&quot;")
           .replace(/'/g, "&#039;");
+      }
+
+      function isValidUrl(url) {
+        if (!url) return false;
+        try {
+          const parsed = new URL(url);
+          return parsed.protocol === "http:" || parsed.protocol === "https:";
+        } catch (err) {
+          return false;
+        }
       }
 
       function isValidGithubUrl(url) {
@@ -210,7 +220,6 @@ const saveProjectBtn = document.getElementById("saveProjectBtn");
           title: title,
           description: description,
           githubLink: githubLink,
-          userId: user.userId,
         };
 
         const originalBtnText = saveProjectBtn.textContent;
@@ -287,11 +296,11 @@ const saveProjectBtn = document.getElementById("saveProjectBtn");
         const user = getSessionUserOrRedirect();
         if (!user) return;
 
-        projectList.innerHTML = "<p>⏳ Loading Projects...</p>";
+        projectList.innerHTML = "<p>Loading Projects...</p>";
 
         try {
           const response = await fetchWithTimeout(
-           `${baseUrl}/api/projects?userId=${encodeURIComponent(user.userId)}`,
+            `${baseUrl}/api/projects`,
             { method: "GET" }
           );
 
@@ -334,7 +343,7 @@ const saveProjectBtn = document.getElementById("saveProjectBtn");
             <br>
 
             ${
-              githubLink
+              githubLink && isValidUrl(githubLink)
                 ? `<a href="${escapeHTML(githubLink)}"
                target="_blank"
                rel="noopener noreferrer"

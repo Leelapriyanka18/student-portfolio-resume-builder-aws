@@ -18,7 +18,7 @@
 
 <header class="header">
   <div class="container nav">
-    <a href="../index.html" class="logo">LP<span>Portfolio</span></a>
+    <a href="../index.html" class="logo">SP<span>Portfolio</span></a>
   </div>
 </header>
 
@@ -33,32 +33,32 @@
 <form id="profileForm">
 
 <div class="form-group">
-<label>Headline</label>
+<label for="headline">Headline</label>
 <input type="text" id="headline">
 </div>
 
 <div class="form-group">
-<label>Bio</label>
+<label for="bio">Bio</label>
 <textarea id="bio"></textarea>
 </div>
 
 <div class="form-group">
-<label>Phone</label>
+<label for="phone">Phone</label>
 <input type="text" id="phone">
 </div>
 
 <div class="form-group">
-<label>Address</label>
+<label for="address">Address</label>
 <textarea id="address"></textarea>
 </div>
 
 <div class="form-group">
-<label>LinkedIn URL</label>
+<label for="linkedin">LinkedIn URL</label>
 <input type="text" id="linkedin">
 </div>
 
 <div class="form-group">
-<label>GitHub URL</label>
+<label for="github">GitHub URL</label>
 <input type="text" id="github">
 </div>
 
@@ -86,7 +86,7 @@ if (!user || !user.userId) {
 
 try {
   const response = await Auth.authFetch(
-    window.API_BASE + "/api/profile?userId=" + encodeURIComponent(user.userId),
+    window.API_BASE + "/api/profile",
     {
       method: "GET"
     }
@@ -130,8 +130,6 @@ if (!user || !user.userId) {
 }
 
 const data = {
-
-userId: Number(user.userId),
 
 headline:
 document.getElementById("headline").value,

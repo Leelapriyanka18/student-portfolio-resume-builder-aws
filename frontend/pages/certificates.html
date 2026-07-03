@@ -18,7 +18,7 @@
   <body>
     <header class="header">
       <div class="container nav">
-        <a href="../index.html" class="logo">LP<span>Portfolio</span></a>
+        <a href="../index.html" class="logo">SP<span>Portfolio</span></a>
         <button
           class="menu-btn"
           id="menuToggle"
@@ -117,7 +117,7 @@
 
           <br /><br />
           <div class="certificate-grid" id="certificateList">
-            <p>⏳ Loading Certificates...</p>
+            <p>Loading Certificates...</p>
           </div>
         </section>
       </div>
@@ -125,7 +125,7 @@
 
     <footer class="footer">
       <div class="container">
-        <p>© 2026 Student Portfolio and Resume Builder</p>
+        <p>&copy; 2026 Student Portfolio and Resume Builder</p>
       </div>
     </footer>
     <script src="../assets/js/script.js"></script>
@@ -143,6 +143,16 @@
           .replace(/>/g, "&gt;")
           .replace(/"/g, "&quot;")
           .replace(/'/g, "&#039;");
+      }
+
+      function isValidUrl(url) {
+        if (!url) return false;
+        try {
+          const parsed = new URL(url);
+          return parsed.protocol === "http:" || parsed.protocol === "https:";
+        } catch (err) {
+          return false;
+        }
       }
 
       function isValidCertificateUrl(url) {
@@ -219,7 +229,6 @@
           issuer: issuer,
           issueDate: issueDate,
           certificateUrl: certificateUrl,
-          userId: user.userId,
         };
 
         const originalBtnText = saveCertificateBtn.textContent;
@@ -299,11 +308,11 @@
         const user = getSessionUserOrRedirect();
         if (!user) return;
 
-        certificateList.innerHTML = "<p>⏳ Loading Certificates...</p>";
+        certificateList.innerHTML = "<p>Loading Certificates...</p>";
 
         try {
           const response = await fetchWithTimeout(
-            `${baseUrl}/api/certificates?userId=${encodeURIComponent(user.userId)}`,
+            `${baseUrl}/api/certificates`,
             { method: "GET" },
           );
 
@@ -357,7 +366,7 @@
             </p>
 
             ${
-              certificateUrl
+              certificateUrl && isValidUrl(certificateUrl)
                 ? `<a href="${escapeHTML(certificateUrl)}"
                target="_blank"
                rel="noopener noreferrer"

@@ -92,25 +92,25 @@
             <article class="dashboard-card">
               <h2>Projects</h2>
 
-              <p id="projectCount">⏳ Loading…</p>
+              <p id="projectCount">Loading...</p>
             </article>
 
             <article class="dashboard-card">
               <h2>Certificates</h2>
 
-              <p id="certificateCount">⏳ Loading…</p>
+              <p id="certificateCount">Loading...</p>
             </article>
 
             <article class="dashboard-card">
               <h2>Resumes</h2>
 
-              <p id="resumeCount">⏳ Loading…</p>
+              <p id="resumeCount">Loading...</p>
             </article>
 
             <article class="dashboard-card">
               <h2>Contacts</h2>
 
-              <p id="contactCount">⏳ Loading…</p>
+              <p id="contactCount">Loading...</p>
             </article>
 
             <article class="dashboard-card">
@@ -125,7 +125,7 @@
 
     <footer class="footer">
       <div class="container">
-        <p>© 2026 Student Portfolio and Resume Builder</p>
+        <p>&copy; 2026 Student Portfolio and Resume Builder</p>
       </div>
     </footer>
 
@@ -179,7 +179,7 @@
 
         try {
           const res = await Auth.authFetch(
-            `${window.API_BASE}${endpoint}?userId=${encodeURIComponent(user.userId)}`,
+            `${window.API_BASE}${endpoint}`,
             { signal: controller.signal }
           );
           clearTimeout(timeoutId);
@@ -234,7 +234,7 @@
       }
 
       async function loadDashboard() {
-        Object.values(countEls).forEach((el) => (el.innerText = "⏳ Loading…"));
+        Object.values(countEls).forEach((el) => (el.innerText = "Loading..."));
 
         const [projectCount, certificateCount, resumeCount, contactCount] = await Promise.all([
           fetchCount("/api/projects", "Projects"),

@@ -36,17 +36,6 @@ public class CertificateDAO {
         return rows > 0;
     }
 
-    public List<Certificate> getAllCertificates() {
-
-        String sql = """
-                SELECT *
-                FROM certificates
-                ORDER BY id DESC
-                """;
-
-        return jdbcTemplate.query(sql, (rs, rowNum) -> mapCertificate(rs));
-    }
-
     public List<Certificate> getCertificatesByUserId(int userId) {
 
         String sql = """

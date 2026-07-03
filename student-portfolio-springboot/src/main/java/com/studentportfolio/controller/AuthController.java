@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,14 +59,4 @@ public class AuthController {
                 .body(Map.of("message", "Invalid Email or Password"));
     }
 
-    @ExceptionHandler({
-            IllegalArgumentException.class,
-            IllegalStateException.class
-    })
-    public ResponseEntity<String> handleException(Exception ex) {
-
-        return ResponseEntity
-                .badRequest()
-                .body(ex.getMessage());
-    }
 }

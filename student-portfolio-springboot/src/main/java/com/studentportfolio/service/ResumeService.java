@@ -28,7 +28,6 @@ public class ResumeService {
         }
 
         resume.setUserId(request.getUserId());
-
         resume.setResumeName(request.getResumeName().trim());
         resume.setFilePath(request.getFilePath());
         resume.setEmail(request.getEmail());
@@ -48,24 +47,15 @@ public class ResumeService {
         resume.setCertificateDetails(request.getCertificateDetails());
         resume.setLanguages(request.getLanguages());
         resume.setHobbies(request.getHobbies());
-        resume.setExperience(
-                request.getExperience());
-
-        resume.setGithub(
-                request.getGithub());
-
-        resume.setLinkedin(
-                request.getLinkedin());
+        resume.setExperience(request.getExperience());
+        resume.setGithub(request.getGithub());
+        resume.setLinkedin(request.getLinkedin());
 
         boolean saved = resumeDAO.saveResume(resume);
 
         if (!saved) {
             throw new IllegalStateException("Unable to save resume");
         }
-    }
-
-    public List<Resume> getAllResumes() {
-        return resumeDAO.getAllResumes();
     }
 
     public List<Resume> getResumesByUserId(int userId) {

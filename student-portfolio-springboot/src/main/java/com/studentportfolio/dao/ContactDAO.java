@@ -36,31 +36,6 @@ public class ContactDAO {
         return rows > 0;
     }
 
-    public List<Contact> getAllContacts() {
-
-        String sql = """
-                SELECT *
-                FROM contacts
-                ORDER BY id DESC
-                """;
-
-        return jdbcTemplate.query(
-                sql,
-                (rs, rowNum) -> {
-                    Contact contact = new Contact();
-
-                    contact.setId(rs.getInt("id"));
-                    contact.setUserId(rs.getInt("user_id"));
-                    contact.setName(rs.getString("name"));
-                    contact.setEmail(rs.getString("email"));
-                    contact.setSubject(rs.getString("subject"));
-                    contact.setMessage(rs.getString("message"));
-
-                    return contact;
-                }
-        );
-    }
-
     public List<Contact> getContactsByUserId(int userId) {
 
         String sql = """

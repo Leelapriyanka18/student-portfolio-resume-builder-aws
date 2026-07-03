@@ -1,13 +1,11 @@
 package com.studentportfolio.dto;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class ProfileRequest {
 
-    @Min(value = 1, message = "User ID is required")
     private int userId;
 
     @NotBlank(message = "Headline is required")

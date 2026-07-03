@@ -224,7 +224,6 @@ document.addEventListener("DOMContentLoaded", () => {
       renderPreview();
 
       const payload = {
-        userId: Auth.getUser().userId,
         resumeName:         name,
         email:              email,
         phone:              phone,
@@ -290,7 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Disable to prevent duplicate clicks
       downloadBtn.disabled = true;
       const originalLabel = downloadBtn.textContent;
-      downloadBtn.textContent = "⏳ Generating…";
+      downloadBtn.textContent = "Generating...";
 
       const restoreButton = () => {
         downloadBtn.disabled = false;
@@ -759,17 +758,62 @@ document.addEventListener("DOMContentLoaded", () => {
   } // end buildPDF
 
   // ────────────────────────────────────────────────────────
-  // CONTACT SECTION — send button feedback
+  // LANDING PAGE CONTACT CARD  → Spring Boot API
   // ────────────────────────────────────────────────────────
   const contactSendBtn = document.getElementById("contactSendBtn");
   if (contactSendBtn) {
-    contactSendBtn.addEventListener("click", () => {
-      const email = (document.getElementById("contactEmail")?.value || "").trim();
+    contactSendBtn.addEventListener("click", async () => {
+      const user = window.Auth && Auth.getUser ? Auth.getUser() : null;
+      if (!user || !user.userId) {
+        showToast("Please log in before sending a contact message.", "error");
+        return;
+      }
+
+      const email = getValue("contactEmail");
+      const github = getValue("contactGithub");
+      const linkedin = getValue("contactLinkedin");
+      const location = getValue("contactLocation");
+
       if (!email || !email.includes("@")) {
         showToast("Please enter a valid email address.", "error");
         return;
       }
-      showToast("Thank you! Your message details have been noted.", "success");
+
+      const message = [
+        github ? `GitHub: ${github}` : "",
+        linkedin ? `LinkedIn: ${linkedin}` : "",
+        location ? `Location: ${location}` : "",
+      ].filter(Boolean).join("\n") || "Landing page contact request.";
+
+      const originalLabel = contactSendBtn.textContent;
+      contactSendBtn.disabled = true;
+      contactSendBtn.textContent = "Sending...";
+
+      try {
+        const res = await Auth.authFetch(`${API_BASE}/api/contact`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: user.userName || "Portfolio user",
+            email,
+            subject: "Portfolio contact request",
+            message,
+          }),
+        });
+
+        const text = await res.text();
+        showToast(text || (res.ok ? "Message sent successfully." : "Unable to send message."), res.ok ? "success" : "error");
+      } catch (error) {
+        showToast(
+          window.getNetworkErrorMessage
+            ? window.getNetworkErrorMessage(error)
+            : "Unable to send message. Check your connection.",
+          "error"
+        );
+      } finally {
+        contactSendBtn.disabled = false;
+        contactSendBtn.textContent = originalLabel;
+      }
     });
   }
 

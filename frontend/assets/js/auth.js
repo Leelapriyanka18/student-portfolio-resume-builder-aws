@@ -1,9 +1,9 @@
 // ============================================================
-// auth.js — shared API base, toast, session & route-guard helpers
-// Loaded BEFORE script.js on every page.
+// auth.js - shared API base, toast, session and route-guard helpers
+// Loaded before script.js on every page.
 // ============================================================
 
-// ── Single source of truth for backend URL ──
+// Single source of truth for backend URL.
 window.API_BASE = ((window.APP_CONFIG && window.APP_CONFIG.apiBase) || "").replace(/\/$/, "");
 
 if (!window.API_BASE) {
@@ -25,7 +25,7 @@ window.getNetworkErrorMessage = function (error) {
   return `Unable to connect to backend at ${window.API_BASE || "the configured API URL"}. Confirm the EC2 app is running, listening on 0.0.0.0:8080, and the security group allows TCP 8080.`;
 };
 
-// ── Toast (shared implementation; script.js reuses this if present) ──
+// Toast helper. script.js reuses this implementation when present.
 window.showToast = window.showToast || function (msg, type = "error") {
   let container = document.getElementById("toast-container");
   if (!container) {
@@ -36,7 +36,7 @@ window.showToast = window.showToast || function (msg, type = "error") {
       "display:flex;flex-direction:column;gap:.5rem;max-width:320px;";
     document.body.appendChild(container);
   }
-  const bg    = type === "success" ? "#EAF3DE" : type === "info" ? "#E6F1FB" : "#FCEBEB";
+  const bg = type === "success" ? "#EAF3DE" : type === "info" ? "#E6F1FB" : "#FCEBEB";
   const color = type === "success" ? "#3B6D11" : type === "info" ? "#185FA5" : "#A32D2D";
   const toast = document.createElement("div");
   toast.style.cssText =
@@ -51,7 +51,7 @@ window.showToast = window.showToast || function (msg, type = "error") {
   }, 4000);
 };
 
-// ── Session helpers ──
+// Session helpers.
 const Auth = {
   isLoggedIn() {
     return localStorage.getItem("loggedIn") === "true"
@@ -60,9 +60,9 @@ const Auth = {
   },
   getUser() {
     return {
-      userId:    localStorage.getItem("userId"),
+      userId: localStorage.getItem("userId"),
       userEmail: localStorage.getItem("userEmail"),
-      userName:  localStorage.getItem("userName"),
+      userName: localStorage.getItem("userName"),
     };
   },
   getToken() {
@@ -105,7 +105,6 @@ const Auth = {
     }
     window.location.href = redirectTo;
   },
-  /** Call at the top of any protected page. Redirects to login if not authenticated. */
   requireAuth(loginPage = "login.html") {
     if (!this.isLoggedIn()) {
       window.location.href = loginPage;
@@ -113,7 +112,6 @@ const Auth = {
     }
     return true;
   },
-  /** Toggles nav links based on session state. Call on every page that has the shared nav. */
   refreshNav() {
     const loggedIn = this.isLoggedIn();
     document.querySelectorAll("[data-auth='guest']").forEach((el) => {

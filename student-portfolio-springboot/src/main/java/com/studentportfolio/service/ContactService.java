@@ -23,6 +23,10 @@ public class ContactService {
 
         Contact contact = new Contact();
 
+        if (request.getUserId() <= 0) {
+            throw new IllegalArgumentException("User ID is required");
+        }
+
         contact.setUserId(request.getUserId());
         contact.setName(request.getName());
         contact.setEmail(request.getEmail());
@@ -34,10 +38,6 @@ public class ContactService {
         if (!saved) {
             throw new IllegalStateException("Unable to save contact");
         }
-    }
-
-    public List<Contact> getAllContacts() {
-        return contactDAO.getAllContacts();
     }
 
     public List<Contact> getContactsByUserId(int userId) {

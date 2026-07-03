@@ -36,19 +36,19 @@ Elastic IP is already assigned. Do not allocate another Elastic IP.
 - Fixed login session flow so the backend returns `userId`, `email`, and `fullName`.
 - Updated frontend login to call `Auth.setSession(...)`.
 - Fixed certificate save flow to use `POST /api/certificates`.
-- Added missing `GET /api/profile?userId=...`.
-- Removed temporary hardcoded `userId = 1` from active profile, certificate, and resume save logic.
+- Added authenticated `GET /api/profile`.
+- Removed temporary hardcoded `userId = 1` from active profile, certificate, resume, project, and contact save logic.
 - Added user-specific reads for projects, certificates, and resumes.
 - Bound Spring Boot to `0.0.0.0:8080` for EC2 network access.
-- Added global CORS for the S3 static website and local `127.0.0.1:5500`.
-- Fixed invalid validation annotation on project `userId`.
+- Added environment-driven CORS for the S3 static website, `127.0.0.1:5500`, and `localhost:5500`.
+- Removed client-side `userId` validation from authenticated request DTOs so the backend can attach the JWT user after validation.
 
 ## Verification
 
 - Active backend folder: `student-portfolio-springboot`
-- Build command: `mvn -q -DskipTests package`
-- Build status: Passed
-- Generated artifact: `student-portfolio-springboot/target/student-portfolio-springboot-0.0.1-SNAPSHOT.jar`
+- Build command: `mvn clean test`
+- Build status from this workstation: `mvn clean test` is blocked before compilation because Maven cannot resolve the Spring Boot parent POM from Maven Central. The local Java trust store rejects Maven Central's TLS certificate (`PKIX path building failed` / `certificate_unknown`). This is an environment dependency-resolution issue, not a repository code failure.
+- Generated artifact: run `mvn clean package` after fixing local Maven/Java certificate trust and after tests pass.
 
 ## Live AWS Verification
 
@@ -80,6 +80,7 @@ The active backend global CORS configuration allows:
 ```text
 http://student-portfolio-priyanka-4501.s3-website-us-east-1.amazonaws.com
 http://127.0.0.1:5500
+http://localhost:5500
 ```
 
 Do not use wildcard CORS for this deployment.
@@ -93,9 +94,13 @@ Do not use wildcard CORS for this deployment.
 - Confirm application logs have no startup errors.
 - Upload the updated frontend files to S3.
 - Redeploy the updated Spring Boot jar to EC2.
+- Capture CloudWatch dashboard and alarm screenshots.
+- Capture SNS topic, confirmed subscription, alarm action, and received email notification screenshots.
+
+CloudWatch and SNS status: Implemented in AWS Console; final evidence collection required.
 
 ## Production Readiness
 
 Not production-ready yet.
 
-Reason: local code builds and the frontend is centralized around one backend URL. Final readiness still depends on redeploying the updated frontend/backend artifacts and completing full end-to-end data verification against Amazon RDS.
+Reason: the frontend is centralized around one backend URL, but final readiness still depends on fixing local Maven certificate trust, generating a verified backend artifact, redeploying the updated frontend/backend artifacts, and completing full end-to-end data verification against Amazon RDS.

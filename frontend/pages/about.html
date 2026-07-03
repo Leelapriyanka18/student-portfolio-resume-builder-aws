@@ -95,12 +95,12 @@
 
   <footer class="footer">
     <div class="container">
-      <p>© 2026 Student Portfolio and Resume Builder</p>
+      <p>&copy; 2026 Student Portfolio and Resume Builder</p>
     </div>
   </footer>
   <script src="../assets/js/script.js"></script>
   <script>
-    // Cached DOM elements — queried once, reused on every render.
+    // Cached DOM elements, queried once and reused on every render.
     const els = {
       tag: document.getElementById("aboutTag"),
       name: document.getElementById("aboutNameHeading"),
@@ -226,7 +226,7 @@
 
       try {
         const response = await fetchWithTimeout(
-          `${window.API_BASE}/api/profile?userId=${encodeURIComponent(user.userId)}`,
+          `${window.API_BASE}/api/profile`,
           { method: "GET" }
         );
 

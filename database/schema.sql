@@ -16,7 +16,8 @@ CREATE TABLE IF NOT EXISTS profiles (
     linkedin_url VARCHAR(500),
     github_url VARCHAR(500),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    UNIQUE KEY uq_profiles_user_id (user_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS projects (
@@ -26,7 +27,8 @@ CREATE TABLE IF NOT EXISTS projects (
     description TEXT NOT NULL,
     github_link VARCHAR(500),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    INDEX idx_projects_user_id (user_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS certificates (
@@ -37,7 +39,8 @@ CREATE TABLE IF NOT EXISTS certificates (
     issue_date VARCHAR(30),
     certificate_url VARCHAR(500),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    INDEX idx_certificates_user_id (user_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS resumes (
@@ -66,7 +69,8 @@ CREATE TABLE IF NOT EXISTS resumes (
     hobbies VARCHAR(255),
     file_path VARCHAR(500),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    INDEX idx_resumes_user_id (user_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS contacts (
@@ -77,5 +81,6 @@ CREATE TABLE IF NOT EXISTS contacts (
     subject VARCHAR(200) NOT NULL,
     message TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    INDEX idx_contacts_user_id (user_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

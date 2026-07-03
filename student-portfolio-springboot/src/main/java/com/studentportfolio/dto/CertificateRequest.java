@@ -1,13 +1,11 @@
 package com.studentportfolio.dto;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class CertificateRequest {
 
-    @Min(value = 1, message = "User ID is required")
     private int userId;
 
     @NotBlank(message = "Certificate name is required")
@@ -18,7 +16,6 @@ public class CertificateRequest {
     @Size(max = 200, message = "Issuer must be at most 200 characters")
     private String issuer;
 
-   
     @Size(max = 30, message = "Issue date must be at most 30 characters")
     private String issueDate;
 

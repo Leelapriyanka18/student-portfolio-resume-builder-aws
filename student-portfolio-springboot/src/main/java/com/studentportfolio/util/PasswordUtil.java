@@ -43,9 +43,21 @@ public class PasswordUtil {
                 return false;
             }
 
-            int iterations = Integer.parseInt(parts[1]);
-            byte[] salt = Base64.getDecoder().decode(parts[2]);
-            byte[] expectedHash = Base64.getDecoder().decode(parts[3]);
+            int iterations;
+            byte[] salt;
+            byte[] expectedHash;
+            try {
+                iterations = Integer.parseInt(parts[1]);
+                salt = Base64.getDecoder().decode(parts[2]);
+                expectedHash = Base64.getDecoder().decode(parts[3]);
+            } catch (IllegalArgumentException ex) {
+                return false;
+            }
+
+            if (iterations <= 0 || salt.length == 0 || expectedHash.length == 0) {
+                return false;
+            }
+
             byte[] actualHash = pbkdf2(password.toCharArray(), salt, iterations, expectedHash.length * 8);
 
             return constantTimeArrayEquals(expectedHash, actualHash);

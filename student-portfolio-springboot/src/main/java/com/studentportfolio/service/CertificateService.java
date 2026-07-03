@@ -28,7 +28,6 @@ public class CertificateService {
         }
 
         certificate.setUserId(request.getUserId());
-
         certificate.setCertificateName(request.getCertificateName());
         certificate.setIssuer(request.getIssuer());
         certificate.setIssueDate(request.getIssueDate());
@@ -39,10 +38,6 @@ public class CertificateService {
         if (!saved) {
             throw new IllegalStateException("Unable to save certificate");
         }
-    }
-
-    public List<Certificate> getAllCertificates() {
-        return certificateDAO.getAllCertificates();
     }
 
     public List<Certificate> getCertificatesByUserId(int userId) {

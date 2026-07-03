@@ -3,6 +3,7 @@ package com.studentportfolio.dao;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.studentportfolio.model.Resume;
@@ -77,56 +78,6 @@ public class ResumeDAO {
         return rows > 0;
     }
 
-    public List<Resume> getAllResumes() {
-
-        String sql = """
-                SELECT *
-                FROM resumes
-                ORDER BY id DESC
-                """;
-
-        return jdbcTemplate.query(
-                sql,
-                (rs, rowNum) -> {
-                    Resume resume = new Resume();
-
-                    resume.setId(rs.getInt("id"));
-resume.setUserId(rs.getInt("user_id"));
-
-resume.setResumeName(rs.getString("resume_name"));
-
-resume.setEmail(rs.getString("email"));
-resume.setPhone(rs.getString("phone"));
-resume.setAddress(rs.getString("address"));
-resume.setRole(rs.getString("role"));
-resume.setSummary(rs.getString("summary"));
-
-resume.setCollege(rs.getString("college"));
-resume.setDegree(rs.getString("degree"));
-resume.setBranch(rs.getString("branch"));
-resume.setGraduationYear(rs.getString("graduation_year"));
-resume.setCgpa(rs.getString("cgpa"));
-
-resume.setSkills(rs.getString("skills"));
-resume.setProjects(rs.getString("projects"));
-resume.setProjectDescription(rs.getString("project_description"));
-
-resume.setCertificates(rs.getString("certificates"));
-resume.setCertificateDetails(rs.getString("certificate_details"));
-
-resume.setExperience(rs.getString("experience"));
-resume.setGithub(rs.getString("github"));
-resume.setLinkedin(rs.getString("linkedin"));
-
-resume.setLanguages(rs.getString("languages"));
-resume.setHobbies(rs.getString("hobbies"));
-
-resume.setFilePath(rs.getString("file_path"));
-resume.setCreatedAt(rs.getTimestamp("created_at"));
-                    return resume;
-                });
-    }
-
     public List<Resume> getResumesByUserId(int userId) {
 
         String sql = """
@@ -136,39 +87,38 @@ resume.setCreatedAt(rs.getTimestamp("created_at"));
                 ORDER BY id DESC
                 """;
 
-        return jdbcTemplate.query(
-                sql,
-                (rs, rowNum) -> {
-                    Resume resume = new Resume();
+        return jdbcTemplate.query(sql, resumeRowMapper(), userId);
+    }
 
-                    resume.setId(rs.getInt("id"));
-                    resume.setUserId(rs.getInt("user_id"));
-                    resume.setResumeName(rs.getString("resume_name"));
-                    resume.setEmail(rs.getString("email"));
-                    resume.setPhone(rs.getString("phone"));
-                    resume.setAddress(rs.getString("address"));
-                    resume.setRole(rs.getString("role"));
-                    resume.setSummary(rs.getString("summary"));
-                    resume.setCollege(rs.getString("college"));
-                    resume.setDegree(rs.getString("degree"));
-                    resume.setBranch(rs.getString("branch"));
-                    resume.setGraduationYear(rs.getString("graduation_year"));
-                    resume.setCgpa(rs.getString("cgpa"));
-                    resume.setSkills(rs.getString("skills"));
-                    resume.setProjects(rs.getString("projects"));
-                    resume.setProjectDescription(rs.getString("project_description"));
-                    resume.setCertificates(rs.getString("certificates"));
-                    resume.setCertificateDetails(rs.getString("certificate_details"));
-                    resume.setExperience(rs.getString("experience"));
-                    resume.setGithub(rs.getString("github"));
-                    resume.setLinkedin(rs.getString("linkedin"));
-                    resume.setLanguages(rs.getString("languages"));
-                    resume.setHobbies(rs.getString("hobbies"));
-                    resume.setFilePath(rs.getString("file_path"));
-                    resume.setCreatedAt(rs.getTimestamp("created_at"));
-                    return resume;
-                },
-                userId
-        );
+    private RowMapper<Resume> resumeRowMapper() {
+        return (rs, rowNum) -> {
+            Resume resume = new Resume();
+            resume.setId(rs.getInt("id"));
+            resume.setUserId(rs.getInt("user_id"));
+            resume.setResumeName(rs.getString("resume_name"));
+            resume.setEmail(rs.getString("email"));
+            resume.setPhone(rs.getString("phone"));
+            resume.setAddress(rs.getString("address"));
+            resume.setRole(rs.getString("role"));
+            resume.setSummary(rs.getString("summary"));
+            resume.setCollege(rs.getString("college"));
+            resume.setDegree(rs.getString("degree"));
+            resume.setBranch(rs.getString("branch"));
+            resume.setGraduationYear(rs.getString("graduation_year"));
+            resume.setCgpa(rs.getString("cgpa"));
+            resume.setSkills(rs.getString("skills"));
+            resume.setProjects(rs.getString("projects"));
+            resume.setProjectDescription(rs.getString("project_description"));
+            resume.setCertificates(rs.getString("certificates"));
+            resume.setCertificateDetails(rs.getString("certificate_details"));
+            resume.setExperience(rs.getString("experience"));
+            resume.setGithub(rs.getString("github"));
+            resume.setLinkedin(rs.getString("linkedin"));
+            resume.setLanguages(rs.getString("languages"));
+            resume.setHobbies(rs.getString("hobbies"));
+            resume.setFilePath(rs.getString("file_path"));
+            resume.setCreatedAt(rs.getTimestamp("created_at"));
+            return resume;
+        };
     }
 }

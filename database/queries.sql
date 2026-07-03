@@ -6,11 +6,16 @@ ALTER TABLE contacts
 
 ALTER TABLE contacts
     ADD CONSTRAINT fk_contacts_user
-    FOREIGN KEY (user_id) REFERENCES users(id);
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
 
 ALTER TABLE certificates
     ADD COLUMN issue_date VARCHAR(30) NULL AFTER issuer,
     ADD COLUMN certificate_url VARCHAR(500) NULL AFTER issue_date;
+
+-- Optional cleanup before adding one-profile-per-user uniqueness to an existing DB:
+-- keep only the latest profile row for each user, then add the unique key.
+ALTER TABLE profiles
+    ADD CONSTRAINT uq_profiles_user_id UNIQUE (user_id);
 
 -- Verification queries
 SELECT id, full_name, email, created_at FROM users ORDER BY id DESC;

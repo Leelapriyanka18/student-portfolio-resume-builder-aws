@@ -23,8 +23,11 @@ public class ProjectService {
 
         Project project = new Project();
 
-        project.setUserId(request.getUserId());
+        if (request.getUserId() <= 0) {
+            throw new IllegalArgumentException("User ID is required");
+        }
 
+        project.setUserId(request.getUserId());
         project.setTitle(request.getTitle());
         project.setDescription(request.getDescription());
         project.setGithubLink(request.getGithubLink());
@@ -34,10 +37,6 @@ public class ProjectService {
         if (!saved) {
             throw new IllegalStateException("Unable to save project");
         }
-    }
-
-    public List<Project> getAllProjects() {
-        return projectDAO.getAllProjects();
     }
 
     public List<Project> getProjectsByUserId(int userId) {

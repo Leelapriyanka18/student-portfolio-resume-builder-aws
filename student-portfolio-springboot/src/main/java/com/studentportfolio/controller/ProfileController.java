@@ -1,12 +1,11 @@
 package com.studentportfolio.controller;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.studentportfolio.dto.ProfileRequest;
@@ -41,7 +40,7 @@ public class ProfileController {
     }
 
     @GetMapping
-    public ResponseEntity<Profile> getProfile(@RequestParam int userId) {
+    public ResponseEntity<Profile> getProfile() {
         Profile profile = profileService.getProfileByUserId(authenticatedUserService.getAuthenticatedUserId());
 
         if (profile == null) {
@@ -51,9 +50,4 @@ public class ProfileController {
         return ResponseEntity.ok(profile);
     }
 
-    @ExceptionHandler({IllegalArgumentException.class,
-            IllegalStateException.class})
-    public ResponseEntity<String> handleBadRequest(Exception ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
-    }
 }
