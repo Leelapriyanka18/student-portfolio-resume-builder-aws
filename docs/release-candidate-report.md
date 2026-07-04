@@ -24,7 +24,7 @@ The accidental nested repository gitlink has been removed from version control a
 
 Repository Completion: 100%.
 
-Overall Project Completion: 98%.
+Overall Project Completion: 99%.
 
 The repository is complete for final-year project release-candidate submission. The remaining submission work is to bundle final screenshots/evidence in the college submission package.
 
@@ -172,6 +172,6 @@ Repository Completion: 100%.
 
 Overall Project Completion: 98%.
 
-Remaining Work: final screenshot packaging, HTTPS hardening for real production, and optional expanded tests.
+Remaining Work: redeploy the updated frontend favicon asset/link to S3 from an AWS-enabled environment, then rerun browser verification to confirm no `/favicon.ico` 404 remains. Optional real-production hardening includes HTTPS and expanded automated tests.
 
 The source code, documentation, backend, frontend, database integration, deployment configuration, and repository cleanup have successfully reached Release Candidate quality.

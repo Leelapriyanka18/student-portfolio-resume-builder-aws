@@ -99,3 +99,4 @@ The repository does not store the RDS password.
 - [Release candidate report](docs/release-candidate-report.md)
 - [Final project audit](docs/final-project-audit.md)
 - [Final certification report](docs/final-certification-report.md)
+- [Final submission evidence package](docs/submission-evidence/README.md)

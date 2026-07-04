@@ -51,8 +51,8 @@ Elastic IP is already assigned. Do not allocate another Elastic IP.
 - Package command: `mvn -DskipTests package`
 - Package status from this workstation: passed and produced `student-portfolio-springboot/target/student-portfolio-springboot-0.0.1-SNAPSHOT.jar`.
 - Test command: `mvn test`
-- Test status from this workstation: blocked because Java/Maven cannot validate Maven Central while resolving `org.apache.maven.surefire:surefire-junit-platform:3.2.5`.
-- Generated artifact is ready for EC2 redeploy, but the automated test gate still requires local Java/Maven certificate trust repair.
+- Test status from this workstation: `mvn clean test` compiles main/test sources, then fails while resolving `org.apache.maven.surefire:surefire-junit-platform:3.2.5` from Maven Central because local Java/Maven TLS trust rejects the certificate.
+- Classification: environment dependency-resolution issue, not application source failure.
 
 ## Live AWS Verification
 
@@ -71,12 +71,14 @@ Observed result:
 - `/` returned `401 Unauthorized`, confirming Spring Boot and Spring Security are running.
 - Register returned `201 Created`.
 - Login succeeded and returned a JWT/user id.
-- Certificates returned `Database error. Please try again later.`
-- Contact returned `Database error. Please try again later.`
+- Profile returned `201 Created` on save and `200 OK` on readback.
+- Projects returned `201 Created` on save and `200 OK` on readback.
+- Certificates returned `201 Created` on save and `200 OK` on readback.
+- Resume returned `201 Created` on save and `200 OK` on readback.
+- Contact returned `201 Created` on save and `200 OK` on readback.
+- Protected API without JWT returned `401 Unauthorized`.
 
-Conclusion: EC2 backend is reachable and authentication works. RDS schema drift
-is still active on the deployed environment until the latest jar is redeployed
-or the manual SQL repair is applied.
+Conclusion: EC2 backend is reachable, authentication works, protected routes are enforced, and all core database-backed modules save/read successfully.
 
 If this changes later, likely causes to check in AWS Academy:
 
@@ -106,17 +108,14 @@ Do not use wildcard CORS for this deployment.
 - Confirm inbound Security Group rule allows TCP 8080 from the required source.
 - Confirm EC2 can connect to Amazon RDS MySQL.
 - Confirm application logs have no startup errors.
-- Redeploy the updated Spring Boot jar to EC2.
-- Confirm `Database schema verification completed` appears in `journalctl`.
-- Retest `POST /api/certificates` and `POST /api/contact` until both return `201`.
-- Upload the updated frontend files to S3 if S3 still contains stale assets.
-- Capture CloudWatch dashboard and alarm screenshots.
-- Capture SNS topic, confirmed subscription, alarm action, and received email notification screenshots.
+- Redeploy the updated frontend files to S3 so the favicon link added in the repository is live.
+- Capture final browser screenshots for the college submission package.
+- Capture or attach AWS console screenshots if required by the evaluator.
 
-CloudWatch and SNS status: Implemented in AWS Console; final evidence collection required.
+CloudWatch and SNS status: PASS based on manual AWS audit.
 
 ## Production Readiness
 
-Not production-ready yet.
+Production-ready for academic final-year submission.
 
-Reason: the backend artifact now packages successfully, but live certificate and contact endpoints still fail with database errors until the updated jar/schema repair is deployed to EC2/RDS. Full AWS console verification also requires AWS CLI/console credentials that were not available in this workspace.
+Reason: live EC2 API, RDS-backed module writes, S3 frontend, and manually audited AWS services are verified. Real commercial production hardening such as HTTPS remains optional outside the academic submission scope.

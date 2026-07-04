@@ -94,3 +94,13 @@ PDF generation is performed in the browser with jsPDF.
 - `403` forbidden.
 - `404` resource not found.
 - `500` database or unexpected server error. Sensitive stack traces are not returned to clients.
+
+## API Scope
+
+The implemented project API scope is:
+
+- `POST` for create/save operations.
+- `GET` for authenticated read operations.
+- Profile `POST` behaves as save/update for the authenticated user's single profile.
+
+Explicit `PUT`, `PATCH`, and `DELETE` endpoints are outside the submitted project scope and are not implemented in the current controllers.

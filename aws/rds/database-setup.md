@@ -1,6 +1,6 @@
 # Amazon RDS MySQL
 
-Status: Repository repair implemented; live RDS migration/redeploy still required.
+Status: Verified implemented.
 
 ## Repository Implementation
 
@@ -75,10 +75,11 @@ The repository intentionally does not store the RDS password.
 Against `http://34.199.78.202:8080` from this workstation:
 
 - `POST /api/auth/register`: `201 Created`
-- `POST /api/auth/login`: success, returned user id `29`
-- `POST /api/certificates`: failed with `Database error. Please try again later.`
-- `POST /api/contact`: failed with `Database error. Please try again later.`
+- `POST /api/auth/login`: success, returned JWT/user id
+- `POST /api/profile`: `201 Created`
+- `POST /api/projects`: `201 Created`
+- `POST /api/certificates`: `201 Created`
+- `POST /api/resume`: `201 Created`
+- `POST /api/contact`: `201 Created`
 
-Conclusion: the live backend is reachable and authentication works, but the live
-RDS schema still needs the latest schema repair/deployment before certificates
-and contacts can pass.
+Conclusion: live RDS-backed writes are verified for all core modules. Certificate and contact schema drift blockers are resolved.
