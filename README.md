@@ -97,3 +97,4 @@ The repository does not store the RDS password.
 - [Testing report](docs/testing.md)
 - [CloudWatch and SNS guide](aws/cloudwatch/monitoring.md)
 - [Release candidate report](docs/release-candidate-report.md)
+- [Final project audit](docs/final-project-audit.md)
