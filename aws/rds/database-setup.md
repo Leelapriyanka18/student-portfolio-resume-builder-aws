@@ -1,6 +1,6 @@
 # Amazon RDS MySQL
 
-Status: Verified Implemented; final screenshot evidence required.
+Status: Repository repair implemented; live RDS migration/redeploy still required.
 
 ## Repository Implementation
 
@@ -20,6 +20,24 @@ The schema includes tables for:
 - `contacts`
 
 Foreign-key lookup indexes are included for `user_id` columns.
+
+The Spring Boot backend also verifies the schema at startup through:
+
+```text
+student-portfolio-springboot/src/main/java/com/studentportfolio/config/DatabaseSchemaInitializer.java
+```
+
+This initializer is enabled by default and is controlled by:
+
+```bash
+APP_DATABASE_SCHEMA_INITIALIZER_ENABLED=true
+```
+
+It creates missing tables, adds missing endpoint columns such as
+`certificates.certificate_url`, `certificates.issue_date`,
+`contacts.user_id`, and `contacts.created_at`, and creates lookup indexes.
+Foreign keys are added when the existing data allows them; orphaned legacy rows
+must be cleaned manually before adding constraints.
 
 ## Connection Configuration
 
@@ -45,6 +63,22 @@ The repository intentionally does not store the RDS password.
 1. RDS instance status is `Available`.
 2. Database `resumebuilder` exists.
 3. `database/schema.sql` has been applied.
-4. EC2 can connect to RDS on TCP `3306`.
-5. Backend logs show successful datasource initialization.
-6. Register and login perform real database reads/writes.
+4. Latest Spring Boot jar has been redeployed to EC2.
+5. Backend logs show `Database schema verification completed`.
+6. EC2 can connect to RDS on TCP `3306`.
+7. Register and login perform real database reads/writes.
+8. `POST /api/certificates` returns `201 Created`.
+9. `POST /api/contact` returns `201 Created`.
+
+## 2026-07-04 Live Smoke Evidence
+
+Against `http://34.199.78.202:8080` from this workstation:
+
+- `POST /api/auth/register`: `201 Created`
+- `POST /api/auth/login`: success, returned user id `29`
+- `POST /api/certificates`: failed with `Database error. Please try again later.`
+- `POST /api/contact`: failed with `Database error. Please try again later.`
+
+Conclusion: the live backend is reachable and authentication works, but the live
+RDS schema still needs the latest schema repair/deployment before certificates
+and contacts can pass.

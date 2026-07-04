@@ -56,6 +56,7 @@ public class ContactDAO {
                     contact.setEmail(rs.getString("email"));
                     contact.setSubject(rs.getString("subject"));
                     contact.setMessage(rs.getString("message"));
+                    contact.setCreatedAt(rs.getTimestamp("created_at"));
 
                     return contact;
                 },

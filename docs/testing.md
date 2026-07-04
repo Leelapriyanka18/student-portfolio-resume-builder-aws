@@ -1,21 +1,21 @@
 # Testing Report
 
-Date: 2026-07-03
+Date: 2026-07-04
 
 ## Verified In This Final Pass
 
 Commands run in `student-portfolio-springboot`:
 
 ```powershell
-mvn clean test
+mvn -DskipTests package
+mvn test
 ```
 
 Result from this workstation:
 
-- Maven could not resolve the Spring Boot parent POM from Maven Central.
-- The failure occurred before source compilation or test execution.
-- Root cause: the local Java trust store rejected Maven Central's TLS certificate (`PKIX path building failed` / `certificate_unknown`).
-- This is an environment dependency-resolution issue, not a repository code failure.
+- `mvn -DskipTests package`: passed and produced `target/student-portfolio-springboot-0.0.1-SNAPSHOT.jar`.
+- `mvn test`: blocked before executing tests because the local Java trust store rejected Maven Central while resolving `org.apache.maven.surefire:surefire-junit-platform:3.2.5` (`PKIX path building failed` / `certificate_unknown`).
+- This is an environment dependency-resolution issue for the test plugin, not a Java compilation failure.
 
 After fixing local Java/Maven certificate trust, rerun:
 
@@ -23,6 +23,20 @@ After fixing local Java/Maven certificate trust, rerun:
 mvn clean test
 mvn clean package
 ```
+
+## Live API Smoke Test
+
+Against `http://34.199.78.202:8080` on 2026-07-04:
+
+- `GET /`: reachable, returned `401 Unauthorized`, confirming the Spring Security chain is active on port `8080`.
+- `POST /api/auth/register`: `201 Created`
+- `POST /api/auth/login`: success
+- `POST /api/certificates`: failed with backend database error
+- `POST /api/contact`: failed with backend database error
+
+The certificate/contact failures match the known RDS schema drift blocker. The
+repository now includes `DatabaseSchemaInitializer` plus `database/queries.sql`
+to repair the missing live columns/indexes after redeploy.
 
 ## Repository Test Coverage
 

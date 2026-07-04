@@ -1,6 +1,6 @@
 # Deployment Readiness Report
 
-Date: 2026-07-02
+Date: 2026-07-04
 
 ## Current Architecture
 
@@ -42,27 +42,41 @@ Elastic IP is already assigned. Do not allocate another Elastic IP.
 - Bound Spring Boot to `0.0.0.0:8080` for EC2 network access.
 - Added environment-driven CORS for the S3 static website, `127.0.0.1:5500`, and `localhost:5500`.
 - Removed client-side `userId` validation from authenticated request DTOs so the backend can attach the JWT user after validation.
+- Added startup database schema verification/repair for missing live RDS columns used by certificate and contact endpoints.
+- Updated RDS audit SQL with information-schema checks for columns, indexes, and constraints.
 
 ## Verification
 
 - Active backend folder: `student-portfolio-springboot`
-- Build command: `mvn clean test`
-- Build status from this workstation: `mvn clean test` is blocked before compilation because Maven cannot resolve the Spring Boot parent POM from Maven Central. The local Java trust store rejects Maven Central's TLS certificate (`PKIX path building failed` / `certificate_unknown`). This is an environment dependency-resolution issue, not a repository code failure.
-- Generated artifact: run `mvn clean package` after fixing local Maven/Java certificate trust and after tests pass.
+- Package command: `mvn -DskipTests package`
+- Package status from this workstation: passed and produced `student-portfolio-springboot/target/student-portfolio-springboot-0.0.1-SNAPSHOT.jar`.
+- Test command: `mvn test`
+- Test status from this workstation: blocked because Java/Maven cannot validate Maven Central while resolving `org.apache.maven.surefire:surefire-junit-platform:3.2.5`.
+- Generated artifact is ready for EC2 redeploy, but the automated test gate still requires local Java/Maven certificate trust repair.
 
 ## Live AWS Verification
 
-Live checks from this workstation:
+Live checks from this workstation on 2026-07-04:
 
 ```text
 GET http://34.199.78.202:8080/
-GET http://34.199.78.202:8080/api/auth/login
+POST http://34.199.78.202:8080/api/auth/register
+POST http://34.199.78.202:8080/api/auth/login
+POST http://34.199.78.202:8080/api/certificates
+POST http://34.199.78.202:8080/api/contact
 ```
 
-Expected result:
+Observed result:
 
-- `/` returns Whitelabel 404, confirming Spring Boot is running.
-- `GET /api/auth/login` returns 405 Method Not Allowed, confirming the endpoint exists and expects POST.
+- `/` returned `401 Unauthorized`, confirming Spring Boot and Spring Security are running.
+- Register returned `201 Created`.
+- Login succeeded and returned a JWT/user id.
+- Certificates returned `Database error. Please try again later.`
+- Contact returned `Database error. Please try again later.`
+
+Conclusion: EC2 backend is reachable and authentication works. RDS schema drift
+is still active on the deployed environment until the latest jar is redeployed
+or the manual SQL repair is applied.
 
 If this changes later, likely causes to check in AWS Academy:
 
@@ -92,8 +106,10 @@ Do not use wildcard CORS for this deployment.
 - Confirm inbound Security Group rule allows TCP 8080 from the required source.
 - Confirm EC2 can connect to Amazon RDS MySQL.
 - Confirm application logs have no startup errors.
-- Upload the updated frontend files to S3.
 - Redeploy the updated Spring Boot jar to EC2.
+- Confirm `Database schema verification completed` appears in `journalctl`.
+- Retest `POST /api/certificates` and `POST /api/contact` until both return `201`.
+- Upload the updated frontend files to S3 if S3 still contains stale assets.
 - Capture CloudWatch dashboard and alarm screenshots.
 - Capture SNS topic, confirmed subscription, alarm action, and received email notification screenshots.
 
@@ -103,4 +119,4 @@ CloudWatch and SNS status: Implemented in AWS Console; final evidence collection
 
 Not production-ready yet.
 
-Reason: the frontend is centralized around one backend URL, but final readiness still depends on fixing local Maven certificate trust, generating a verified backend artifact, redeploying the updated frontend/backend artifacts, and completing full end-to-end data verification against Amazon RDS.
+Reason: the backend artifact now packages successfully, but live certificate and contact endpoints still fail with database errors until the updated jar/schema repair is deployed to EC2/RDS. Full AWS console verification also requires AWS CLI/console credentials that were not available in this workspace.

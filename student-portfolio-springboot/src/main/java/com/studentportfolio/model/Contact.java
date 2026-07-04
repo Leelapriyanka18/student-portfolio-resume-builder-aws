@@ -8,6 +8,7 @@ public class Contact {
     private String email;
     private String subject;
     private String message;
+    private java.sql.Timestamp createdAt;
 
     public Contact() {
     }
@@ -58,5 +59,13 @@ public class Contact {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public java.sql.Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(java.sql.Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 }
